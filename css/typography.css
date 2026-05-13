@@ -1,1 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+:root {
+    --ati-blue: #0056b3;       /* ATI-nin əsas göy rəngi */
+    --ati-dark-blue: #003d80;
+    --ati-orange: #ff8c00;    /* Vacib bildirişlər üçün */
+    --ati-light-gray: #f4f4f4; /* Arxa fon */
+    --ati-text: #333333;      /* Əsas mətn */
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--ati-light-gray);
+    color: var(--ati-text);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--ati-blue);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+p {
+    font-size: 16px;
+    margin: 10px 0;
+}
