@@ -1,34 +1,101 @@
-.auth-container {
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 30px;
+/* 1. Naviqasiya Paneli (Navbar) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 8%;
     background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
+.site-logo {
+    height: 40px;
 }
 
-.btn-primary {
-    width: 100%;
-    padding: 15px;
-    background-color: #0056b3;
+.nav-links ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.btn-customer {
+    background: #A68B5C; /* Şəkildəki qızılı rəng */
     color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.btn-primary:hover {
-    background-color: #003d80;
+/* 2. ARXA FON ŞƏKLİ BURADA TƏYİN OLUNUR (Hero Section) */
+.hero-section {
+    height: 80vh; /* Ekranın 80%-i qədər hündürlük */
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                url('../img/hero-bg.png') no-repeat center center;
+    background-size: cover; /* Şəkli ekrana tam oturdur */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+/* 3. Axtarış Paneli */
+.search-box {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    outline: none;
+}
+
+.btn-track {
+    background: #A68B5C;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 4. Xidmət Kartları */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 50px 8%;
+}
+
+.service-card {
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.service-card:hover {
+    border-color: #A68B5C;
+    transform: translateY(-5px);
 }
