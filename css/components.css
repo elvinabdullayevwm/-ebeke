@@ -1,23 +1,27 @@
-/* 1. Ümumi Tənzimləmələr */
+/* 1. ÜMUMİ AYARLAR */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #fcfcfc;
+    background-color: #ffffff;
+    line-height: 1.6;
 }
 
-/* 2. Navbar (Üst Menyu) */
+/* 2. NAVBAR (ÜST MENYU) */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 8%;
-    background: #ffffff;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 8%;
+    background: white;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .site-logo {
@@ -28,61 +32,54 @@ body {
 .nav-links ul {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 25px;
 }
 
-.nav-links li {
-    color: #444;
+.nav-links a {
+    text-decoration: none;
+    color: #333;
     font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.nav-links li:hover {
-    color: #A68B5C;
+    font-size: 15px;
 }
 
 .btn-customer {
-    background: #A68B5C;
+    background: #A68B5C; /* Qızılı rəng */
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 20px;
     border-radius: 5px;
-    font-weight: bold;
     cursor: pointer;
+    font-weight: bold;
 }
 
-/* 3. Hero Section (Arxa fon) */
+/* 3. HERO SECTION (ARXA FON VƏ AXTARIŞ) */
 .hero {
-    height: 75vh;
-    background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                 url('../img/hero-bg.png') no-repeat center center/cover;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     text-align: center;
+    width: 100%;
 }
 
 .hero-content h1 {
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 40px;
     margin-bottom: 15px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
 }
 
-.hero-content p {
-    font-size: 18px;
-    opacity: 0.9;
-}
-
-/* 4. Axtarış Paneli */
 .search-panel {
     background: white;
-    padding: 10px;
+    padding: 8px;
     border-radius: 12px;
     display: flex;
-    width: 600px;
-    margin: 40px auto 0;
+    width: 100%;
+    max-width: 550px;
+    margin-top: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
@@ -99,44 +96,46 @@ body {
     background: #A68B5C;
     color: white;
     border: none;
-    padding: 0 30px;
+    padding: 0 25px;
     border-radius: 8px;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: bold;
 }
 
-/* 5. Premium Xidmətlər Kartları */
+/* 4. PREMIUM XİDMƏTLƏR (KARTLARIN YAN-YANA DÜZÜLMƏSİ) */
 .premium-services {
     padding: 80px 8%;
     background: #ffffff;
+    text-align: center;
 }
 
 .section-title {
-    text-align: center;
     font-size: 32px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     color: #222;
 }
 
+/* KARTLARI YAN-YANA DÜZƏN ƏSAS HİSSƏ */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr); /* 4 SÜTUN */
+    gap: 25px;
+    width: 100%;
 }
 
 .service-card {
-    padding: 40px 25px;
     background: #fff;
+    padding: 40px 20px;
     border: 1px solid #eee;
     border-radius: 15px;
-    text-align: center;
-    transition: 0.3s all ease;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
 }
 
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
     border-color: #A68B5C;
+    box-shadow: 0 10px 25px rgba(166, 139, 92, 0.1);
 }
 
 .service-icon {
@@ -145,12 +144,26 @@ body {
 }
 
 .service-card h3 {
-    margin-bottom: 15px;
-    color: #333;
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #222;
 }
 
 .service-card p {
+    font-size: 14px;
     color: #666;
-    font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.5;
+}
+
+/* MOBİL VERSİYA (Ekran balacalaşanda kartlar alt-alta düşsün) */
+@media (max-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr); /* Planşetdə 2 dənə */
+    }
+}
+
+@media (max-width: 600px) {
+    .services-grid {
+        grid-template-columns: 1fr; /* Telefonda 1 dənə */
+    }
 }
