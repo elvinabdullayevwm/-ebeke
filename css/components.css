@@ -1,1 +1,50 @@
+/* Əsas Konteynir */
+.auth-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
+/* Giriş sahələri (Inputs) */
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ölçüləri qorumaq üçün */
+    font-size: 16px;
+}
+
+/* ATI-nin klassik göy düyməsi */
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--ati-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--ati-dark-blue);
+}
+
+/* Yük Kartı (Sifarişlər üçün) */
+.load-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-left: 5px solid var(--ati-orange); /* Vacib vurğu */
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
