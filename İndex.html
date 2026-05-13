@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaşıYol - Logistika Sistemi</title>
+    <title>DaşıYol - ATI Üslublu Panel</title>
     
-    <!-- CSS Şəbəkəsi (Dəri) -->
-    <link rel="stylesheet" href="css/typography.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/components.css">
+    <!-- CSS Faylları -->
+    <link rel="stylesheet" href="./css/typography.css">
+    <link rel="stylesheet" href="./css/animations.css">
+    <link rel="stylesheet" href="./css/components.css">
 </head>
 <body>
 
     <div class="auth-container fade-in">
-        <!-- Login Bölməsi -->
+        <!-- Giriş Bölməsi -->
         <section id="login-section">
-            <h2>Giriş</h2>
-            <input type="email" id="login-email" placeholder="E-poçt">
-            <input type="password" id="login-pass" placeholder="Şifrə">
-            <button class="btn-primary" onclick="handleLogin()">Giriş Et</button>
-            <p onclick="showSection('register-section')">Hesabın yoxdur? Qeydiyyat</p>
+            <h2 style="text-align: center;">Sistemə Giriş</h2>
+            <div style="padding: 10px 0;">
+                <label>E-poçt ünvanı</label>
+                <input type="email" id="login-email" placeholder="nümunə@mail.com">
+                
+                <label>Şifrə</label>
+                <input type="password" id="login-pass" placeholder="******">
+                
+                <button class="btn-primary" onclick="handleLogin()">Giriş Et</button>
+            </div>
+            <p style="text-align: center; font-size: 14px; cursor: pointer;" onclick="showSection('register-section')">
+                Hesabınız yoxdur? **Qeydiyyatdan keçin**
+            </p>
         </section>
 
         <!-- Qeydiyyat Bölməsi -->
@@ -27,36 +35,43 @@
             <h2>Qeydiyyat</h2>
             <input type="text" id="reg-name" placeholder="Ad və Soyad">
             <input type="email" id="reg-email" placeholder="E-poçt">
-            <button class="btn-primary">Qeydiyyatı Tamamla</button>
-            <p onclick="showSection('login-section')">Geri qayıt</p>
+            <button class="btn-primary">Təsdiqlə</button>
+            <p style="text-align: center; cursor: pointer;" onclick="showSection('login-section')">Geri qayıt</p>
         </section>
 
-        <!-- Bazar Meydanı (Marketplace) -->
+        <!-- Marketplace (Yük Birjası) -->
         <section id="marketplace-section" style="display:none;">
-            <h2>Yük Birjası</h2>
+            <h2>Yük Birjası (ATI Model)</h2>
             <div id="load-list">
-                <!-- Yüklər bura dinamik yığılacaq -->
+                <!-- Sınaq üçün nümunə yük kartı -->
+                <div class="load-card">
+                    <div>
+                        <strong>Bakı ➔ Gəncə</strong>
+                        <p>Meyvə-tərəvəz, 20 ton</p>
+                    </div>
+                    <div>
+                        <span style="color: green; font-weight: bold;">850 AZN</span>
+                        <button style="padding: 5px 10px; margin-left: 10px;">Bax</button>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
 
-    <!-- JS Şəbəkəsi (Əzələlər) -->
-    <script src="js/api.js"></script>
-    <script src="js/ui-controller.js"></script>
-    <script src="js/auth.js"></script>
+    <!-- JS Faylları -->
+    <script src="./js/api.js"></script>
+    <script src="./js/ui-controller.js"></script>
+    <script src="./js/auth.js"></script>
 
     <script>
-        // Sistemi işə salan başlanğıc funksiyası
+        // Səhifə yüklənəndə işə düşür
         window.onload = () => {
-            console.log("Sistem aktivdir...");
             showSection('login-section');
         };
 
         async function handleLogin() {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
-            
-            // auth.js-dəki funksiyanı çağırırıq
             await login(email, pass);
         }
     </script>
