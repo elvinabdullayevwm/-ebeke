@@ -3,52 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaşıYol - Şəbəkə Sistemi</title>
+    <title>Yolasal - Rəqəmsal Logistika Platforması</title>
     
-    <!-- CSS Şəbəkəsi -->
+    <!-- CSS fayllarını bura bağlayırıq -->
     <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-    <div class="auth-container fade-in">
-        <section id="login-section">
-            <h2>Sistemə Giriş</h2>
-            <label>E-poçt</label>
-            <input type="email" id="login-email" placeholder="nümunə@mail.com">
-            <label>Şifrə</label>
-            <input type="password" id="login-pass" placeholder="******">
-            <button class="btn-primary" onclick="handleLogin()">Giriş Et</button>
-            <p onclick="showSection('register-section')" style="text-align:center; cursor:pointer; margin-top:15px;">Qeydiyyat</p>
-        </section>
+    <!-- 1. HEADER (ÜST MENYU) -->
+    <header class="navbar">
+        <div class="logo-container">
+            <!-- logo.jpg şəkli sənin img qovluğunda olduğu üçün belə çağırırıq -->
+            <img src="img/logo.jpg" alt="Yolasal Loqo" class="site-logo">
+        </div>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Fleet</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Tracking</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <span class="lang-switcher">AZ | EN</span>
+            <button class="btn-customer">MÜŞTƏRİ GİRİŞİ</button>
+        </div>
+    </header>
 
-        <section id="register-section" style="display:none;">
-            <h2>Qeydiyyat</h2>
-            <input type="text" id="reg-name" placeholder="Ad Soyad">
-            <input type="email" id="reg-email" placeholder="E-poçt">
-            <button class="btn-primary">Təsdiqlə</button>
-            <p onclick="showSection('login-section')" style="text-align:center; cursor:pointer;">Geri qayıt</p>
-        </section>
+    <!-- 2. HERO SECTION (ŞƏKİL OLAN HİSSƏ) -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>ETİBARLI LOQİSTİKA VƏ DAŞIMA HƏLLƏRİ</h1>
+            <p>YOLASAL İLƏ YÜKÜNÜZ QAYDASINDA!</p>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Yükü...">
+                <button class="btn-track">Yükü İzlə</button>
+            </div>
+        </div>
+    </section>
 
-        <section id="marketplace-section" style="display:none;">
-            <h2>Yük Birjası</h2>
-            <div id="load-list"></div>
-        </section>
-    </div>
+    <!-- 3. PREMIUM XİDMƏTLƏR -->
+    <section class="services-container">
+        <h2>Premium Xidmətlərimiz</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🚛</div>
+                <h3>Loqistika Transitlərimiz</h3>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📦</div>
+                <h3>Yükün Sığortalanması</h3>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌎</div>
+                <h3>Beynəlxalq Daşıma</h3>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📍</div>
+                <h3>Anbar Xidmətləri</h3>
+            </div>
+        </div>
+    </section>
 
-    <!-- JS Şəbəkəsi -->
+    <!-- JS fayllarını da bura bağlayaq (İşləməsi üçün) -->
     <script src="js/api.js"></script>
     <script src="js/ui-controller.js"></script>
     <script src="js/auth.js"></script>
-
-    <script>
-        window.onload = () => { showSection('login-section'); };
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
-            await login(email, pass);
-        }
-    </script>
 </body>
 </html>
