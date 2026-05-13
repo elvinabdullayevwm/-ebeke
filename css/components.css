@@ -1,44 +1,54 @@
-/* 1. Naviqasiya Paneli (Navbar) */
+/* Ekranın kənarındakı boşluqları silirik */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* MENYU DİZAYNI */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 8%;
+    padding: 10px 8%;
     background: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .site-logo {
-    height: 40px;
+    height: 60px; /* Loqonu kiçildirik ki, ekranı tutmasın */
+    width: auto;
 }
 
 .nav-links ul {
     display: flex;
     list-style: none;
-    gap: 25px;
+    gap: 20px;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: #333;
+.nav-links li {
     font-weight: 500;
+    color: #333;
+    cursor: pointer;
 }
 
 .btn-customer {
-    background: #A68B5C; /* Şəkildəki qızılı rəng */
+    background: #A68B5C; /* Sənin bəyəndiyin qızılı rəng */
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-/* 2. ARXA FON ŞƏKLİ BURADA TƏYİN OLUNUR (Hero Section) */
-.hero-section {
-    height: 80vh; /* Ekranın 80%-i qədər hündürlük */
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+/* ARXA FON ŞƏKLİ VƏ HERO HİSSƏSİ */
+.hero {
+    height: 85vh; /* Ekranın 85%-ni tutur */
+    /* Şəklin yolu: CSS faylından çıxıb img qovluğuna girir */
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                 url('../img/hero-bg.png') no-repeat center center;
-    background-size: cover; /* Şəkli ekrana tam oturdur */
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,55 +57,37 @@
 }
 
 .hero-content h1 {
-    font-size: 42px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
-/* 3. Axtarış Paneli */
-.search-box {
+.hero-content p {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* AXTARIŞ PANELİ */
+.search-panel {
     background: white;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 8px;
     display: flex;
-    width: 500px;
-    margin: 0 auto;
+    width: 450px;
+    margin: 30px auto;
 }
 
-.search-box input {
+.search-panel input {
     flex: 1;
     border: none;
     padding: 12px;
     outline: none;
 }
 
-.btn-track {
+.btn-search {
     background: #A68B5C;
     color: white;
     border: none;
-    padding: 10px 25px;
+    padding: 0 25px;
     border-radius: 5px;
     cursor: pointer;
-}
-
-/* 4. Xidmət Kartları */
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 50px 8%;
-}
-
-.service-card {
-    background: #fff;
-    padding: 30px;
-    border: 1px solid #eee;
-    border-radius: 15px;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.service-card:hover {
-    border-color: #A68B5C;
-    transform: translateY(-5px);
 }
