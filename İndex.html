@@ -3,72 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaşıYol - ATI Üslublu Panel</title>
+    <title>DaşıYol - Şəbəkə Sistemi</title>
     
-    <!-- CSS Faylları -->
-    <link rel="stylesheet" href="./css/typography.css">
-    <link rel="stylesheet" href="./css/animations.css">
-    <link rel="stylesheet" href="./css/components.css">
+    <!-- CSS Şəbəkəsi -->
+    <link rel="stylesheet" href="css/typography.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
     <div class="auth-container fade-in">
-        <!-- Giriş Bölməsi -->
         <section id="login-section">
-            <h2 style="text-align: center;">Sistemə Giriş</h2>
-            <div style="padding: 10px 0;">
-                <label>E-poçt ünvanı</label>
-                <input type="email" id="login-email" placeholder="nümunə@mail.com">
-                
-                <label>Şifrə</label>
-                <input type="password" id="login-pass" placeholder="******">
-                
-                <button class="btn-primary" onclick="handleLogin()">Giriş Et</button>
-            </div>
-            <p style="text-align: center; font-size: 14px; cursor: pointer;" onclick="showSection('register-section')">
-                Hesabınız yoxdur? **Qeydiyyatdan keçin**
-            </p>
+            <h2>Sistemə Giriş</h2>
+            <label>E-poçt</label>
+            <input type="email" id="login-email" placeholder="nümunə@mail.com">
+            <label>Şifrə</label>
+            <input type="password" id="login-pass" placeholder="******">
+            <button class="btn-primary" onclick="handleLogin()">Giriş Et</button>
+            <p onclick="showSection('register-section')" style="text-align:center; cursor:pointer; margin-top:15px;">Qeydiyyat</p>
         </section>
 
-        <!-- Qeydiyyat Bölməsi -->
         <section id="register-section" style="display:none;">
             <h2>Qeydiyyat</h2>
-            <input type="text" id="reg-name" placeholder="Ad və Soyad">
+            <input type="text" id="reg-name" placeholder="Ad Soyad">
             <input type="email" id="reg-email" placeholder="E-poçt">
             <button class="btn-primary">Təsdiqlə</button>
-            <p style="text-align: center; cursor: pointer;" onclick="showSection('login-section')">Geri qayıt</p>
+            <p onclick="showSection('login-section')" style="text-align:center; cursor:pointer;">Geri qayıt</p>
         </section>
 
-        <!-- Marketplace (Yük Birjası) -->
         <section id="marketplace-section" style="display:none;">
-            <h2>Yük Birjası (ATI Model)</h2>
-            <div id="load-list">
-                <!-- Sınaq üçün nümunə yük kartı -->
-                <div class="load-card">
-                    <div>
-                        <strong>Bakı ➔ Gəncə</strong>
-                        <p>Meyvə-tərəvəz, 20 ton</p>
-                    </div>
-                    <div>
-                        <span style="color: green; font-weight: bold;">850 AZN</span>
-                        <button style="padding: 5px 10px; margin-left: 10px;">Bax</button>
-                    </div>
-                </div>
-            </div>
+            <h2>Yük Birjası</h2>
+            <div id="load-list"></div>
         </section>
     </div>
 
-    <!-- JS Faylları -->
-    <script src="./js/api.js"></script>
-    <script src="./js/ui-controller.js"></script>
-    <script src="./js/auth.js"></script>
+    <!-- JS Şəbəkəsi -->
+    <script src="js/api.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/auth.js"></script>
 
     <script>
-        // Səhifə yüklənəndə işə düşür
-        window.onload = () => {
-            showSection('login-section');
-        };
-
+        window.onload = () => { showSection('login-section'); };
         async function handleLogin() {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
