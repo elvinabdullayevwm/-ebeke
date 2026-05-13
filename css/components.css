@@ -14,13 +14,13 @@ input {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    display: block;
+    box-sizing: border-box;
 }
 
 .btn-primary {
     width: 100%;
     padding: 15px;
-    background-color: var(--ati-blue);
+    background-color: #0056b3;
     color: white;
     border: none;
     border-radius: 4px;
@@ -30,16 +30,5 @@ input {
 }
 
 .btn-primary:hover {
-    background-color: var(--ati-dark-blue);
-}
-
-.load-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-left: 6px solid var(--ati-orange);
-    padding: 15px;
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #003d80;
 }
