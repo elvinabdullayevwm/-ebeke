@@ -3,75 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yolasal - Rəqəmsal Logistika Platforması</title>
-    
-    <!-- CSS fayllarını bura bağlayırıq -->
-    <link rel="stylesheet" href="css/typography.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <title>Yolasal - Premium Logistika</title>
+    <!-- CSS faylını bura bağlayırıq. Sənin css qovluğunda components.css olduğu üçün yol belədir -->
     <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-    <!-- 1. HEADER (ÜST MENYU) -->
+    <!-- ÜST MENYU -->
     <header class="navbar">
-        <div class="logo-container">
-            <!-- logo.jpg şəkli sənin img qovluğunda olduğu üçün belə çağırırıq -->
-            <img src="img/logo.jpg" alt="Yolasal Loqo" class="site-logo">
+        <div class="logo-area">
+            <img src="img/logo.jpg" alt="Yolasal" class="site-logo">
         </div>
         <nav class="nav-links">
             <ul>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Fleet</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Tracking</a></li>
-                <li><a href="#">Contact</a></li>
+                <li>Services</li>
+                <li>Fleet</li>
+                <li>About Us</li>
+                <li>Tracking</li>
+                <li>Contact</li>
             </ul>
         </nav>
-        <div class="header-actions">
-            <span class="lang-switcher">AZ | EN</span>
+        <div class="header-right">
+            <span>AZ | EN</span>
             <button class="btn-customer">MÜŞTƏRİ GİRİŞİ</button>
         </div>
     </header>
 
-    <!-- 2. HERO SECTION (ŞƏKİL OLAN HİSSƏ) -->
-    <section class="hero-section">
+    <!-- ANA HİSSƏ (ARXA FON BURADA GÖRÜNƏCƏK) -->
+    <section class="hero">
         <div class="hero-content">
             <h1>ETİBARLI LOQİSTİKA VƏ DAŞIMA HƏLLƏRİ</h1>
             <p>YOLASAL İLƏ YÜKÜNÜZ QAYDASINDA!</p>
             
-            <div class="search-box">
+            <div class="search-panel">
                 <input type="text" placeholder="Yükü...">
-                <button class="btn-track">Yükü İzlə</button>
+                <button class="btn-search">Yükü İzlə</button>
             </div>
         </div>
     </section>
 
-    <!-- 3. PREMIUM XİDMƏTLƏR -->
-    <section class="services-container">
-        <h2>Premium Xidmətlərimiz</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">🚛</div>
-                <h3>Loqistika Transitlərimiz</h3>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">📦</div>
-                <h3>Yükün Sığortalanması</h3>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">🌎</div>
-                <h3>Beynəlxalq Daşıma</h3>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">📍</div>
-                <h3>Anbar Xidmətləri</h3>
-            </div>
-        </div>
-    </section>
-
-    <!-- JS fayllarını da bura bağlayaq (İşləməsi üçün) -->
-    <script src="js/api.js"></script>
-    <script src="js/ui-controller.js"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html>
