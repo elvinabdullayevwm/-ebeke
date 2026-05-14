@@ -1,107 +1,98 @@
-/**
- * Yolasal Premium Logistics - UI Controller
- * Bütün keçidlər və interaktiv elementlər burada idarə olunur.
- */
-
-// 1. SƏHİFƏNİN BÖLMƏLƏRİNƏ SƏLİS SÜRÜŞMƏ (SMOOTH SCROLL)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
-        // Navbarın hündürlüyünü (90px) nəzərə alırıq ki, başlıq navbarın altında qalmasın
-        const offset = 95; 
+        const offset = 100;
         const bodyRect = document.body.getBoundingClientRect().top;
         const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
         window.scrollTo({
-            top: offsetPosition,
+            top: (elementRect - bodyRect) - offset,
             behavior: "smooth"
         });
-    } else {
-        console.error("Hədəf bölmə tapılmadı ID: " + id);
     }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("Yolasal UI sistemi uğurla işə düşdü.");
+    
+    // QEYDİYYAT MODALINI YARADAN FUNKSİYA
+    function openRegisterModal() {
+        // Əgər giriş modalı açıqdırsa, onu bağla
+        const loginModal = document.getElementById("loginModal");
+        if (loginModal) loginModal.remove();
 
-    // 2. MÜŞTƏRİ GİRİŞİ (MODAL PƏNCƏRƏSİ) İDARƏEDİCİSİ
-    const loginBtn = document.getElementById("loginBtn");
+        const cities = ["Bakı", "Gəncə", "Sumqayıt", "Xırdalan", "Naxçıvan", "Lənkəran", "Şəki", "Quba", "Daşkəsən", "Şirvan", "Mingəçevir", "Zaqatala", "Qəbələ", "Bərdə", "Ağdam"]; // Siyahını ehtiyaca görə genişləndirə bilərsən
 
-    if (loginBtn) {
-        loginBtn.addEventListener("click", function() {
-            // Modalı HTML-ə əlavə edirik
-            const modalHTML = `
-                <div id="loginModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:10001; backdrop-filter: blur(8px);">
-                    <div style="background:white; padding:45px; border-radius:24px; width:400px; position:relative; text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-                        <span id="closeModal" style="position:absolute; top:20px; right:25px; cursor:pointer; font-size:30px; color:#999;">&times;</span>
-                        <h2 style="margin-bottom:25px; color:#222; font-weight:700; font-family: 'Segoe UI', sans-serif;">Müştəri Girişi</h2>
-                        
-                        <input type="email" id="userEmail" placeholder="E-poçt ünvanı" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #eee; border-radius:12px; outline:none; font-size:16px; background:#f9f9f9;">
-                        <input type="password" id="userPass" placeholder="Şifrə" style="width:100%; padding:15px; margin-bottom:25px; border:1px solid #eee; border-radius:12px; outline:none; font-size:16px; background:#f9f9f9;">
-                        
-                        <button id="submitLogin" style="width:100%; padding:16px; background:#A68B5C; color:white; border:none; border-radius:12px; cursor:pointer; font-weight:bold; font-size:17px; transition:0.3s; box-shadow: 0 5px 15px rgba(166,139,92,0.3);">Daxil Ol</button>
-                        
-                        <div style="margin-top:30px; font-size:14px; color:#666;">
-                            <p style="margin-bottom:10px; cursor:pointer; color:#A68B5C; font-weight:600;">Şifrəni bərpa et</p>
-                            <p>Hesabınız yoxdur? <span style="color:#A68B5C; cursor:pointer; font-weight:bold;">Qeydiyyatdan keçin</span></p>
-                        </div>
+        const regModalHTML = `
+            <div id="regModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:10002; backdrop-filter: blur(5px); padding: 20px;">
+                <div style="background:white; padding:35px; border-radius:20px; width:100%; max-width:500px; position:relative; max-height: 90vh; overflow-y: auto;">
+                    <span id="closeReg" style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:28px; color:#999;">&times;</span>
+                    <h2 style="margin-bottom:20px; text-align:center; color:#A68B5C;">Yeni Hesab Yarat</h2>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <input type="text" placeholder="Ad" style="padding:12px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                        <input type="text" placeholder="Soyad" style="padding:12px; border:1px solid #ddd; border-radius:8px; outline:none;">
                     </div>
+
+                    <div style="margin-top:15px; display:flex; gap:5px;">
+                        <select style="padding:12px; border:1px solid #ddd; border-radius:8px; width:80px; outline:none;">
+                            <option>050</option><option>051</option><option>055</option><option>070</option><option>077</option><option>010</option><option>099</option>
+                        </select>
+                        <input type="text" placeholder="xxx-xx-xx" style="flex:1; padding:12px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                    </div>
+
+                    <input type="email" placeholder="Email ünvanı" style="width:100%; padding:12px; margin-top:15px; border:1px solid #ddd; border-radius:8px; outline:none;">
+
+                    <select style="width:100%; padding:12px; margin-top:15px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                        <option value="">Yaşadığınız ünvanı seçin</option>
+                        ${cities.map(city => `<option value="${city}">${city}</option>`).join('')}
+                    </select>
+
+                    <div style="margin-top:15px; display:flex; align-items:center; gap:20px; padding:12px; border:1px solid #ddd; border-radius:8px;">
+                        <span style="color:#666;">Cins:</span>
+                        <label><input type="radio" name="gender" value="kisi"> Kişi</label>
+                        <label><input type="radio" name="gender" value="qadin"> Qadın</label>
+                    </div>
+
+                    <div style="margin-top:15px;">
+                        <label style="display:block; font-size:13px; color:#666; margin-bottom:5px;">Doğum tarixi:</label>
+                        <input type="date" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                    </div>
+
+                    <input type="text" placeholder="MMC adı (və ya fərdi sahibkar)" style="width:100%; padding:12px; margin-top:15px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                    
+                    <input type="password" placeholder="Parol təyin edin" style="width:100%; padding:12px; margin-top:15px; border:1px solid #ddd; border-radius:8px; outline:none;">
+
+                    <button style="width:100%; padding:15px; background:#A68B5C; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; margin-top:20px; font-size:16px;">Qeydiyyatı Tamamla</button>
                 </div>
-            `;
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', regModalHTML);
 
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-            // Modalı bağlamaq üçün funksiyalar
-            const modal = document.getElementById("loginModal");
-            const closeBtn = document.getElementById("closeModal");
-
-            closeBtn.onclick = () => modal.remove();
-            
-            // Modalın kənarına (qara hissəyə) basanda bağlanması
-            window.onclick = (event) => {
-                if (event.target == modal) modal.remove();
-            };
-
-            // Giriş düyməsinin məntiqi (auth.js ilə inteqrasiya üçün)
-            document.getElementById("submitLogin").onclick = async function() {
-                const email = document.getElementById("userEmail").value;
-                const pass = document.getElementById("userPass").value;
-
-                if (email && pass) {
-                    if (typeof login === "function") {
-                        await login(email, pass);
-                    } else {
-                        console.warn("auth.js yüklənməyib, simulyasiya edilir...");
-                        alert("Sistemə daxil olunur: " + email);
-                    }
-                } else {
-                    alert("Zəhmət olmasa bütün xanaları doldurun!");
-                }
-            };
-        });
+        document.getElementById("closeReg").onclick = () => document.getElementById("regModal").remove();
+        window.onclick = (e) => { if(e.target.id === "regModal") document.getElementById("regModal").remove(); };
     }
 
-    // 3. YÜKÜ İZLƏMƏ (SEARCH) PANELİ
-    const searchBtn = document.querySelector(".btn-search");
-    const trackInput = document.getElementById("trackInput");
-
-    if (searchBtn && trackInput) {
-        searchBtn.addEventListener("click", function() {
-            const trackCode = trackInput.value.trim();
-            if (trackCode) {
-                // Burada gələcəkdə API-yə sorğu göndəriləcək
-                alert("Yük məlumatları axtarılır: " + trackCode);
-            } else {
-                alert("Zəhmət olmasa izləmə nömrəsini daxil edin.");
-                trackInput.focus();
-            }
-        });
-
-        // Enter düyməsi ilə axtarış
-        trackInput.addEventListener("keypress", function(e) {
-            if (e.key === 'Enter') searchBtn.click();
+    // GİRİŞ MODALINI AÇANDA QEYDİYYAT LİNKİNƏ BASILMASINI İZLƏYİRİK
+    const loginBtn = document.getElementById("loginBtn");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function() {
+            // ... (əvvəlki giriş modalı kodu) ...
+            const modalHTML = `
+                <div id="loginModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:10001; backdrop-filter: blur(5px);">
+                    <div style="background:white; padding:40px; border-radius:20px; width:380px; position:relative; text-align:center;">
+                        <span id="closeModal" style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:28px;">&times;</span>
+                        <h2 style="margin-bottom:25px;">Müştəri Girişi</h2>
+                        <input type="email" placeholder="E-poçt" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
+                        <input type="password" placeholder="Şifrə" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ddd; border-radius:8px;">
+                        <button style="width:100%; padding:12px; background:#A68B5C; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Daxil Ol</button>
+                        <p style="margin-top:20px;">Hesabınız yoxdur? <span id="switchToReg" style="color:#A68B5C; font-weight:bold; cursor:pointer;">Qeydiyyatdan keçin</span></p>
+                    </div>
+                </div>`;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            document.getElementById("closeModal").onclick = () => document.getElementById("loginModal").remove();
+            
+            // Qeydiyyat linkinə klik
+            document.getElementById("switchToReg").onclick = openRegisterModal;
         });
     }
 });
