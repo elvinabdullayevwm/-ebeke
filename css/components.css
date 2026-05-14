@@ -1,30 +1,23 @@
-/* NAVBAR TƏKMİLLƏŞDİRMƏ */
-.navbar {
+/* NAVBAR DÜZƏLİŞLƏRİ */
+.nav-links ul {
     display: flex;
-    justify-content: space-between;
+    list-style: none;
+    gap: 35px;
     align-items: center;
-    padding: 0 10% !important;
-    background: rgba(255, 255, 255, 0.98);
-    height: 95px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(10px); /* Müasir şüşə effekti */
 }
 
-/* MENYU LİNK STİLLƏRİ */
-.nav-links li {
+.nav-links ul li {
     font-weight: 500;
-    color: #444;
-    cursor: pointer;
+    color: #333;
+    cursor: pointer; /* Üzərinə gələndə əl işarəsi (pointer) çıxır */
     font-size: 15px;
     transition: all 0.3s ease;
     position: relative;
-    padding: 5px 0;
+    padding-bottom: 5px;
 }
 
-.nav-links li::after {
+/* Üzərinə gələndə çıxan zərif qızılı xətt effekti */
+.nav-links ul li::after {
     content: '';
     position: absolute;
     width: 0;
@@ -35,72 +28,26 @@
     transition: width 0.3s ease;
 }
 
-.nav-links li:hover {
-    color: #A68B5C;
+.nav-links ul li:hover {
+    color: #A68B5C; /* Yazı rəngi dəyişir */
 }
 
-.nav-links li:hover::after {
-    width: 100%;
+.nav-links ul li:hover::after {
+    width: 100%; /* Xətt tam uzanır */
 }
 
-/* BÖLMƏLƏR ÜÇÜN ÜMUMİ DİZAYN */
-.premium-services {
-    padding: 120px 10%;
-    text-align: center;
+/* SƏHİFƏNİN BÖLMƏLƏRİ ÜÇÜN MƏSAFƏ */
+section {
+    scroll-margin-top: 95px; /* Sürüşmə zamanı navbarın altında qalmaması üçün */
 }
 
-.section-title {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 50px;
-    color: #1a1a1a;
-    letter-spacing: -0.5px;
+/* MODAL PƏNCƏRƏSİ ÜÇÜN ƏLAVƏ (ƏGƏR JS İLƏ VERİLMƏYİBSƏ) */
+#loginModal {
+    backdrop-filter: blur(8px); /* Arxanı dumanlı edir, daha elit görünür */
 }
 
-.section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: #A68B5C;
-    margin: 20px auto 0;
-}
-
-/* AVTOPARK VƏ ƏLAQƏ KARTLARI */
-#fleet-section .service-card {
-    background: white;
-    font-weight: 600;
-    color: #333;
-    padding: 30px;
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-}
-
-#contact-section p {
-    margin-bottom: 15px;
-    font-weight: 500;
-    color: #444;
-}
-
-/* MOBİL UYĞUNLUQ */
-@media (max-width: 992px) {
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .hero-content h1 {
-        font-size: 38px;
-    }
-}
-
-@media (max-width: 600px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-    .navbar {
-        padding: 0 5% !important;
-    }
-    .nav-links {
-        display: none; /* Mobil menyu gələcəkdə əlavə oluna bilər */
-    }
+.modal-btn:hover {
+    background: #8e754a !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(166, 139, 92, 0.3);
 }
