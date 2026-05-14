@@ -10,10 +10,11 @@
 </head>
 <body>
 
-    <header class="navbar fade-in">
+    <header class="navbar">
         <div class="logo-area">
             <img src="img/logo.jpg" alt="Yolasal" class="site-logo">
         </div>
+        
         <nav class="nav-links">
             <ul>
                 <li onclick="scrollToSection('services-section')">Xidmətlər</li>
@@ -23,6 +24,7 @@
                 <li onclick="scrollToSection('contact-section')">Əlaqə</li>
             </ul>
         </nav>
+
         <div class="header-right">
             <span class="lang">AZ | EN</span>
             <button class="btn-customer" id="loginBtn">MÜŞTƏRİ GİRİŞİ</button>
@@ -30,10 +32,9 @@
     </header>
 
     <section class="hero">
-        <div class="hero-content fade-in">
+        <div class="hero-content">
             <h1>ETİBARLI LOQİSTİKA VƏ DAŞIMA HƏLLƏRİ</h1>
             <p>YOLASAL İLƏ YÜKÜNÜZ QAYDASINDA!</p>
-            
             <div class="search-panel" id="track-area">
                 <input type="text" id="trackInput" placeholder="Yükü izləmək üçün nömrəni yazın...">
                 <button class="btn-search">Yükü İzlə</button>
@@ -44,26 +45,10 @@
     <section class="premium-services" id="services-section">
         <h2 class="section-title">Eksklüziv Xidmətlərimiz</h2>
         <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">💼</div>
-                <h3>Korporativ Həllər</h3>
-                <p>Biznesiniz üçün fərdi loqistika strategiyalarının qurulması.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">✈️</div>
-                <h3>Qlobal Ekspres</h3>
-                <p>Beynəlxalq marşrutlar üzrə ən qısa müddətdə çatdırılma.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">💎</div>
-                <h3>Özəl Daşımalar</h3>
-                <p>Yüksək dəyərli və həssas yüklərin sığortalı daşınması.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">📡</div>
-                <h3>Smart Logistika</h3>
-                <p>Yükün hərəkətinə 24/7 rəqəmsal nəzarət və canlı izləmə.</p>
-            </div>
+            <div class="service-card"><h3>💼 Korporativ Həllər</h3><p>Biznes üçün fərdi loqistika strategiyaları.</p></div>
+            <div class="service-card"><h3>✈️ Qlobal Ekspres</h3><p>Beynəlxalq marşrutlar üzrə sürətli çatdırılma.</p></div>
+            <div class="service-card"><h3>💎 Özəl Daşımalar</h3><p>Həssas və dəyərli yüklərin sığortalı idarə olunması.</p></div>
+            <div class="service-card"><h3>📡 Smart Logistika</h3><p>Yükün 24/7 rəqəmsal izlənilməsi.</p></div>
         </div>
     </section>
 
@@ -72,26 +57,18 @@
         <div class="services-grid">
             <div class="service-card">🚛 Ağır Tonnajlı TIR-lar</div>
             <div class="service-card">🚚 Orta Ölçülü Furqonlar</div>
-            <div class="service-card">🚐 Ekspres Mikroavtobuslar</div>
-            <div class="service-card">❄️ Refrijeratorlar</div>
+            <div class="service-card">🚐 Mikroavtobuslar</div>
         </div>
     </section>
 
     <section id="about-section" class="premium-services">
         <h2 class="section-title">Haqqımızda</h2>
-        <p style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: #555;">
-            Yolasal olaraq loqistika sahəsində peşəkar və etibarlı xidmət təklif edirik. 
-            Məqsədimiz yüklərinizi mənzil başına təhlükəsiz və vaxtında çatdırmaqdır.
-        </p>
+        <p>Yolasal - Peşəkar loqistika infrastrukturumuzla xidmətinizdəyik.</p>
     </section>
 
     <section id="contact-section" class="premium-services" style="background: #f9f9f9;">
         <h2 class="section-title">Bizimlə Əlaqə</h2>
-        <div style="font-size: 18px; color: #333;">
-            <p>📍 Bakı, Azərbaycan</p><br>
-            <p>📞 +994 (xx) xxx xx xx</p><br>
-            <p>✉️ info@yolasal.az</p>
-        </div>
+        <p>📍 Bakı, Azərbaycan | 📞 +994 (xx) xxx xx xx</p>
     </section>
 
     <script src="js/api.js"></script>
