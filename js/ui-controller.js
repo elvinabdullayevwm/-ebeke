@@ -1,13 +1,26 @@
-function showSection(id) {
-    const sections = ['login-section', 'register-section', 'marketplace-section'];
-    sections.forEach(s => {
-        const el = document.getElementById(s);
-        if(el) el.style.display = 'none';
-    });
-    
-    const target = document.getElementById(id);
-    if(target) {
-        target.style.display = 'block';
-        target.classList.add('fade-in');
+document.addEventListener("DOMContentLoaded", function() {
+    // Müştəri Girişi Düyməsi
+    const loginBtn = document.querySelector(".btn-customer");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function() {
+            const email = prompt("E-poçt:");
+            const pass = prompt("Şifrə:");
+            if (email && pass) {
+                login(email, pass); // auth.js-dəki funksiya
+            }
+        });
     }
-}
+
+    // Yükü İzlə Düyməsi
+    const searchBtn = document.querySelector(".btn-search");
+    if (searchBtn) {
+        searchBtn.addEventListener("click", function() {
+            const trackCode = document.getElementById("trackInput").value;
+            if (trackCode) {
+                alert("Yük axtarılır: " + trackCode);
+            } else {
+                alert("Zəhmət olmasa izləmə kodunu daxil edin.");
+            }
+        });
+    }
+});
