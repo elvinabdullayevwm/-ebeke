@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yolasal - Etibarlı Loqistika</title>
-    <!-- CSS faylına bağlantı -->
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/typography.css">
 </head>
 <body>
 
-    <!-- ÜST MENYU -->
-    <header class="navbar">
+    <header class="navbar fade-in">
         <div class="logo-area">
             <img src="img/logo.jpg" alt="Yolasal" class="site-logo">
         </div>
@@ -29,39 +29,37 @@
         </div>
     </header>
 
-    <!-- ANA HİSSƏ (HERO) -->
     <section class="hero">
-        <div class="hero-content">
+        <div class="hero-content fade-in">
             <h1>ETİBARLI LOQİSTİKA VƏ DAŞIMA HƏLLƏRİ</h1>
             <p>YOLASAL İLƏ YÜKÜNÜZ QAYDASINDA!</p>
             
             <div class="search-panel">
-                <input type="text" placeholder="Yükü...">
+                <input type="text" id="trackInput" placeholder="Yükü izləmək üçün nömrə yazın...">
                 <button class="btn-search">Yükü İzlə</button>
             </div>
         </div>
     </section>
 
-    <!-- XİDMƏTLƏR BÖLMƏSİ -->
     <section class="premium-services">
         <h2 class="section-title">Premium Xidmətlərimiz</h2>
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card fade-in">
                 <div class="service-icon">🚛</div>
                 <h3>Etibarlı Daşıma</h3>
                 <p>Yüklərinizin mənzil başına təhlükəsiz çatdırılması.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card fade-in">
                 <div class="service-icon">📦</div>
                 <h3>Loqistika Həlləri</h3>
                 <p>Biznesiniz üçün ən optimal daşıma marşrutları.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card fade-in">
                 <div class="service-icon">🌍</div>
                 <h3>Beynəlxalq Transit</h3>
                 <p>Sərhədləri aşan sürətli və qanuni logistika.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card fade-in">
                 <div class="service-icon">📍</div>
                 <h3>Canlı İzləmə</h3>
                 <p>Yükünüzün harada olduğunu anbaan izləyin.</p>
@@ -69,5 +67,8 @@
         </div>
     </section>
 
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui-controller.js"></script>
 </body>
 </html>
