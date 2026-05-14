@@ -1,40 +1,87 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const loginBtn = document.querySelector(".btn-customer");
+    console.log("Yolasal UI Controller Aktivdir!");
+
+    const loginBtn = document.getElementById("loginBtn");
 
     if (loginBtn) {
         loginBtn.addEventListener("click", function() {
-            const loginHTML = `
-                <div id="loginModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:10000;">
-                    <div style="background:white; padding:40px; border-radius:15px; width:380px; position:relative; text-align:center;">
-                        <span id="closeModal" style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:24px; color:#999;">&times;</span>
-                        <h2 style="margin-bottom:25px; color:#333;">Müştəri Girişi</h2>
+            // Modal pəncərəsinin HTML strukturu
+            const modalHTML = `
+                <div id="loginModal">
+                    <div class="modal-content fade-in">
+                        <span class="close-btn" id="closeModal">&times;</span>
+                        <h2>Müştəri Girişi</h2>
                         
-                        <input type="email" id="userEmail" placeholder="E-poçt ünvanı" style="width:100%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px; outline:none;">
-                        <input type="password" id="userPass" placeholder="Şifrə" style="width:100%; padding:14px; margin-bottom:20px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                        <input type="email" id="userEmail" class="modal-input" placeholder="E-poçt ünvanınız">
+                        <input type="password" id="userPass" class="modal-input" placeholder="Şifrəniz">
                         
-                        <button id="submitLogin" style="width:100%; padding:14px; background:#A68B5C; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:16px;">Daxil Ol</button>
+                        <button id="submitLogin" class="modal-btn">Daxil Ol</button>
                         
-                        <div style="margin-top:25px; font-size:14px; color:#666; line-height:1.6;">
-                            <p style="margin-bottom:10px; cursor:pointer; color:#A68B5C; font-weight:500;">Şifrəni bərpa et</p>
-                            <p>Hesabınız yoxdur? <span style="color:#A68B5C; cursor:pointer; font-weight:bold;">Qeydiyyatdan keçin</span></p>
+                        <div class="modal-links">
+                            <p><span class="modal-link-gold" id="recoverPass">Şifrəni bərpa et</span></p>
+                            <p>Hesabınız yoxdur? <span class="modal-link-gold" id="goToRegister">Qeydiyyatdan keçin</span></p>
                         </div>
                     </div>
                 </div>
             `;
 
-            document.body.insertAdjacentHTML('beforeend', loginHTML);
+            // Modalı səhifəyə əlavə edirik
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-            document.getElementById("closeModal").onclick = () => document.getElementById("loginModal").remove();
+            // --- MODAL DAXİLİ FUNKSİYALAR ---
 
+            // 1. Modalı bağlamaq
+            document.getElementById("closeModal").onclick = function() {
+                document.getElementById("loginModal").remove();
+            };
+
+            // 2. Daxil ol düyməsi (auth.js ilə əlaqəli)
             document.getElementById("submitLogin").onclick = async function() {
                 const email = document.getElementById("userEmail").value;
                 const pass = document.getElementById("userPass").value;
-                if(email && pass) {
-                    await login(email, pass); // auth.js-dəki funksiya
+
+                if (email && pass) {
+                    // auth.js faylındakı login funksiyasını çağırırıq
+                    if (typeof login === "function") {
+                        await login(email, pass);
+                    } else {
+                        alert("Giriş sistemi hələ tam qoşulmayıb (auth.js yoxlanılmalıdır).");
+                    }
                 } else {
-                    alert("Zəhmət olmasa bütün xanaları doldurun!");
+                    alert("Zəhmət olmasa e-poçt və şifrəni daxil edin.");
                 }
             };
+
+            // 3. Qeydiyyat düyməsi (Hələlik sadə bildiriş)
+            document.getElementById("goToRegister").onclick = function() {
+                alert("Qeydiyyat bölməsinə yönləndirilir...");
+            };
+
+            // 4. Şifrə bərpa düyməsi
+            document.getElementById("recoverPass").onclick = function() {
+                alert("Şifrə bərpa linki e-poçtunuza göndəriləcək.");
+            };
+
+            // Modalın kənarına basanda bağlanması
+            window.onclick = function(event) {
+                const modal = document.getElementById("loginModal");
+                if (event.target == modal) {
+                    modal.remove();
+                }
+            };
+        });
+    }
+
+    // Yükü İzlə düyməsi üçün funksiya
+    const searchBtn = document.querySelector(".btn-search");
+    if (searchBtn) {
+        searchBtn.addEventListener("click", function() {
+            const trackCode = document.getElementById("trackInput").value;
+            if (trackCode) {
+                alert("Axtarılır: " + trackCode);
+            } else {
+                alert("Zəhmət olmasa izləmə nömrəsini daxil edin.");
+            }
         });
     }
 });
