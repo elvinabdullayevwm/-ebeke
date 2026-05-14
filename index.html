@@ -16,11 +16,11 @@
         </div>
         <nav class="nav-links">
             <ul>
-                <li>Xidmətlər</li>
-                <li>Avtopark</li>
-                <li>Haqqımızda</li>
-                <li>İzləmə</li>
-                <li>Əlaqə</li>
+                <li data-target="services-section">Xidmətlər</li>
+                <li data-target="fleet-section">Avtopark</li>
+                <li data-target="about-section">Haqqımızda</li>
+                <li data-target="trackInput">İzləmə</li>
+                <li data-target="contact-section">Əlaqə</li>
             </ul>
         </nav>
         <div class="header-right">
@@ -41,29 +41,56 @@
         </div>
     </section>
 
-    <section class="premium-services">
-        <h2 class="section-title">Premium Xidmətlərimiz</h2>
+    <section class="premium-services" id="services-section">
+        <h2 class="section-title">Eksklüziv Xidmətlərimiz</h2>
         <div class="services-grid">
             <div class="service-card">
-                <div class="service-icon">🚛</div>
-                <h3>Etibarlı Daşıma</h3>
-                <p>Yüklərinizin mənzil başına təhlükəsiz çatdırılması.</p>
+                <div class="service-icon">💼</div>
+                <h3>Korporativ Həllər</h3>
+                <p>Biznesiniz üçün fərdi loqistika strategiyalarının və təchizat zəncirinin qurulması.</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">📦</div>
-                <h3>Loqistika Həlləri</h3>
-                <p>Biznesiniz üçün ən optimal daşıma marşrutları.</p>
+                <div class="service-icon">✈️</div>
+                <h3>Qlobal Ekspres</h3>
+                <p>Beynəlxalq marşrutlar üzrə sərhədləri aşan, ən qısa müddətdə çatdırılma xidməti.</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">🌍</div>
-                <h3>Beynəlxalq Transit</h3>
-                <p>Sərhədləri aşan sürətli və qanuni logistika.</p>
+                <div class="service-icon">💎</div>
+                <h3>Özəl Daşımalar</h3>
+                <p>Yüksək dəyərli, həssas və xüsusi diqqət tələb edən yüklərin sığortalı idarə olunması.</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">📍</div>
-                <h3>Canlı İzləmə</h3>
-                <p>Yükünüzün harada olduğunu anbaan izləyin.</p>
+                <div class="service-icon">📡</div>
+                <h3>Smart Logistika</h3>
+                <p>Yükün hərəkətinə 24/7 rəqəmsal nəzarət, canlı izləmə və tam şəffaflıq.</p>
             </div>
+        </div>
+    </section>
+
+    <section id="fleet-section" class="premium-services" style="background: #fdfdfd;">
+        <h2 class="section-title">Professional Avtopark</h2>
+        <div class="services-grid">
+            <div class="service-card">🚛 Ağır Tonnajlı TIR-lar</div>
+            <div class="service-card">🚚 Orta Ölçülü Furqonlar</div>
+            <div class="service-card">🚐 Ekspres Mikroavtobuslar</div>
+            <div class="service-card">❄️ Refrijeratorlar</div>
+        </div>
+    </section>
+
+    <section id="about-section" class="premium-services">
+        <h2 class="section-title">Mükəmməllik Yolunda</h2>
+        <p style="max-width: 800px; margin: 0 auto; color: #666; line-height: 1.8;">
+            Yolasal olaraq, biz sadəcə yük daşımırıq; biz biznesləri və insanları bir-birinə bağlayan etibarlı körpülər qururuq. 
+            Peşəkar komandamız və müasir texnoloji infrastrukturumuzla loqistikanı daha sürətli və təhlükəsiz edirik.
+        </p>
+    </section>
+
+    <section id="contact-section" class="premium-services" style="background: #f9f9f9;">
+        <h2 class="section-title">Bizimlə Əlaqə</h2>
+        <div style="color: #333; font-size: 18px;">
+            <p>📍 Bakı şəhəri, Azərbaycan</p><br>
+            <p>📞 +994 (99) 789 59 69</p><br>
+            <p>✉️ info@yolasal.az</p>
         </div>
     </section>
 
