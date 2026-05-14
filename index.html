@@ -16,11 +16,11 @@
         </div>
         <nav class="nav-links">
             <ul>
-                <li data-target="services-section">Xidmətlər</li>
-                <li data-target="fleet-section">Avtopark</li>
-                <li data-target="about-section">Haqqımızda</li>
-                <li data-target="trackInput">İzləmə</li>
-                <li data-target="contact-section">Əlaqə</li>
+                <li onclick="scrollToSection('services-section')">Xidmətlər</li>
+                <li onclick="scrollToSection('fleet-section')">Avtopark</li>
+                <li onclick="scrollToSection('about-section')">Haqqımızda</li>
+                <li onclick="scrollToSection('track-area')">İzləmə</li>
+                <li onclick="scrollToSection('contact-section')">Əlaqə</li>
             </ul>
         </nav>
         <div class="header-right">
@@ -34,7 +34,7 @@
             <h1>ETİBARLI LOQİSTİKA VƏ DAŞIMA HƏLLƏRİ</h1>
             <p>YOLASAL İLƏ YÜKÜNÜZ QAYDASINDA!</p>
             
-            <div class="search-panel">
+            <div class="search-panel" id="track-area">
                 <input type="text" id="trackInput" placeholder="Yükü izləmək üçün nömrəni yazın...">
                 <button class="btn-search">Yükü İzlə</button>
             </div>
@@ -47,22 +47,22 @@
             <div class="service-card">
                 <div class="service-icon">💼</div>
                 <h3>Korporativ Həllər</h3>
-                <p>Biznesiniz üçün fərdi loqistika strategiyalarının və təchizat zəncirinin qurulması.</p>
+                <p>Biznesiniz üçün fərdi loqistika strategiyalarının qurulması.</p>
             </div>
             <div class="service-card">
                 <div class="service-icon">✈️</div>
                 <h3>Qlobal Ekspres</h3>
-                <p>Beynəlxalq marşrutlar üzrə sərhədləri aşan, ən qısa müddətdə çatdırılma xidməti.</p>
+                <p>Beynəlxalq marşrutlar üzrə ən qısa müddətdə çatdırılma.</p>
             </div>
             <div class="service-card">
                 <div class="service-icon">💎</div>
                 <h3>Özəl Daşımalar</h3>
-                <p>Yüksək dəyərli, həssas və xüsusi diqqət tələb edən yüklərin sığortalı idarə olunması.</p>
+                <p>Yüksək dəyərli və həssas yüklərin sığortalı daşınması.</p>
             </div>
             <div class="service-card">
                 <div class="service-icon">📡</div>
                 <h3>Smart Logistika</h3>
-                <p>Yükün hərəkətinə 24/7 rəqəmsal nəzarət, canlı izləmə və tam şəffaflıq.</p>
+                <p>Yükün hərəkətinə 24/7 rəqəmsal nəzarət və canlı izləmə.</p>
             </div>
         </div>
     </section>
@@ -78,18 +78,18 @@
     </section>
 
     <section id="about-section" class="premium-services">
-        <h2 class="section-title">Mükəmməllik Yolunda</h2>
-        <p style="max-width: 800px; margin: 0 auto; color: #666; line-height: 1.8;">
-            Yolasal olaraq, biz sadəcə yük daşımırıq; biz biznesləri və insanları bir-birinə bağlayan etibarlı körpülər qururuq. 
-            Peşəkar komandamız və müasir texnoloji infrastrukturumuzla loqistikanı daha sürətli və təhlükəsiz edirik.
+        <h2 class="section-title">Haqqımızda</h2>
+        <p style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: #555;">
+            Yolasal olaraq loqistika sahəsində peşəkar və etibarlı xidmət təklif edirik. 
+            Məqsədimiz yüklərinizi mənzil başına təhlükəsiz və vaxtında çatdırmaqdır.
         </p>
     </section>
 
     <section id="contact-section" class="premium-services" style="background: #f9f9f9;">
         <h2 class="section-title">Bizimlə Əlaqə</h2>
-        <div style="color: #333; font-size: 18px;">
-            <p>📍 Bakı şəhəri, Azərbaycan</p><br>
-            <p>📞 +994 (99) 789 59 69</p><br>
+        <div style="font-size: 18px; color: #333;">
+            <p>📍 Bakı, Azərbaycan</p><br>
+            <p>📞 +994 (xx) xxx xx xx</p><br>
             <p>✉️ info@yolasal.az</p>
         </div>
     </section>
