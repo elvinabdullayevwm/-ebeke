@@ -1,63 +1,235 @@
-/* ÜMUMİ RESET */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+/* 1. ÜMUMİ RESET VƏ ƏSAS AYARLAR */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* NAVBAR - SABİT VƏ SƏLİQƏLİ */
+body {
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* 2. NAVBAR - SƏLİQƏLİ VƏ SABİT */
 .navbar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 5%; background: white; height: 90px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: sticky; top: 0; z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5% !important;
+    background: #ffffff;
+    height: 90px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.logo-area { width: 180px; }
-.site-logo { width: 100%; height: auto; display: block; }
+/* LOQO SAHƏSİ - DAĞILMANIN QARŞISINI ALAN HİSSƏ */
+.logo-area {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 200px; /* Sabit en */
+    cursor: pointer;
+}
 
-.nav-links ul { display: flex; list-style: none; gap: 20px; }
-.nav-links li { font-weight: 500; cursor: pointer; transition: 0.3s; font-size: 14px; color: #333; }
-.nav-links li:hover { color: #A68B5C; }
+.site-logo {
+    max-height: 70px; /* Navbar hündürlüyünə uyğun səliqəli ölçü */
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
 
-.header-right { display: flex; align-items: center; gap: 15px; }
+.site-logo:hover {
+    transform: scale(1.05);
+}
+
+/* MENYU LİNKLƏRİ */
+.nav-links {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-links ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links li {
+    font-weight: 500;
+    color: #444;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-links li:hover {
+    color: #A68B5C;
+}
+
+/* SAĞ TƏRƏF (DİL VƏ GİRİŞ) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 250px;
+    justify-content: flex-end;
+}
+
+.lang {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+}
+
 .btn-customer {
-    background: #A68B5C; color: white; border: none; padding: 10px 18px;
-    border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;
+    background: #A68B5C;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(166, 139, 92, 0.2);
 }
 
-/* ANA GÖRÜNTÜ (DAĞILAN HİSSƏNİN BƏRPASI) */
+.btn-customer:hover {
+    background: #8e754a;
+    transform: translateY(-2px);
+}
+
+/* 3. HERO SECTION (ANA GÖRÜNTÜ) */
 .hero {
-    height: 80vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    height: 85vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                 url('../img/hero-bg.png') center/cover no-repeat;
-    display: flex; align-items: center; justify-content: center;
-    color: white; text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 0 5%;
 }
 
-.hero-content h1 { font-size: 45px; font-weight: 800; margin-bottom: 10px; }
-.hero-content p { font-size: 18px; margin-bottom: 30px; letter-spacing: 2px; }
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
 
-/* AXTARIŞ PANELİ */
+.hero-content p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+/* 4. AXTARIŞ PANELİ */
 .search-panel {
-    background: white; padding: 8px; border-radius: 12px;
-    display: flex; width: 100%; max-width: 600px; margin: 0 auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
 }
 
-.search-panel input { flex: 1; border: none; padding: 15px; outline: none; font-size: 16px; border-radius: 8px; }
-.btn-search { background: #A68B5C; color: white; border: none; padding: 0 30px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-/* BÖLMƏLƏR */
-.premium-services { padding: 80px 10%; text-align: center; }
-.section-title { font-size: 32px; margin-bottom: 50px; position: relative; padding-bottom: 15px; }
-.section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: #A68B5C; }
-
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-.service-card { padding: 40px 20px; border: 1px solid #eee; border-radius: 15px; transition: 0.3s; background: white; }
-.service-card:hover { transform: translateY(-10px); border-color: #A68B5C; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-
-/* MODAL (GİRİŞ PƏNCƏRƏSİ) */
-#loginModal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center;
-    z-index: 10001; backdrop-filter: blur(5px);
+.search-panel input {
+    flex: 1;
+    border: none;
+    padding: 15px 20px;
+    outline: none;
+    font-size: 16px;
+    color: #333;
 }
-.modal-content { background: white; padding: 40px; border-radius: 20px; width: 380px; position: relative; text-align: center; }
-.close-btn { position: absolute; top: 15px; right: 20px; font-size: 25px; cursor: pointer; color: #999; }
+
+.btn-search {
+    background: #A68B5C;
+    color: white;
+    border: none;
+    padding: 0 35px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-search:hover {
+    background: #8e754a;
+}
+
+/* 5. XİDMƏTLƏR VƏ BÖLMƏLƏR */
+.premium-services {
+    padding: 100px 10%;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 60px;
+    color: #1a1a1a;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #A68B5C;
+    margin: 20px auto 0;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    padding: 50px 30px;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    background: white;
+    transition: 0.4s;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    border-color: #A68B5C;
+}
+
+.service-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.service-card p {
+    color: #666;
+    font-size: 15px;
+}
+
+/* 6. MOBİL UYĞUNLUQ */
+@media (max-width: 992px) {
+    .navbar { padding: 0 3% !important; }
+    .nav-links { display: none; } /* Mobil menyu üçün əlavə iş lazım olacaq */
+    .hero-content h1 { font-size: 36px; }
+}
