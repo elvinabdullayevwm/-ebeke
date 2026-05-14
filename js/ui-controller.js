@@ -1,16 +1,34 @@
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("Yolasal UI Controller Aktivdir!");
+    console.log("Yolasal UI sistemi tam aktivdir!");
 
+    // --- 1. MENYU DÜYMƏLƏRİNİN SƏLİS SÜRÜŞMƏSİ (SMOOTH SCROLL) ---
+    const navLinks = document.querySelectorAll(".nav-links li");
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", function() {
+            const targetId = this.getAttribute("data-target");
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                // Səhifəni həmin hissəyə səlis şəkildə sürüşdürürük
+                window.scrollTo({
+                    top: targetElement.offsetTop - 90, // Navbarın hündürlüyünü nəzərə alırıq
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+
+    // --- 2. MÜŞTƏRİ GİRİŞİ (MODAL PƏNCƏRƏSİ) ---
     const loginBtn = document.getElementById("loginBtn");
 
     if (loginBtn) {
         loginBtn.addEventListener("click", function() {
-            // Modal pəncərəsinin HTML strukturu
             const modalHTML = `
                 <div id="loginModal">
-                    <div class="modal-content fade-in">
+                    <div class="modal-content">
                         <span class="close-btn" id="closeModal">&times;</span>
-                        <h2>Müştəri Girişi</h2>
+                        <h2 style="font-family: 'Segoe UI', sans-serif;">Müştəri Girişi</h2>
                         
                         <input type="email" id="userEmail" class="modal-input" placeholder="E-poçt ünvanınız">
                         <input type="password" id="userPass" class="modal-input" placeholder="Şifrəniz">
@@ -25,60 +43,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             `;
 
-            // Modalı səhifəyə əlavə edirik
             document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-            // --- MODAL DAXİLİ FUNKSİYALAR ---
+            // Modalı bağlamaq
+            document.getElementById("closeModal").onclick = () => document.getElementById("loginModal").remove();
 
-            // 1. Modalı bağlamaq
-            document.getElementById("closeModal").onclick = function() {
-                document.getElementById("loginModal").remove();
-            };
-
-            // 2. Daxil ol düyməsi (auth.js ilə əlaqəli)
+            // Daxil ol düyməsi (auth.js funksiyasını çağırır)
             document.getElementById("submitLogin").onclick = async function() {
                 const email = document.getElementById("userEmail").value;
                 const pass = document.getElementById("userPass").value;
-
                 if (email && pass) {
-                    // auth.js faylındakı login funksiyasını çağırırıq
                     if (typeof login === "function") {
                         await login(email, pass);
                     } else {
-                        alert("Giriş sistemi hələ tam qoşulmayıb (auth.js yoxlanılmalıdır).");
+                        alert("Giriş funksiyası (auth.js) hələ yüklənməyib.");
                     }
                 } else {
-                    alert("Zəhmət olmasa e-poçt və şifrəni daxil edin.");
+                    alert("Zəhmət olmasa bütün xanaları doldurun!");
                 }
             };
 
-            // 3. Qeydiyyat düyməsi (Hələlik sadə bildiriş)
-            document.getElementById("goToRegister").onclick = function() {
-                alert("Qeydiyyat bölməsinə yönləndirilir...");
-            };
-
-            // 4. Şifrə bərpa düyməsi
-            document.getElementById("recoverPass").onclick = function() {
-                alert("Şifrə bərpa linki e-poçtunuza göndəriləcək.");
-            };
-
-            // Modalın kənarına basanda bağlanması
-            window.onclick = function(event) {
+            // Kənara basanda bağlamaq
+            window.onclick = (event) => {
                 const modal = document.getElementById("loginModal");
-                if (event.target == modal) {
-                    modal.remove();
-                }
+                if (event.target == modal) modal.remove();
             };
         });
     }
 
-    // Yükü İzlə düyməsi üçün funksiya
+    // --- 3. YÜKÜ İZLƏ DÜYMƏSİ ---
     const searchBtn = document.querySelector(".btn-search");
     if (searchBtn) {
         searchBtn.addEventListener("click", function() {
             const trackCode = document.getElementById("trackInput").value;
             if (trackCode) {
-                alert("Axtarılır: " + trackCode);
+                alert("Yükünüz sistemdə axtarılır: " + trackCode);
+                // Bura gələcəkdə API izləmə funksiyası əlavə olunacaq
             } else {
                 alert("Zəhmət olmasa izləmə nömrəsini daxil edin.");
             }
