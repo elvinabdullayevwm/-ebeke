@@ -173,5 +173,32 @@
             </p>
         </div>
     </section>
+    <div id="loginModal" class="activity-modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal" id="closeLogin">&times;</span>
+            
+            <div id="loginFormArea">
+                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Müştəri Girişi</h3>
+                <input type="email" placeholder="E-poçt ünvanınız" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px;">
+                <input type="password" placeholder="Şifrəniz" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <button class="btn-customer" style="width: 100%; padding: 15px;">DAXİL OL</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                    Hesabınız yokdur? <a href="#" id="showReg" style="color: #A68B5C; font-weight: bold; text-decoration: none;">Qeydiyyatdan keçin</a>
+                </p>
+            </div>
+
+            <div id="regFormArea" style="display: none;">
+                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Yeni Qeydiyyat</h3>
+                <input type="text" placeholder="Ad və Soyad" style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px;">
+                <input type="tel" placeholder="Telefon nömrəsi" style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px;">
+                <input type="email" placeholder="E-poçt" style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px;">
+                <input type="password" placeholder="Şifrə təyin edin" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <button class="btn-customer" style="width: 100%; padding: 15px;">QEYDİYYATI TAMAMLA</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+                    Artıq hesabınız var? <a href="#" id="showLogin" style="color: #A68B5C; font-weight: bold; text-decoration: none;">Giriş edin</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
