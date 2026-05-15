@@ -1,9 +1,9 @@
-/* 1. ÜMUMİ RESET VƏ ƏSAS AYARLAR */
+/* 1. ÜMUMİ RESET VƏ FONTLAR */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -13,44 +13,38 @@ body {
     overflow-x: hidden;
 }
 
-/* NAVBARIN ÜMUMİ AYARI */
+/* 2. NAVBAR (NAVİQASİYA) */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 5% !important;
     background: #ffffff;
-    height: 90px; /* Navbar hündürlüyü sabit qalsın */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height: 90px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: all 0.3s ease;
 }
 
-/* LOQO SAHƏSİNİN DÜZƏLİŞİ */
 .logo-area {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 200px; /* Loqo üçün kifayət qədər yer */
+    width: 200px;
     height: 100%;
+    cursor: pointer;
 }
 
 .site-logo {
-    max-height: 65px; /* Navbarın içində çox böyük görünməməsi üçün */
+    max-height: 70px;
     width: auto;
-    object-fit: contain; /* Şəklin proporsiyasını qoruyur */
-    padding: 5px 0; /* Yuxarı və aşağıdan azca nəfəs yeri */
-    
-    /* ƏGƏR LOQONUN ARXASINDA ÇİRKİN AĞ FON VARSA: */
+    object-fit: contain;
+    padding: 5px 0;
+    /* Əgər loqonun ağ fonu varsa aşağıdakı sətri aktiv saxla */
     mix-blend-mode: multiply; 
 }
 
-.site-logo:hover {
-    transform: scale(1.05);
-}
-
-/* MENYU LİNKLƏRİ */
 .nav-links {
     flex: 1;
     display: flex;
@@ -64,12 +58,11 @@ body {
 }
 
 .nav-links li {
-    font-weight: 500;
+    font-weight: 600;
     color: #444;
     cursor: pointer;
     font-size: 15px;
     transition: 0.3s;
-    position: relative;
     white-space: nowrap;
 }
 
@@ -77,7 +70,6 @@ body {
     color: #A68B5C;
 }
 
-/* SAĞ TƏRƏF (DİL VƏ GİRİŞ) */
 .header-right {
     display: flex;
     align-items: center;
@@ -88,21 +80,21 @@ body {
 
 .lang {
     font-size: 14px;
-    font-weight: 600;
-    color: #666;
+    font-weight: 700;
+    color: #888;
 }
 
 .btn-customer {
     background: #A68B5C;
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
+    padding: 12px 25px;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: 700;
     font-size: 14px;
     transition: 0.3s;
-    box-shadow: 0 4px 10px rgba(166, 139, 92, 0.2);
+    box-shadow: 0 4px 12px rgba(166, 139, 92, 0.2);
 }
 
 .btn-customer:hover {
@@ -110,10 +102,10 @@ body {
     transform: translateY(-2px);
 }
 
-/* 3. HERO SECTION (ANA GÖRÜNTÜ) */
+/* 3. HERO SECTION */
 .hero {
     height: 85vh;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('../img/hero-bg.png') center/cover no-repeat;
     display: flex;
     align-items: center;
@@ -124,28 +116,28 @@ body {
 }
 
 .hero-content h1 {
-    font-size: 48px;
+    font-size: 45px;
     font-weight: 800;
-    margin-bottom: 15px;
-    letter-spacing: -1px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 .hero-content p {
     font-size: 20px;
-    margin-bottom: 40px;
-    opacity: 0.9;
+    margin-bottom: 35px;
+    font-weight: 300;
 }
 
-/* 4. AXTARIŞ PANELİ */
+/* 4. SEARCH PANEL (YÜKÜ İZLƏ) */
 .search-panel {
     background: white;
-    padding: 10px;
+    padding: 8px;
     border-radius: 15px;
     display: flex;
     width: 100%;
-    max-width: 650px;
+    max-width: 600px;
     margin: 0 auto;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 .search-panel input {
@@ -154,85 +146,140 @@ body {
     padding: 15px 20px;
     outline: none;
     font-size: 16px;
-    color: #333;
+    border-radius: 10px;
 }
 
 .btn-search {
     background: #A68B5C;
     color: white;
     border: none;
-    padding: 0 35px;
+    padding: 0 30px;
     border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
     transition: 0.3s;
 }
 
-.btn-search:hover {
-    background: #8e754a;
-}
-
-/* 5. XİDMƏTLƏR VƏ BÖLMƏLƏR */
+/* 5. SERVICES GRID */
 .premium-services {
-    padding: 100px 10%;
+    padding: 80px 10%;
     text-align: center;
 }
 
 .section-title {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 60px;
-    color: #1a1a1a;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    position: relative;
+    padding-bottom: 15px;
 }
 
 .section-title::after {
     content: '';
-    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 60px;
     height: 4px;
     background: #A68B5C;
-    margin: 20px auto 0;
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    gap: 25px;
 }
 
 .service-card {
-    padding: 50px 30px;
+    padding: 40px 25px;
     border: 1px solid #f0f0f0;
     border-radius: 20px;
-    background: white;
+    background: #fff;
     transition: 0.4s;
 }
 
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
     border-color: #A68B5C;
 }
 
-.service-icon {
-    font-size: 40px;
-    margin-bottom: 20px;
+/* --- 6. MOBİL ADAPTASİYA (RESPONSIVE) --- */
+@media (max-width: 768px) {
+    .navbar {
+        height: 75px;
+        padding: 0 15px !important;
+    }
+
+    .logo-area {
+        width: 140px;
+    }
+
+    .site-logo {
+        max-height: 55px;
+    }
+
+    /* Telefonda menyu siyahısını gizlədirik (hamburger menyu üçün yer) */
+    .nav-links {
+        display: none;
+    }
+
+    .header-right {
+        width: auto;
+    }
+
+    .btn-customer {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    .search-panel {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        gap: 10px;
+    }
+
+    .search-panel input {
+        background: white;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn-search {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .premium-services {
+        padding: 50px 5%;
+    }
+
+    /* Qeydiyyat modalı üçün mobil düzəliş */
+    #regModal > div {
+        width: 95% !important;
+        padding: 20px !important;
+    }
+
+    #regModal div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important; /* Ad-Soyad alt-alta */
+    }
 }
 
-.service-card h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #222;
-}
-
-.service-card p {
-    color: #666;
-    font-size: 15px;
-}
-
-/* 6. MOBİL UYĞUNLUQ */
-@media (max-width: 992px) {
-    .navbar { padding: 0 3% !important; }
-    .nav-links { display: none; } /* Mobil menyu üçün əlavə iş lazım olacaq */
-    .hero-content h1 { font-size: 36px; }
+/* 7. MODAL CUSTOM STYLES (Qeydiyyat və Giriş) */
+input[type="date"], select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A68B5C' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    cursor: pointer;
 }
