@@ -87,7 +87,7 @@ body {
 /* 4. HERO SECTION */
 .hero {
     height: 80vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                 url('../img/hero-bg.png') center/cover no-repeat;
     display: flex;
     align-items: center;
@@ -100,6 +100,7 @@ body {
     font-size: 42px;
     font-weight: 800;
     margin-bottom: 20px;
+    letter-spacing: 1px;
 }
 
 .search-panel {
@@ -108,7 +109,7 @@ body {
     border-radius: 15px;
     display: flex;
     width: 600px;
-    margin: 0 auto;
+    margin: 20px auto 0;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
@@ -167,13 +168,15 @@ body {
     font-size: 32px;
     font-weight: 800;
     color: #A68B5C;
+    margin-bottom: 5px;
 }
 
 .stat-box .lab {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #888;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* 6. MODAL SİSTEMİ */
@@ -193,9 +196,9 @@ body {
     padding: 40px;
     border-radius: 25px;
     width: 90%;
-    max-width: 480px;
+    max-width: 500px;
     position: relative;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
     max-height: 90vh;
     overflow-y: auto;
 }
@@ -204,33 +207,36 @@ body {
     position: absolute;
     top: 20px; right: 25px;
     font-size: 30px; cursor: pointer; color: #bbb;
+    transition: 0.2s;
 }
 
 .close-modal:hover { color: #333; }
 
-/* 7. FORM ELEMENTLƏRİ (YENİ) */
+/* 7. FORM ELEMENTLƏRİ */
 .form-input {
     width: 100%;
-    padding: 12px;
+    padding: 12px 15px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 10px;
     outline: none;
     font-size: 14px;
     transition: 0.3s;
+    background: #f9f9f9;
 }
 
 .form-input:focus {
     border-color: #A68B5C;
-    box-shadow: 0 0 5px rgba(166, 139, 92, 0.2);
+    background: #fff;
+    box-shadow: 0 0 8px rgba(166, 139, 92, 0.15);
 }
 
-select.form-input {
+input[type="radio"] {
+    accent-color: #A68B5C;
     cursor: pointer;
-    background-color: #fff;
 }
 
-/* 8. XİDMƏTLƏR QRİDİ */
+/* 8. XİDMƏTLƏR VƏ BÖLMƏLƏR */
 .premium-services {
     padding: 80px 10%;
     text-align: center;
@@ -240,6 +246,19 @@ select.form-input {
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    width: 50px;
+    height: 3px;
+    background: #A68B5C;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .services-grid {
@@ -259,6 +278,7 @@ select.form-input {
 .service-card:hover {
     border-color: #A68B5C;
     transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 /* 9. MOBİL VERSİYA */
@@ -268,10 +288,12 @@ select.form-input {
         grid-template-columns: 1fr 1fr;
     }
     .stat-box:last-child { grid-column: span 2; }
-    .hero-content h1 { font-size: 28px; }
-    .search-panel { width: 95%; flex-direction: column; }
+    .hero-content h1 { font-size: 30px; }
+    .search-panel { width: 95%; flex-direction: column; background: transparent; box-shadow: none; }
     .search-panel input { margin-bottom: 10px; border-radius: 10px; }
-    .nav-links { display: none; } /* Mobil menyu üçün gələcəkdə burger əlavə oluna bilər */
+    .btn-search { padding: 15px; border-radius: 10px; }
+    .nav-links { display: none; }
+    .navbar { height: 70px; }
 }
 
 /* Scrollbar dizaynı */
