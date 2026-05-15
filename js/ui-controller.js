@@ -1,6 +1,6 @@
 /**
  * YOLASAL - UI İdarəetmə Mərkəzi
- * Naviqasiya, Canlı Statistika və Müştəri Paneli məntiqləri
+ * Naviqasiya, Canlı Statistika və Məxfi ID Məntiqli Qeydiyyat
  */
 
 // 1. CANLI MƏLUMAT BAZASI (Simulyasiya)
@@ -32,7 +32,7 @@ const liveData = {
     ]
 };
 
-// 2. ŞƏHƏR VƏ RAYONLAR SİYAHISI (Qeydiyyat üçün)
+// 2. ŞƏHƏR VƏ RAYONLAR SİYAHISI
 const cities = [
     "Bakı", "Sumqayıt", "Gəncə", "Xırdalan", "Mingəçevir", "Lənkəran", "Şirvan", "Naxçıvan", 
     "Quba", "Qusar", "Xaçmaz", "Şəki", "Qəbələ", "Şamaxı", "İsmayıllı", "Göyçay", "Ağsu", 
@@ -44,8 +44,20 @@ const cities = [
     "Biləsuvar", "Neftçala", "Salyan", "Cəlilabad", "Masallı", "Yardımlı", "Lerik", "Astara"
 ];
 
-// Səhifə yüklənəndə şəhərləri select-ə doldur
+// 3. MƏXFİ MÜŞTƏRİ ID GENERATORU
+// Format: [İlin son rəqəmi][Ay][0001-9999] (Məsələn: 650001)
+function generateSecretID(sequence) {
+    const now = new Date(); // Cari vaxt: May 2026
+    const yearDigit = now.getFullYear().toString().slice(-1); // "6"
+    const month = now.getMonth() + 1; // May üçün "5"
+    const paddedSequence = sequence.toString().padStart(4, '0'); // "0001"
+    
+    return `${yearDigit}${month}${paddedSequence}`;
+}
+
+// Səhifə yüklənəndə ilkin işlər
 document.addEventListener('DOMContentLoaded', () => {
+    // Şəhərləri doldur
     const citySelect = document.getElementById('citySelect');
     if (citySelect) {
         cities.sort().forEach(city => {
@@ -55,15 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
             citySelect.appendChild(opt);
         });
     }
-    
-    // Təsadüfi Müştəri ID-si yarat
-    const idDisplay = document.getElementById('generatedID');
-    if (idDisplay) {
-        idDisplay.innerText = "YLS-" + Math.floor(100000 + Math.random() * 900000);
-    }
 });
 
-// 3. STATİSTİKA MODALINI İDARƏ ETMƏK
+// 4. STATİSTİKA MODALINI İDARƏ ETMƏK
 function showLiveDetails(type) {
     const modal = document.getElementById("activityModal");
     const title = document.getElementById("modalTitle");
@@ -83,8 +89,6 @@ function showLiveDetails(type) {
         dataList.innerHTML = liveData[type]
             .map(item => `<div>${item}</div>`)
             .join('');
-    } else {
-        dataList.innerHTML = "<div>Hazırda aktiv məlumat tapılmadı.</div>";
     }
     
     modal.style.display = "flex";
@@ -92,62 +96,67 @@ function showLiveDetails(type) {
 }
 
 function closeActivityModal() {
-    const modal = document.getElementById("activityModal");
-    if (modal) modal.style.display = "none";
+    document.getElementById("activityModal").style.display = "none";
     document.body.style.overflow = "auto";
 }
 
-// 4. MÜŞTƏRİ GİRİŞİ VƏ QEYDİYYAT MODALI
+// 5. GİRİŞ/QEYDİYYAT MODAL İDARƏETMƏSİ
 const loginModal = document.getElementById('loginModal');
-const loginBtn = document.getElementById('loginBtn');
-const closeLogin = document.getElementById('closeLogin');
 
-// Giriş pəncərəsini aç (Alert silindi!)
-loginBtn?.addEventListener('click', () => {
+document.getElementById('loginBtn')?.addEventListener('click', () => {
     loginModal.style.display = 'flex';
     document.body.style.overflow = "hidden";
 });
 
-// Giriş pəncərəsini bağla
-closeLogin?.addEventListener('click', () => {
+document.getElementById('closeLogin')?.addEventListener('click', () => {
     loginModal.style.display = 'none';
     document.body.style.overflow = "auto";
 });
 
-// Qeydiyyat formasına keçid
 document.getElementById('showReg')?.addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('loginFormArea').style.display = 'none';
     document.getElementById('regFormArea').style.display = 'block';
 });
 
-// Giriş formasına geri keçid
 document.getElementById('showLogin')?.addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('regFormArea').style.display = 'none';
     document.getElementById('loginFormArea').style.display = 'block';
 });
 
-// 5. NAVİQASİYA (SCROLL)
+// 6. QEYDİYYATI TAMAMLA DÜYMƏSİ (ID GENERASİYASI)
+document.getElementById('finishRegBtn')?.addEventListener('click', function() {
+    // Buraya gələcəkdə Google Sheet-dən gələn son sıra nömrəsi qoyulacaq.
+    // Simulyasiya üçün hələlik 1 götürürük.
+    const mockSequence = 1; 
+    
+    const secretID = generateSecretID(mockSequence);
+    
+    // ID-ni gizli inputa yazırıq
+    document.getElementById('hiddenCustomerID').value = secretID;
+
+    // Yoxlama üçün (Development zamanı):
+    console.log("Məxfi Yaradılmış Müştəri ID-si:", secretID);
+
+    // Bura gələcəkdə Təsdid Kodu və Google Sheets göndərmə məntiqi əlavə olunacaq
+    alert("Qeydiyyat məlumatları qəbul edildi. Təhlükəsizlik üçün ID mərkəzi bazada qeyd olundu.");
+});
+
+// 7. NAVİQASİYA (SCROLL)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
-        const headerOffset = 90;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
         window.scrollTo({
-            top: offsetPosition,
+            top: element.offsetTop - 90,
             behavior: "smooth"
         });
     }
 }
 
-// 6. KƏNAR KLİKLƏR (Modalları bağlamaq üçün)
+// 8. KƏNAR KLİKLƏR
 window.onclick = function(event) {
-    if (event.target == document.getElementById("activityModal")) {
-        closeActivityModal();
-    }
+    if (event.target == document.getElementById("activityModal")) closeActivityModal();
     if (event.target == loginModal) {
         loginModal.style.display = 'none';
         document.body.style.overflow = "auto";
