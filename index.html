@@ -170,19 +170,19 @@
                 <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Yeni Qeydiyyat</h3>
                 
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" placeholder="Ad *" class="form-input" required>
-                    <input type="text" placeholder="Soyad *" class="form-input" required>
+                    <input type="text" id="regFirstName" placeholder="Ad *" class="form-input" required>
+                    <input type="text" id="regLastName" placeholder="Soyad *" class="form-input" required>
                 </div>
 
                 <div style="display: flex; gap: 5px; margin-bottom: 12px;">
-                    <select class="form-input" style="width: 100px; padding: 10px;">
+                    <select id="regPrefix" class="form-input" style="width: 100px; padding: 10px;">
                         <option>050</option><option>051</option><option>055</option>
                         <option>070</option><option>077</option><option>099</option><option>010</option>
                     </select>
-                    <input type="tel" placeholder="xxx-xx-xx *" class="form-input" style="flex: 1;" required>
+                    <input type="tel" id="regPhone" placeholder="xxx-xx-xx *" class="form-input" style="flex: 1;" required>
                 </div>
 
-                <input type="email" placeholder="Mail Ünvanı *" class="form-input" required>
+                <input type="email" id="regEmail" placeholder="Mail Ünvanı *" class="form-input" required>
                 
                 <select id="citySelect" class="form-input" required>
                     <option value="">Yaşadığınız rayonu seçin *</option>
@@ -190,24 +190,22 @@
 
                 <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 15px; padding-left: 5px;">
                     <label style="font-size: 14px; color: #444;">Cinsi *:</label>
-                    <label style="font-size: 14px;"><input type="radio" name="gender" value="k" required> Kişi</label>
-                    <label style="font-size: 14px;"><input type="radio" name="gender" value="q" required> Qadın</label>
+                    <label style="font-size: 14px;"><input type="radio" name="gender" value="Kişi" required> Kişi</label>
+                    <label style="font-size: 14px;"><input type="radio" name="gender" value="Qadın" required> Qadın</label>
                 </div>
 
                 <div style="margin-bottom: 15px;">
                     <label style="font-size: 12px; color: #666; display: block; margin-bottom: 5px;">Doğum Tarixi *</label>
-                    <input type="date" class="form-input" required>
+                    <input type="date" id="regBirthDate" class="form-input" required>
                 </div>
 
-                <input type="text" placeholder="MMC adı (və ya fərdi sahibkar)" class="form-input">
-                <input type="password" placeholder="Parol təyin edin *" class="form-input" required>
+                <input type="text" id="regMMC" placeholder="MMC adı (varsa)" class="form-input">
+                <input type="password" id="regPassword" placeholder="Parol təyin edin *" class="form-input" required>
 
-                <div style="background: #fdfaf4; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px dashed #A68B5C; text-align: center;">
-                    <span style="font-size: 12px; color: #888;">Sizin Müştəri ID-niz:</span><br>
-                    <strong id="generatedID" style="font-size: 18px; color: #A68B5C; letter-spacing: 1px;">YLS-000000</strong>
-                </div>
+                <input type="hidden" id="hiddenCustomerID">
 
-                <button class="btn-customer" style="width: 100%; padding: 15px;">QEYDİYYATI TAMAMLA</button>
+                <button type="button" class="btn-customer" id="finishRegBtn" style="width: 100%; padding: 15px;">QEYDİYYATI TAMAMLA</button>
+                
                 <p style="text-align: center; margin-top: 15px; font-size: 14px;">
                     Artıq hesabınız var? <a href="#" id="showLogin" style="color: #A68B5C; font-weight: bold; text-decoration: none;">Giriş edin</a>
                 </p>
