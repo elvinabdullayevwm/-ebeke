@@ -1,10 +1,9 @@
 /**
  * YOLASAL - UI İdarəetmə Mərkəzi
- * Bu skript həm naviqasiyanı, həm də canlı fəaliyyət panelini idarə edir.
+ * Naviqasiya, Canlı Statistika və Müştəri Paneli məntiqləri
  */
 
 // 1. CANLI MƏLUMAT BAZASI (Simulyasiya)
-// Bu məlumatlar müştəridə həvəs və güvən oyatmaq üçün nəzərdə tutulub.
 const liveData = {
     'aktiv-sifaris': [
         "📦 Bakı - Gəncə: 2.5 ton tikinti materialı (Gözləmədə)",
@@ -29,18 +28,47 @@ const liveData = {
     'teslimat': [
         "✅ Bakı - Gəncə: 2 ton ərzaq yükü uğurla təhvil verildi",
         "✅ Şəmkir - Bakı: Mebel dəsti tam qüsursuz təslim edildi",
-        "✅ Quba - Rusiya: Meyvə yükü təyinat nöqtəsinə çatdırıldı",
-        "✅ Sumqayıt daxili: Tikinti materialları ünvana təslim edildi"
+        "✅ Quba - Rusiya: Meyvə yükü təyinat nöqtəsinə çatdırıldı"
     ]
 };
 
-// 2. MODAL PƏNCƏRƏSİNİ İDARƏ ETMƏK
+// 2. ŞƏHƏR VƏ RAYONLAR SİYAHISI (Qeydiyyat üçün)
+const cities = [
+    "Bakı", "Sumqayıt", "Gəncə", "Xırdalan", "Mingəçevir", "Lənkəran", "Şirvan", "Naxçıvan", 
+    "Quba", "Qusar", "Xaçmaz", "Şəki", "Qəbələ", "Şamaxı", "İsmayıllı", "Göyçay", "Ağsu", 
+    "Kürdəmir", "Ucar", "Yevlax", "Bərdə", "Tərtər", "Ağdam", "Füzuli", "Cəbrayıl", 
+    "Zəngilan", "Qubadlı", "Laçın", "Kəlbəcər", "Şuşa", "Xocalı", "Xankəndi", "Goranboy", 
+    "Naftalan", "Şəmkir", "Tovuz", "Ağstafa", "Qazax", "Gədəbəy", "Daşkəsən", "Samux", 
+    "Göygöl", "Oğuz", "Balakən", "Zaqatala", "Qax", "Siyəzən", "Şabran", "Xızı", 
+    "Qobustan", "Hacıqabul", "Saatlı", "Sabirabad", "İmişli", "Beyləqan", "Zərdab", 
+    "Biləsuvar", "Neftçala", "Salyan", "Cəlilabad", "Masallı", "Yardımlı", "Lerik", "Astara"
+];
+
+// Səhifə yüklənəndə şəhərləri select-ə doldur
+document.addEventListener('DOMContentLoaded', () => {
+    const citySelect = document.getElementById('citySelect');
+    if (citySelect) {
+        cities.sort().forEach(city => {
+            let opt = document.createElement('option');
+            opt.value = city;
+            opt.innerHTML = city;
+            citySelect.appendChild(opt);
+        });
+    }
+    
+    // Təsadüfi Müştəri ID-si yarat
+    const idDisplay = document.getElementById('generatedID');
+    if (idDisplay) {
+        idDisplay.innerText = "YLS-" + Math.floor(100000 + Math.random() * 900000);
+    }
+});
+
+// 3. STATİSTİKA MODALINI İDARƏ ETMƏK
 function showLiveDetails(type) {
     const modal = document.getElementById("activityModal");
     const title = document.getElementById("modalTitle");
     const dataList = document.getElementById("modalData");
     
-    // Başlıqların Azərbaycan dilində qarşılığı
     const titles = {
         'aktiv-sifaris': 'Aktiv Sifarişlər',
         'aktiv-reys': 'Aktiv Reyslər',
@@ -49,7 +77,6 @@ function showLiveDetails(type) {
         'teslimat': 'Son 24 Saatdakı Təslimatlar'
     };
 
-    // Başlığı və məlumat siyahısını yeniləyirik
     title.innerText = titles[type];
     
     if (liveData[type]) {
@@ -60,22 +87,52 @@ function showLiveDetails(type) {
         dataList.innerHTML = "<div>Hazırda aktiv məlumat tapılmadı.</div>";
     }
     
-    // Modalı göstər
     modal.style.display = "flex";
-    document.body.style.overflow = "hidden"; // Arxa fonun scroll olmasını dayandırır
+    document.body.style.overflow = "hidden";
 }
 
 function closeActivityModal() {
     const modal = document.getElementById("activityModal");
-    modal.style.display = "none";
-    document.body.style.overflow = "auto"; // Scroll-u bərpa edir
+    if (modal) modal.style.display = "none";
+    document.body.style.overflow = "auto";
 }
 
-// 3. NAVİQASİYA (SCROLL) FUNKSİYASI
+// 4. MÜŞTƏRİ GİRİŞİ VƏ QEYDİYYAT MODALI
+const loginModal = document.getElementById('loginModal');
+const loginBtn = document.getElementById('loginBtn');
+const closeLogin = document.getElementById('closeLogin');
+
+// Giriş pəncərəsini aç (Alert silindi!)
+loginBtn?.addEventListener('click', () => {
+    loginModal.style.display = 'flex';
+    document.body.style.overflow = "hidden";
+});
+
+// Giriş pəncərəsini bağla
+closeLogin?.addEventListener('click', () => {
+    loginModal.style.display = 'none';
+    document.body.style.overflow = "auto";
+});
+
+// Qeydiyyat formasına keçid
+document.getElementById('showReg')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('loginFormArea').style.display = 'none';
+    document.getElementById('regFormArea').style.display = 'block';
+});
+
+// Giriş formasına geri keçid
+document.getElementById('showLogin')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('regFormArea').style.display = 'none';
+    document.getElementById('loginFormArea').style.display = 'block';
+});
+
+// 5. NAVİQASİYA (SCROLL)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
-        const headerOffset = 90; // Navbar hündürlüyü
+        const headerOffset = 90;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -86,37 +143,13 @@ function scrollToSection(id) {
     }
 }
 
-// 4. KƏNAR KLİKLƏRİ TUTMAQ (Modalı bağlamaq üçün)
+// 6. KƏNAR KLİKLƏR (Modalları bağlamaq üçün)
 window.onclick = function(event) {
-    const modal = document.getElementById("activityModal");
-    if (event.target == modal) {
+    if (event.target == document.getElementById("activityModal")) {
         closeActivityModal();
     }
+    if (event.target == loginModal) {
+        loginModal.style.display = 'none';
+        document.body.style.overflow = "auto";
+    }
 };
-
-// 5. LOGIN DÜYMƏSİ ÜÇÜN KLİK (Hələlik sadə alert)
-document.getElementById('loginBtn')?.addEventListener('click', () => {
-    alert("Müştəri Paneli tezliklə aktiv olacaq!");
-});
-// Giriş Modalını açmaq
-document.getElementById('loginBtn')?.addEventListener('click', () => {
-    document.getElementById('loginModal').style.display = 'flex';
-});
-
-// Modalı bağlamaq
-document.getElementById('closeLogin')?.addEventListener('click', () => {
-    document.getElementById('loginModal').style.display = 'none';
-});
-
-// Giriş və Qeydiyyat formaları arası keçid
-document.getElementById('showReg')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('loginFormArea').style.display = 'none';
-    document.getElementById('regFormArea').style.display = 'block';
-});
-
-document.getElementById('showLogin')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('regFormArea').style.display = 'none';
-    document.getElementById('loginFormArea').style.display = 'block';
-});
