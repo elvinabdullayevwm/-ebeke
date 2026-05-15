@@ -38,7 +38,6 @@ body {
     max-height: 70px;
     width: auto;
     object-fit: contain;
-    mix-blend-mode: multiply;
 }
 
 .nav-links ul {
@@ -67,6 +66,7 @@ body {
     justify-content: flex-end;
 }
 
+/* 3. DÜYMƏLƏR */
 .btn-customer {
     background: #A68B5C;
     color: white;
@@ -84,7 +84,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* 3. HERO SECTION */
+/* 4. HERO SECTION */
 .hero {
     height: 80vh;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
@@ -130,7 +130,7 @@ body {
     font-weight: 700;
 }
 
-/* 4. CANLI FƏALİYYƏT PANELİ (YENİ) */
+/* 5. STATİSTİKA PANELİ */
 .live-activity {
     background: #ffffff;
     padding: 40px 5%;
@@ -167,7 +167,6 @@ body {
     font-size: 32px;
     font-weight: 800;
     color: #A68B5C;
-    margin-bottom: 5px;
 }
 
 .stat-box .lab {
@@ -175,10 +174,9 @@ body {
     font-weight: 700;
     color: #888;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-/* 5. MODAL STİLLƏRİ */
+/* 6. MODAL SİSTEMİ */
 .activity-modal {
     display: none;
     position: fixed;
@@ -198,17 +196,9 @@ body {
     max-width: 480px;
     position: relative;
     box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
 }
-
-.data-list div {
-    padding: 15px;
-    border-bottom: 1px solid #f5f5f5;
-    font-size: 15px;
-    color: #444;
-    font-weight: 500;
-}
-
-.data-list div:last-child { border-bottom: none; }
 
 .close-modal {
     position: absolute;
@@ -218,7 +208,29 @@ body {
 
 .close-modal:hover { color: #333; }
 
-/* 6. XİDMƏTLƏR */
+/* 7. FORM ELEMENTLƏRİ (YENİ) */
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.form-input:focus {
+    border-color: #A68B5C;
+    box-shadow: 0 0 5px rgba(166, 139, 92, 0.2);
+}
+
+select.form-input {
+    cursor: pointer;
+    background-color: #fff;
+}
+
+/* 8. XİDMƏTLƏR QRİDİ */
 .premium-services {
     padding: 80px 10%;
     text-align: center;
@@ -241,6 +253,7 @@ body {
     border: 1px solid #f0f0f0;
     border-radius: 20px;
     transition: 0.3s;
+    background: #fff;
 }
 
 .service-card:hover {
@@ -248,32 +261,24 @@ body {
     transform: translateY(-10px);
 }
 
-/* 7. MOBİL VERSİYA (RESPONSIVE) */
+/* 9. MOBİL VERSİYA */
 @media (max-width: 768px) {
     .stats-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
-    
     .stat-box:last-child { grid-column: span 2; }
-
     .hero-content h1 { font-size: 28px; }
+    .search-panel { width: 95%; flex-direction: column; }
+    .search-panel input { margin-bottom: 10px; border-radius: 10px; }
+    .nav-links { display: none; } /* Mobil menyu üçün gələcəkdə burger əlavə oluna bilər */
+}
 
-    .search-panel {
-        width: 90%;
-        flex-direction: column;
-        background: transparent;
-        box-shadow: none;
-    }
-
-    .search-panel input {
-        background: white;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-
-    .btn-search {
-        padding: 15px;
-        border-radius: 10px;
-    }
+/* Scrollbar dizaynı */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #A68B5C;
+    border-radius: 10px;
 }
