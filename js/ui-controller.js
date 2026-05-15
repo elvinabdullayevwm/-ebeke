@@ -98,3 +98,25 @@ window.onclick = function(event) {
 document.getElementById('loginBtn')?.addEventListener('click', () => {
     alert("Müştəri Paneli tezliklə aktiv olacaq!");
 });
+// Giriş Modalını açmaq
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+    document.getElementById('loginModal').style.display = 'flex';
+});
+
+// Modalı bağlamaq
+document.getElementById('closeLogin')?.addEventListener('click', () => {
+    document.getElementById('loginModal').style.display = 'none';
+});
+
+// Giriş və Qeydiyyat formaları arası keçid
+document.getElementById('showReg')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('loginFormArea').style.display = 'none';
+    document.getElementById('regFormArea').style.display = 'block';
+});
+
+document.getElementById('showLogin')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('regFormArea').style.display = 'none';
+    document.getElementById('loginFormArea').style.display = 'block';
+});
