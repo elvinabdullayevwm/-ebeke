@@ -3,7 +3,7 @@
  */
 
 // --- KONFİQURASİYA ---
-const SCRIPT_URL = "BURAYA_GOOGLE_SCRIPT_LINKINI_YAPISTIR"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyB3Zp39Gq9Kdn3tcm9E9fqfNHAa5HNqRJaey_LrINp67u-pjC3dnxwkBNDOH19h_71A/exec"; 
 let generatedOtp = null;
 let tempUserData = {};
 
