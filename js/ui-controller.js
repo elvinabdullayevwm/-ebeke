@@ -1,6 +1,6 @@
 /**
  * YOLASAL - Professional UI & Logic Controller
- * Version: 2.0 (Premium & Responsive)
+ * Version: 2.5 (Giriş və Şəxsi Kabinet İnteqrasiyası ilə)
  */
 
 // --- KONFİQURASİYA ---
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Rayonları doldur
     const citySelect = document.getElementById('citySelect');
     if (citySelect) {
+        citySelect.innerHTML = '<option value="">Yaşadığınız rayonu seçin *</option>'; // Təmizləmə sığortası
         cities.sort().forEach(city => {
             let opt = document.createElement('option');
             opt.value = city; opt.innerHTML = city;
@@ -29,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            // Hamburger animasiyası üçün
             menuToggle.classList.toggle('is-active'); 
         });
     }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Menyu linkinə basanda menyunu bağla (Mobil üçün)
     document.querySelectorAll('.nav-links li').forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+            if (navLinks) navLinks.classList.remove('active');
         });
     });
 });
@@ -46,11 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
 const loginModal = document.getElementById('loginModal');
 
 function openLogin() {
-    loginModal.style.display = 'flex';
+    if (loginModal) loginModal.style.display = 'flex';
 }
 
 document.getElementById('loginBtn')?.addEventListener('click', openLogin);
-document.getElementById('closeLogin')?.addEventListener('click', () => loginModal.style.display = 'none');
+document.getElementById('closeLogin')?.addEventListener('click', () => {
+    if (loginModal) loginModal.style.display = 'none';
+});
 
 // Pəncərələr arası keçid
 document.getElementById('showReg')?.addEventListener('click', (e) => {
@@ -66,7 +68,7 @@ document.getElementById('showLogin')?.addEventListener('click', (e) => {
     document.getElementById('loginFormArea').style.display = 'block';
 });
 
-// 4. QEYDİYYAT PROSESİ (Məntiq qorundu)
+// 4. QEYDİYYAT PROSESİ
 document.getElementById('startRegBtn')?.addEventListener('click', async () => {
     const name = document.getElementById('regName').value;
     const surname = document.getElementById('regSurname').value;
@@ -116,7 +118,7 @@ document.getElementById('startRegBtn')?.addEventListener('click', async () => {
     }
 });
 
-// 5. OTP TƏSDİQİ
+// 5. OTP TƏSDİQİ VƏ AVTOMATİK GİRİŞƏ YÖNLƏNDİRMƏ
 document.getElementById('verifyOtpBtn')?.addEventListener('click', async () => {
     const userOtp = document.getElementById('otpInput').value;
 
@@ -131,18 +133,108 @@ document.getElementById('verifyOtpBtn')?.addEventListener('click', async () => {
                 mode: "no-cors",
                 body: JSON.stringify({ action: "registerUser", ...tempUserData })
             });
-            alert("Qeydiyyat uğurla tamamlandı! ID kodunuz mailinizə göndərildi.");
-            location.reload();
+            
+            alert("Qeydiyyat uğurla tamamlandı! İndi təyin etdiyiniz şifrə ilə daxil ola bilərsiniz.");
+            
+            // İstifadıçini birbaşa loqin formasına qaytarırıq (Sənin istəyinə uyğun)
+            document.getElementById('otpFormArea').style.display = 'none';
+            document.getElementById('loginFormArea').style.display = 'block';
+            
+            // Loqin inputuna qeydiyyatdan keçdiyi maili avtomatik yazırıq ki, rahat olsun
+            document.getElementById('loginId').value = tempUserData.email;
+            
+            // Müvəqqəti datanı sıfırlayırıq və düyməni bərpa edirik
+            generatedOtp = null;
+            tempUserData = {};
+            btn.disabled = false;
+            btn.innerText = "TƏSDİQLƏ";
         } catch (err) {
             alert("Sistem xətası.");
             btn.disabled = false;
+            btn.innerText = "TƏSDİQLƏ";
         }
     } else {
         alert("Kod yanlışdır!");
     }
 });
 
-// 6. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
+// 6. REAL GİRİŞ (LOGIN) PROSESİ
+async function handleLoginProcess() {
+    const loginId = document.getElementById('loginId').value.trim();
+    const loginPass = document.getElementById('loginPass').value;
+    const submitBtn = document.getElementById('submitLoginBtn');
+
+    if (!loginId || !loginPass) {
+        alert("Zəhmət olmasa bütün xanaları doldurun!");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Yoxlanılır...";
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "login",
+                loginId: loginId,
+                password: loginPass
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "Success") {
+            // Modalı bağla
+            if (loginModal) loginModal.style.display = 'none';
+            
+            // Məlumatları Şəxsi Kabinetə (Dashboard) doldur
+            document.getElementById('dashUserName').innerText = result.name + " " + result.surname;
+            document.getElementById('dashUserId').innerText = result.id;
+            document.getElementById('dashUserMmc').innerText = result.mmc ? result.mmc : "Şəxsi Hesab";
+            document.getElementById('dashUserPhone').innerText = result.phone;
+
+            // Əsas üst menyudakı "Müştəri Girişi" düyməsini gizlədib yerinə "KABİNET" yazmaq olar (Vizual gözəllik üçün)
+            const mainLoginBtn = document.getElementById('loginBtn');
+            if (mainLoginBtn) {
+                mainLoginBtn.innerText = "ŞƏXSİ KABİNET";
+                mainLoginBtn.setAttribute("onclick", "scrollToSection('customerDashboard')");
+            }
+
+            // Şəxsi kabinet bölməsini göstər və ekranı oraya sürüşdür
+            const dashboardSection = document.getElementById('customerDashboard');
+            dashboardSection.style.display = 'block';
+            scrollToSection('customerDashboard');
+
+            // İnputları təmizlə
+            document.getElementById('loginId').value = "";
+            document.getElementById('loginPass').value = "";
+
+        } else {
+            alert("Xəta: ID/E-mail və ya şifrə yanlışdır!");
+        }
+    } catch (err) {
+        alert("Giriş zamanı xəta baş verdi. Şəbəkəni yoxlayın.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "DAXİL OL";
+    }
+}
+
+// 7. SİSTEMDƏN ÇIXIŞ (LOGOUT)
+function logoutUser() {
+    if (confirm("Şəxsi kabinetdən çıxmaq istədiyinizə əminsiniz?")) {
+        document.getElementById('customerDashboard').style.display = 'none';
+        const mainLoginBtn = document.getElementById('loginBtn');
+        if (mainLoginBtn) {
+            mainLoginBtn.innerText = "MÜŞTƏRİ GİRİŞİ";
+            mainLoginBtn.setAttribute("onclick", "openLogin()");
+        }
+        scrollToSection('home');
+    }
+}
+
+// 8. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
@@ -159,27 +251,30 @@ function scrollToSection(id) {
     }
 }
 
-// Canlı Statistika Detalları (Simulyasiya)
+// Canlı Statistika Detalları
 function showLiveDetails(type) {
     const modal = document.getElementById('activityModal');
     const title = document.getElementById('modalTitle');
     const dataDiv = document.getElementById('modalData');
     
-    modal.style.display = 'flex';
-    title.innerText = type.replace('-', ' ').toUpperCase();
-    dataDiv.innerHTML = "<p style='padding:20px; text-align:center;'>Məlumatlar yüklənir...</p>";
-    
-    setTimeout(() => {
-        dataDiv.innerHTML = `
-            <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650012</b> - Bakı ➔ Gəncə (Yolda)</div>
-            <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650045</b> - Sumqayıt ➔ Quba (Yüklənir)</div>
-            <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650089</b> - Lənkəran ➔ Bakı (Çatdı)</div>
-        `;
-    }, 800);
+    if (modal) {
+        modal.style.display = 'flex';
+        title.innerText = type.replace('-', ' ').toUpperCase();
+        dataDiv.innerHTML = "<p style='padding:20px; text-align:center;'>Məlumatlar yüklənir...</p>";
+        
+        setTimeout(() => {
+            dataDiv.innerHTML = `
+                <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650012</b> - Bakı ➔ Gəncə (Yolda)</div>
+                <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650045</b> - Sumqayıt ➔ Quba (Yüklənir)</div>
+                <div style="padding:10px; border-bottom:1px solid #eee;"><b>ID: 650089</b> - Lənkəran ➔ Bakı (Çatdı)</div>
+            `;
+        }, 800);
+    }
 }
 
 function closeActivityModal() {
-    document.getElementById('activityModal').style.display = 'none';
+    const actModal = document.getElementById('activityModal');
+    if (actModal) actModal.style.display = 'none';
 }
 
 // Modal kənarına basanda bağlansın
