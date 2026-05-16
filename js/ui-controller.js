@@ -1,15 +1,15 @@
 /**
  * YOLASAL - Professional UI & Logic Controller
- * Version: 2.6 (İstifadəçi Avatarı və Dropdown Menyu İnteqrasiyası ilə)
+ * Version: 2.7 (Dashboard İntellektual İdarəetmə Düymələri İnteqrasiyası ilə)
  */
 
 // --- KONFİQURASİYA ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyF1E--MWuAT9De6NSHn-k4iTtNscAfZ8GdxU-EJadCMvqNm2QcA7KD5eCHXst0Adcvcw/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyB3Zp39Gq9Kdn3tcm9E9fqfNHAa5HNqRJaey_LrINp67u-pjC3dnxwkBNDOH19h_71A/exec"; 
 let generatedOtp = null;
 let tempUserData = {};
 
 // 1. ŞƏHƏR VƏ RAYONLARIN YÜKLƏNMƏSİ
-const cities = ["Bakı", "Sumqayıt", "Gəncə", "Xırdalan", "Mingəçevir", "Lənkəran", "Şirvan", "Naxçıvan", "Quba", "Qusar", "Xaçmaz", "Şəki", "Qəbələ", "Şamaxı", "İsmayıllı", "Göyçay", "Ağsu", "Kürdəmir", "Ucar", "Yevlax", "Bərdə", "Tərtər", "Ağdam", "Füzuli", "Cəbrayıl", "Zəngilan", "Qubadlı", "Laçın", "Kəlbəcər", "Şuşa", "Xocalı", "Xankəndi", "Goranboy", "Naftalan", "Şəmkir", "Tovuz", "Ağstafa", "Qazax", "Gədəbəy", "Daşkəsən", "Samux", "Göygöl", "Oğuz", "Balakən", "Zaqatala", "Qax", "Siyəzən", "Şabran", "Xızı", "Qobustan", "Hacıqabul", "Saatlı", "Sabirabad", "İmişli", "Beyləqan", "Zərdab", "Biləsuvar", "Neftçala", "Salyan", "Cəlilabad", "Masallı", "Yardımlı", "Lerik", "Astara"];
+const cities = ["Bakı", "Sumqayıt", "Gəncə", "Xırdalan", "Mingəçevir", "Lənkəran", "Şirvan", "Naxçıvan", "Quba", "Qusar", "Xaçmaz", "Şəki", "Qəbələ", "Şamaxı", "İsmayıllı", "Göyçay", "Ağsu", "Kürdəmir", "Ucar", "Yevlax", "Bərdə", "Tərtər", "Ağdam", "Füzuli", "Cəbrayıl", "Zəngilan", "Qubadlı", "Laçın", "Kəlbəcər", "Şuşa", "Xocalı", "Xankəndi", "Goranboy", "Naftalan", "Şəmkir", "Tovuz", "Ağstafa", "Qazax", "Gədəbəy", "Daşkəsən", "Samux", "Göygöl", "Oğuz", "Balakən", "Zaqatala", "Qax", "Siyəzən", "Şabran", "Xızı", "Qobustan", "Hacıqabul", "Saatlı", "Sabirabad", "İmişli", "Beyləqan", "Zərdab", "Biləsuvar", "Neftçala", "Salyan", "Cəlilabad", "Masallı", "Yardümlı", "Lerik", "Astara"];
 
 document.addEventListener('DOMContentLoaded', () => {
     // Rayonları doldur
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Menyu linkinə basanda menyunu bağla (Mobil üçün)
     document.querySelectorAll('.nav-links li').forEach(link => {
         link.addEventListener('click', (e) => {
-            // Əgər kliklənən yer profil ikonudursa və ya dropdown menyudursa, nav-links-i bağlama
             if (e.target.closest('#userProfileArea')) return;
             if (navLinks) navLinks.classList.remove('active');
         });
@@ -181,7 +180,9 @@ async function handleLoginProcess() {
             })
         });
 
-        const result = await response.json();
+        // Backend-dən gələn TEXT tipli JSON cavabını etibarlı şəkildə parse edirik (CORS sığortası)
+        const textData = await response.text();
+        const result = JSON.parse(textData);
 
         if (result.status === "Success") {
             if (loginModal) loginModal.style.display = 'none';
@@ -192,14 +193,13 @@ async function handleLoginProcess() {
             document.getElementById('dashUserMmc').innerText = result.mmc ? result.mmc : "Şəxsi Hesab";
             document.getElementById('dashUserPhone').innerText = result.phone;
 
-            // --- YENİLİK: BUTONU GİZLƏ VƏ YUMRU İKONU AKTİVLƏŞDİR ---
+            // Navbardakı düyməni gizlə və avatarı aktivləşdir
             const mainLoginBtn = document.getElementById('loginBtn');
             const userProfileArea = document.getElementById('userProfileArea');
             
             if (mainLoginBtn) mainLoginBtn.style.display = 'none';
             if (userProfileArea) {
                 userProfileArea.style.display = 'inline-block';
-                // İkonun içində istifadəçinin adının ilk hərfini göstərmək üçün vizual gözəllik:
                 document.getElementById('userAvatarBtn').innerText = result.name.charAt(0).toUpperCase();
             }
 
@@ -216,7 +216,7 @@ async function handleLoginProcess() {
             alert("Xəta: ID/E-mail və ya şifrə yanlışdır!");
         }
     } catch (err) {
-        alert("Giriş zamanı xəta baş verdi. Şəbəkəni yoxlayın.");
+        alert("Giriş zamanı xəta baş verdi. Şəbəkəni və ya məlumatları yoxlayın.");
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = "DAXİL OL";
@@ -225,7 +225,7 @@ async function handleLoginProcess() {
 
 // 7. AVATAR DROPDOWN MENYUNU AÇIB-BAĞLAMAQ
 function toggleUserDropdown(event) {
-    event.stopPropagation(); // Klik hadisəsinin pəncərəyə yayılmasının qarşısını alır
+    event.stopPropagation();
     const menu = document.getElementById('userDropdownMenu');
     if (menu) {
         menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
@@ -245,14 +245,11 @@ function logoutUser(event) {
     if (event) event.preventDefault();
     
     if (confirm("Şəxsi kabinetdən çıxmaq istədiyinizə əminsiniz?")) {
-        // Dropdown menyunu bağla
         const menu = document.getElementById('userDropdownMenu');
         if (menu) menu.style.display = 'none';
 
-        // Şəxsi kabineti gizlət
         document.getElementById('customerDashboard').style.display = 'none';
         
-        // Düymələri köhnə halına qaytar
         const mainLoginBtn = document.getElementById('loginBtn');
         const userProfileArea = document.getElementById('userProfileArea');
         
@@ -263,7 +260,48 @@ function logoutUser(event) {
     }
 }
 
-// 10. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
+// 10. NEW ADDTION: DASHBOARD İNTELLEKTUAL DÜYMƏLƏRİNİN İŞLƏNMƏSİ
+function handleDashboardAction(actionType) {
+    // Burada hər bir düymənin gələcəkdə açacağı pəncərə, modal və ya sorğular idarə olunacaq
+    console.log("İcra edilən əməliyyat:", actionType);
+    
+    switch(actionType) {
+        case 'new-order':
+            alert("Yeni Sifariş Yaratma formu tezliklə bura inteqrasiya olunacaq.");
+            break;
+        case 'new-route':
+            alert("Yeni Reys Yaratma formu tezliklə bura inteqrasiya olunacaq.");
+            break;
+        case 'active-orders':
+            alert("Aktiv Sifarişlərinizin siyahısı yüklənir...");
+            break;
+        case 'active-routes':
+            alert("Aktiv Reyslərinizin siyahısı yüklənir...");
+            break;
+        case 'in-progress-orders':
+            alert("İcrada olan sifarişləriniz axtarılır...");
+            break;
+        case 'in-progress-routes':
+            alert("İcrada olan reysləriniz axtarılır...");
+            break;
+        case 'delivered-orders':
+            alert("Təslim edilən sifarişlərinizin arxivi açılır...");
+            break;
+        case 'completed-routes':
+            alert("Tamamlanmış reyslərinizin arxivi açılır...");
+            break;
+        case 'search-orders':
+            alert("Sifarişlər üçün təkmilləşdirilmiş filtr paneli hazırlanır...");
+            break;
+        case 'search-routes':
+            alert("Reyslər üçün təkmilləşdirilmiş filtr paneli hazırlanır...");
+            break;
+        default:
+            console.warn("Naməlum əməliyyat xətası.");
+    }
+}
+
+// 11. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
@@ -306,12 +344,11 @@ function closeActivityModal() {
     if (actModal) actModal.style.display = 'none';
 }
 
-// Ekranın hər hansı boş yerinə basanda dropdown menyu və modallar bağlansın
+// Pəncərə klikləri sığortası
 window.onclick = function(event) {
     if (event.target == loginModal) loginModal.style.display = "none";
     if (event.target == document.getElementById('activityModal')) closeActivityModal();
     
-    // Dropdown menyudan kənara basıldıqda menyunu bağla
     if (!event.target.closest('#userProfileArea')) {
         const menu = document.getElementById('userDropdownMenu');
         if (menu) menu.style.display = 'none';
