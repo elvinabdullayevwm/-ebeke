@@ -4,7 +4,7 @@
  */
 
 // --- KONFİQURASİYA ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyF1E--MWuAT9De6NSHn-k4iTtNscAfZ8GdxU-EJadCMvqNm2QcA7KD5eCHXst0Adcvcw/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweXAWCzUo35VWaTHvRuE1LMI9fpdri5KMnAAf91noVm5ugcwDGTFRIKlf5EN2-D50Cgg/exec"; 
 let generatedOtp = null;
 let tempUserData = {};
 
