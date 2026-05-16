@@ -29,8 +29,35 @@
                 <li><button class="btn-customer" id="loginBtn" onclick="openLogin()">MÜŞTƏRİ GİRİŞİ</button></li>
             </ul>
         </nav>
+    </header>
 
-        </header>
+    <section id="customerDashboard" class="premium-services fade-in" style="display: none; background: #fdfdfd; border-bottom: 2px solid #eee;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: left; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px;">
+                <h2>Xoş gəldiniz, <span id="dashUserName" style="color: var(--primary);">Müştəri</span>!</h2>
+                <button class="btn-customer" onclick="logoutUser()" style="background: #d9534f; padding: 8px 18px; font-size: 14px;">ÇIXIŞ</button>
+            </div>
+            
+            <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Müştəri ID</h4>
+                    <p id="dashUserId" style="font-size: 22px; font-weight: 800; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Şirkət / MMC</h4>
+                    <p id="dashUserMmc" style="font-size: 18px; font-weight: 600; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Telefon nömrəsi</h4>
+                    <p id="dashUserPhone" style="font-size: 18px; font-weight: 600; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 30px; background: #fff; border: 1px dashed #ccc; border-radius: 15px; text-align: center; color: #666;">
+                <p>Şəxsi kabinetiniz aktivdir. Buradan sifarişlərinizi və reyslərinizi idarə edə bilərsiniz.</p>
+            </div>
+        </div>
+    </section>
 
     <section class="hero" id="home">
         <div class="hero-content">
@@ -134,9 +161,9 @@
             
             <div id="loginFormArea">
                 <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Müştəri Girişi</h3>
-                <input type="text" id="loginId" placeholder="Müştəri ID-si və ya Mail" class="form-input">
+                <input type="text" id="loginId" placeholder="Müştəri ID-si, Mail və ya Nömrə" class="form-input">
                 <input type="password" id="loginPass" placeholder="Şifrəniz" class="form-input">
-                <button class="btn-customer" style="width: 100%; padding: 15px;">DAXİL OL</button>
+                <button class="btn-customer" id="submitLoginBtn" onclick="handleLoginProcess()" style="width: 100%; padding: 15px;">DAXİL OL</button>
                 <div style="text-align: center; margin-top: 15px; font-size: 13px;">
                     <a href="#" id="forgotPass" style="color: #888; text-decoration: none;">Parolu bərpa et</a>
                 </div>
