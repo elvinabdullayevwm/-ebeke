@@ -6,6 +6,67 @@
     <title>Yolasal - Professional Loqistika Platforması</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/components.css">
+    <style>
+        /* Mövcud CSS-i dağıtmamaq üçün bu yeni funksiyanın dizaynını bura əlavə edirik */
+        .user-profile-container {
+            position: relative;
+            display: inline-block;
+        }
+        .user-avatar-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary, #A68B5C);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .user-avatar-btn:hover {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(166, 139, 92, 0.5);
+        }
+        .user-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            overflow: hidden;
+            border: 1px solid #eee;
+            animation: fadeInShort 0.2s ease;
+        }
+        .user-dropdown-menu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s ease;
+        }
+        .user-dropdown-menu a:hover {
+            background-color: #f5f5f5;
+            color: var(--primary, #A68B5C);
+        }
+        .user-dropdown-menu .menu-divider {
+            border-top: 1px solid #eee;
+            margin: 0;
+        }
+        @keyframes fadeInShort {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
@@ -26,7 +87,21 @@
                 <li onclick="scrollToSection('fleet-section')">Avtopark</li>
                 <li onclick="scrollToSection('about-section')">Haqqımızda</li>
                 <li onclick="scrollToSection('contact-section')">Əlaqə</li>
-                <li><button class="btn-customer" id="loginBtn" onclick="openLogin()">MÜŞTƏRİ GİRİŞİ</button></li>
+                
+                <li id="nav-auth-container">
+                    <button class="btn-customer" id="loginBtn" onclick="openLogin()">MÜŞTƏRİ GİRİŞİ</button>
+                    
+                    <div id="userProfileArea" class="user-profile-container" style="display: none;">
+                        <div class="user-avatar-btn" id="userAvatarBtn" onclick="toggleUserDropdown(event)">
+                            👤
+                        </div>
+                        <div class="user-dropdown-menu" id="userDropdownMenu">
+                            <a href="#" onclick="openSettings(event)">⚙️ Ayarlar</a>
+                            <div class="menu-divider"></div>
+                            <a href="#" onclick="logoutUser(event)" style="color: #d9534f;">🚪 Çıxış</a>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -35,7 +110,7 @@
         <div style="max-width: 1200px; margin: 0 auto; text-align: left; padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px;">
                 <h2>Xoş gəldiniz, <span id="dashUserName" style="color: var(--primary);">Müştəri</span>!</h2>
-                <button class="btn-customer" onclick="logoutUser()" style="background: #d9534f; padding: 8px 18px; font-size: 14px;">ÇIXIŞ</button>
+                <button class="btn-customer" onclick="logoutUser(event)" style="background: #d9534f; padding: 8px 18px; font-size: 14px;">ÇIXIŞ</button>
             </div>
             
             <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
