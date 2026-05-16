@@ -1,10 +1,10 @@
 /**
  * YOLASAL - Professional UI & Logic Controller
- * Version: 2.5 (Giriş və Şəxsi Kabinet İnteqrasiyası ilə)
+ * Version: 2.6 (İstifadəçi Avatarı və Dropdown Menyu İnteqrasiyası ilə)
  */
 
 // --- KONFİQURASİYA ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbH8efBNT1Hr5odV1exim-qgh4JthB_P3Ci5SPZmaoNvIj-RnhkbaBoKkKJcLwHaBy0A/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyB3Zp39Gq9Kdn3tcm9E9fqfNHAa5HNqRJaey_LrINp67u-pjC3dnxwkBNDOH19h_71A/exec"; 
 let generatedOtp = null;
 let tempUserData = {};
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Rayonları doldur
     const citySelect = document.getElementById('citySelect');
     if (citySelect) {
-        citySelect.innerHTML = '<option value="">Yaşadığınız rayonu seçin *</option>'; // Təmizləmə sığortası
+        citySelect.innerHTML = '<option value="">Yaşadığınız rayonu seçin *</option>'; 
         cities.sort().forEach(city => {
             let opt = document.createElement('option');
             opt.value = city; opt.innerHTML = city;
@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Menyu linkinə basanda menyunu bağla (Mobil üçün)
     document.querySelectorAll('.nav-links li').forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            // Əgər kliklənən yer profil ikonudursa və ya dropdown menyudursa, nav-links-i bağlama
+            if (e.target.closest('#userProfileArea')) return;
             if (navLinks) navLinks.classList.remove('active');
         });
     });
@@ -136,14 +138,11 @@ document.getElementById('verifyOtpBtn')?.addEventListener('click', async () => {
             
             alert("Qeydiyyat uğurla tamamlandı! İndi təyin etdiyiniz şifrə ilə daxil ola bilərsiniz.");
             
-            // İstifadıçini birbaşa loqin formasına qaytarırıq (Sənin istəyinə uyğun)
             document.getElementById('otpFormArea').style.display = 'none';
             document.getElementById('loginFormArea').style.display = 'block';
             
-            // Loqin inputuna qeydiyyatdan keçdiyi maili avtomatik yazırıq ki, rahat olsun
             document.getElementById('loginId').value = tempUserData.email;
             
-            // Müvəqqəti datanı sıfırlayırıq və düyməni bərpa edirik
             generatedOtp = null;
             tempUserData = {};
             btn.disabled = false;
@@ -185,7 +184,6 @@ async function handleLoginProcess() {
         const result = await response.json();
 
         if (result.status === "Success") {
-            // Modalı bağla
             if (loginModal) loginModal.style.display = 'none';
             
             // Məlumatları Şəxsi Kabinetə (Dashboard) doldur
@@ -194,11 +192,15 @@ async function handleLoginProcess() {
             document.getElementById('dashUserMmc').innerText = result.mmc ? result.mmc : "Şəxsi Hesab";
             document.getElementById('dashUserPhone').innerText = result.phone;
 
-            // Əsas üst menyudakı "Müştəri Girişi" düyməsini gizlədib yerinə "KABİNET" yazmaq olar (Vizual gözəllik üçün)
+            // --- YENİLİK: BUTONU GİZLƏ VƏ YUMRU İKONU AKTİVLƏŞDİR ---
             const mainLoginBtn = document.getElementById('loginBtn');
-            if (mainLoginBtn) {
-                mainLoginBtn.innerText = "ŞƏXSİ KABİNET";
-                mainLoginBtn.setAttribute("onclick", "scrollToSection('customerDashboard')");
+            const userProfileArea = document.getElementById('userProfileArea');
+            
+            if (mainLoginBtn) mainLoginBtn.style.display = 'none';
+            if (userProfileArea) {
+                userProfileArea.style.display = 'inline-block';
+                // İkonun içində istifadəçinin adının ilk hərfini göstərmək üçün vizual gözəllik:
+                document.getElementById('userAvatarBtn').innerText = result.name.charAt(0).toUpperCase();
             }
 
             // Şəxsi kabinet bölməsini göstər və ekranı oraya sürüşdür
@@ -221,20 +223,47 @@ async function handleLoginProcess() {
     }
 }
 
-// 7. SİSTEMDƏN ÇIXIŞ (LOGOUT)
-function logoutUser() {
+// 7. AVATAR DROPDOWN MENYUNU AÇIB-BAĞLAMAQ
+function toggleUserDropdown(event) {
+    event.stopPropagation(); // Klik hadisəsinin pəncərəyə yayılmasının qarşısını alır
+    const menu = document.getElementById('userDropdownMenu');
+    if (menu) {
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+}
+
+// 8. AYARLAR FUNKSİYASI
+function openSettings(event) {
+    if (event) event.preventDefault();
+    alert("Ayarlar bölməsi tezliklə aktiv ediləcək.");
+    const menu = document.getElementById('userDropdownMenu');
+    if (menu) menu.style.display = 'none';
+}
+
+// 9. SİSTEMDƏN ÇIXIŞ (LOGOUT)
+function logoutUser(event) {
+    if (event) event.preventDefault();
+    
     if (confirm("Şəxsi kabinetdən çıxmaq istədiyinizə əminsiniz?")) {
+        // Dropdown menyunu bağla
+        const menu = document.getElementById('userDropdownMenu');
+        if (menu) menu.style.display = 'none';
+
+        // Şəxsi kabineti gizlət
         document.getElementById('customerDashboard').style.display = 'none';
+        
+        // Düymələri köhnə halına qaytar
         const mainLoginBtn = document.getElementById('loginBtn');
-        if (mainLoginBtn) {
-            mainLoginBtn.innerText = "MÜŞTƏRİ GİRİŞİ";
-            mainLoginBtn.setAttribute("onclick", "openLogin()");
-        }
+        const userProfileArea = document.getElementById('userProfileArea');
+        
+        if (mainLoginBtn) mainLoginBtn.style.display = 'inline-block';
+        if (userProfileArea) userProfileArea.style.display = 'none';
+        
         scrollToSection('home');
     }
 }
 
-// 8. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
+// 10. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
@@ -277,8 +306,14 @@ function closeActivityModal() {
     if (actModal) actModal.style.display = 'none';
 }
 
-// Modal kənarına basanda bağlansın
+// Ekranın hər hansı boş yerinə basanda dropdown menyu və modallar bağlansın
 window.onclick = function(event) {
     if (event.target == loginModal) loginModal.style.display = "none";
     if (event.target == document.getElementById('activityModal')) closeActivityModal();
+    
+    // Dropdown menyudan kənara basıldıqda menyunu bağla
+    if (!event.target.closest('#userProfileArea')) {
+        const menu = document.getElementById('userDropdownMenu');
+        if (menu) menu.style.display = 'none';
+    }
 }
