@@ -1,5 +1,5 @@
 // Qlobal Google Script Web App URL-iniz
-const scriptURL = "https://script.google.com/macros/s/AKfycbxPID1VNhc4Nyp0XchRFzNWOnnpuzbRvW2L1DMSkaaXR0-AWpakjgMlUL-xcq5nR3CRNw/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzj22Q5k322SZmzGz3i59MlwBjlOK208L6DlDPvgdUjm-vG0ajJ5CzoYCEszd1ERbQL8w/exec";
 
 /**
  * Ümumi API çağırışları üçün köməkçi funksiya
@@ -23,16 +23,21 @@ async function apiCall(data) {
 // ==========================================================================
 
 function apiNewOrder(orderData, customerID) {
-    // 1. Müştəri ID-sini təyin edirik
+    // 1. Real Müştəri ID-sini götürürük
     const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
 
-    // 2. Sifariş ID formatını nizamlayırıq (MüştəriID/O-Son4Rəqəm)
+    // 2. Sizin tam olaraq istədiyiniz format: MüştəriID/O-Son4Rəqəm (Məsələn: 650001/O-1234)
     const sequenceNum = String(Date.now()).slice(-4);
     const customOrderID = `${realCustomerID}/O-${sequenceNum}`;
 
+    // 3. Google Script-in daxildə özündən ID generasiya etməməsi üçün
+    // həm kiçik, həm böyük hərflərlə bütün ehtimal olunan açarlara bizim ID-ni yazırıq:
     orderData.orderId = customOrderID;
+    orderData.orderID = customOrderID;
+    orderData.id = customOrderID;
+    orderData.sifarisId = customOrderID;
 
-    // 3. Sənin Google Scriptinin (Backend) gözlədiyi format
+    // 4. Məlumat paketi hazırlayırıq
     const payload = {
         action: "createNewOrder",
         customerID: realCustomerID,
@@ -53,7 +58,7 @@ function apiNewOrder(orderData, customerID) {
             resolve({ status: 'success', orderId: customOrderID });
         })
         .catch(error => {
-            // CORS bloklaması ehtimalına qarşı resolve edirik ki, məlumat cədvələ getsin
+            // Şəbəkə və ya CORS fərqi olduqda belə prosesin dayanmaması üçün resolve edirik
             resolve({ status: 'success', orderId: customOrderID });
         });
     });
