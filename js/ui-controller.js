@@ -479,3 +479,76 @@ window.addEventListener('click', function(event) {
         closeNewOrderModal();
     }
 });
+// ==========================================================================
+// MƏRKƏZİ DASHBOARD IDARƏEDİCİSİ VƏ MODAL SCRIPTİ
+// ==========================================================================
+
+/**
+ * Dashboard-dakı düymələrin klik əmrlərini mərkəzi idarə edən funksiya
+ */
+function handleDashboardAction(actionType) {
+    if (actionType === 'new-order') {
+        // "Yeni sifariş yarat" düyməsinə basıldıqda modalı açırıq
+        openNewOrderModal();
+    } else if (actionType === 'new-route') {
+        // Bu hissə növbəti mərhələdə "Yeni reys yarat" üçün istifadə olunacaq
+        alert('Yeni Reys Yaratma modulu tezliklə bura inteqrasiya olunacaq.');
+    } else {
+        // Digər aktiv/icrada olan düymələr üçün müvəqqəqi bildiriş
+        alert(actionType + ' bölməsi tezliklə aktivləşdiriləcək.');
+    }
+}
+
+/**
+ * Yeni sifariş modalını ekranda göstərən əsas funksiya
+ */
+function openNewOrderModal() {
+    const modal = document.getElementById('newOrderModal');
+    if (modal) {
+        modal.style.display = 'block';
+        populateOrderCities(); // Şəhərlərin dropdown siyahısını doldurur
+    } else {
+        console.error("XƏTA: 'newOrderModal' element HTML daxilində tapılmadı!");
+    }
+}
+
+/**
+ * Modal pəncərəsini bağlamaq üçün funksiya
+ */
+function closeNewOrderModal() {
+    const modal = document.getElementById('newOrderModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+/**
+ * Sifariş formasındakı "Şəhərlər" siyahısını avtomatik dolduran funksiya
+ */
+function populateOrderCities() {
+    const pickupSelect = document.getElementById('orderPickupCity');
+    const dropSelect = document.getElementById('orderDropCity');
+    
+    // Azərbaycanın əsas şəhər və rayonlarının siyahısı
+    const cities = [
+        "Bakı", "Gəncə", "Sumqayıt", "Mingəçevir", "Xırdalan", "Naxçıvan", "Lənkəran", 
+        "Yevlax", "Şəki", "Şirvan", "Quba", "Xaçmaz", "Qusar", "Şamaxi", "İsmayıllı", 
+        "Qəbələ", "Göyçay", "Bərdə", "Ağdam", "Ağcabədi", "Füzuli", "Cəlilabad", 
+        "Salyan", "Masallı", "Şəmkir", "Tovuz", "Qazax", "Zaqatala", "Balakən"
+    ];
+    
+    // Hər iki dropdown-u təmizləyirik və ilkin dəyəri veririk
+    if (pickupSelect && pickupSelect.options.length <= 1) {
+        pickupSelect.innerHTML = '<option value="">Seçin *</option>';
+        cities.forEach(city => {
+            pickupSelect.innerHTML += `<option value="${city}">${city}</option>`;
+        });
+    }
+    
+    if (dropSelect && dropSelect.options.length <= 1) {
+        dropSelect.innerHTML = '<option value="">Seçin *</option>';
+        cities.forEach(city => {
+            dropSelect.innerHTML += `<option value="${city}">${city}</option>`;
+        });
+    }
+}
