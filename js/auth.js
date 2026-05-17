@@ -1,9 +1,47 @@
 // ==========================================================================
-// İSTİFADƏÇİ GİRİŞ (LOGIN) VƏ SESSİYA IDARƏEDİCİSİ
+// YOLASAL - DAİMİ SESSİYA, LOGİN VƏ SƏHİFƏ İDARƏEDİCİSİ (TAM KOD)
 // ==========================================================================
 
 /**
- * İstifadəçi Giriş Funksiyası
+ * 1. SƏHİFƏLƏRİ AÇIB-GİZLƏDƏN VƏ F5 ATMAQDAN QORUYAN ANA FUNKSİYA
+ * Sənin layihəndəki köhnə 'showSection' funksiyasını tamamilə bu əvəz edir.
+ */
+function showSection(sectionId) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userID = localStorage.getItem('userID');
+
+    // Əgər istifadəçi giriş ETMƏYİBSƏ və login/register-dən başqa səhifəyə keçmək istəyirsə:
+    // Onu qeyd-şərtsiz Giriş səhifəsinə yönləndiririk
+    if ((isLoggedIn !== 'true' || !userID) && sectionId !== 'login-section' && sectionId !== 'register-section') {
+        sectionId = 'login-section';
+    }
+
+    // Əgər istifadəçi giriş EDİBSƏ və səhifə F5 olunanda səhvən login/register açılmaq istəyirsə:
+    // Onu qeyd-şərtsiz əsas işçi masasına (marketplace) göndəririk
+    if (isLoggedIn === 'true' && userID && (sectionId === 'login-section' || sectionId === 'register-section' || !sectionId)) {
+        sectionId = 'marketplace-section';
+    }
+
+    // --- SƏHİFƏLƏRİ EKRANDA GÖSTƏRMƏK / GİZLƏMƏK MƏNTİQİ ---
+    // Sənin layihəndə olan bütün əsas bölmələrin ID-ləri (Bura yeni ID-lər də əlavə edə bilərsən)
+    const sections = ['login-section', 'register-section', 'marketplace-section', 'dashboard-section'];
+    
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none'; // Əvvəlcə hamısını gizlət
+        }
+    });
+
+    // İndi isə yalnız hədəf bölməni ekranda göstər
+    const targetEl = document.getElementById(sectionId);
+    if (targetEl) {
+        targetEl.style.display = 'block';
+    }
+}
+
+/**
+ * 2. İSTİFADƏÇİ GİRİŞ (LOGIN) FUNKSİYASI
  */
 async function login(email, pass) {
     if (!email || !pass) {
@@ -22,14 +60,11 @@ async function login(email, pass) {
     if (response.includes("Uğurlu") || response.includes("Login sorğusu")) {
         alert("Giriş edildi!");
 
-        // 🔥 F5 PROBLEMİNİN HƏLLİ: Giriş məlumatlarını brauzerin daimi yaddasına yazırıq
+        // 🔥 F5 PROBLEMİNİ BİRDƏFƏLİK HƏLL EDƏN YADDAŞ YAZILIŞI:
         localStorage.setItem('isLoggedIn', 'true');
-        
-        // Gələcəkdə hər müştərinin öz real ID-si gələndə bura yazılacaq. 
-        // Hələlik test üçün statik "650001" qoyuruq ki, sistem işləsin.
-        localStorage.setItem('userID', '650001'); 
+        localStorage.setItem('userID', '650001'); // Müvəqqəti test ID-si (Gələcəkdə dinamik olacaq)
 
-        // Sistemə daxil edirik
+        // Giriş uğurlu olduğu üçün əsas səhifəni açırıq
         showSection('marketplace-section');
     } else {
         alert("Server cavabı: " + response);
@@ -37,32 +72,28 @@ async function login(email, pass) {
 }
 
 /**
- * 🔥 F5 BASANDA PROFİLDƏN ÇIXMAMAQ ÜÇÜN AVTOMATİK YOXLAYICI
- * Səhifə hər dəfə yenilənəndə (F5) brauzer yaddasını yoxlayır
+ * 3. SİSTEMDƏN ÇIXIŞ (LOGOUT) FUNKSİYASI
+ */
+function logout() {
+    // Brauzerin daimi yaddaşını təmizləyirik
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userID');
+    
+    alert("Sistemdən çıxış edildi!");
+    showSection('login-section'); // Giriş ekranına qaytar
+}
+
+/**
+ * 4. SƏHİFƏ HƏR DƏFƏ YÜKLƏNƏNDƏ VƏ YA F5 OLUNANDA AVTOMATİK İŞLƏYƏN HİSSƏ
+ * Brauzer tam açılan kimi dərhal yaddaşı yoxlayır və istifadəçini olduğu yerdə saxlayır.
  */
 window.addEventListener('DOMContentLoaded', () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const userID = localStorage.getItem('userID');
 
-    // Əgər istifadəçi bayaq giriş edibsə və yaddaşda varsa:
     if (isLoggedIn === 'true' && userID) {
-        // Avtomatik olaraq onu əsas profil bölməsinə keçir, login ekranında saxlama!
         showSection('marketplace-section');
     } else {
-        // Əgər giriş etməyibsə, loqin ekranını göstər
-        showSection('login-section'); // Qeyd: Əgər səndə login bölməsinin adı fərqlidirsə (məs: 'auth-section'), onu yazarsan.
+        showSection('login-section');
     }
 });
-
-/**
- * Sistemdən Çıxış (Log out) Funksiyası
- * İstifadəçi özü istəyərək çıxmaq istəyəndə bu funksiyanı çağırırıq
- */
-function logout() {
-    // Brauzerin yaddaşını tam təmizləyirik
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userID');
-    
-    alert("Sistemdən çıxış edildi!");
-    showSection('login-section'); // Yenidən login ekranına qaytarır
-}
