@@ -1,54 +1,75 @@
 // ==========================================================================
-// YOLASAL - F5 PROBLEMİNİ KÖKÜNDƏN DETEKTİV EDƏN TAM KOD
+// YOLASAL - KUKİ (COOKIE) DƏSTƏKLİ F5-DƏN QORUMA SİSTEMİ (SON VERSIYA)
 // ==========================================================================
 
 /**
- * 1. SƏHİFƏLƏRİ GÖSTƏRƏN VƏ GİZLƏDƏN SESSİYA FUNKSİYASI
+ * Kuki yazmaq üçün köməkçi funksiya (Məlumatı brauzerə məcburi qəbul etdirir)
+ */
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=Lax";
+}
+
+/**
+ * Kuki oxumaq üçün köməkçi funksiya
+ */
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for(let i=0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+/**
+ * Kuki silmək üçün (Çıxış zamanı)
+ */
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+/**
+ * 1. SƏHİFƏLƏRİ IDARƏ EDƏN ANA FUNKSİYA
  */
 function showSection(sectionId) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const userID = localStorage.getItem('userID');
+    // Məlumatları həm kükidən, həm də ehtiyat olaraq localStorage-dan yoxlayırıq
+    const isLoggedIn = getCookie('isLoggedIn') || localStorage.getItem('isLoggedIn');
+    const userID = getCookie('userID') || localStorage.getItem('userID');
 
-    console.log("=== showSection İşə Düşdü ===");
-    console.log("İstənilən Səhifə ID-si:", sectionId);
-    console.log("Yaddaşda isLoggedIn:", isLoggedIn);
-    console.log("Yaddaşda userID:", userID);
-
-    // Əgər istifadəçi giriş etməyibsə, onu məcburi login-ə yönləndiririk
+    // Əgər giriş yoxdursa, məcburi login-ə at
     if ((isLoggedIn !== 'true' || !userID) && sectionId !== 'login-section' && sectionId !== 'register-section') {
-        console.log("İstifadəçi tapılmadı! Giriş səhifəsinə yönləndirilir...");
         sectionId = 'login-section';
     }
 
-    // Əgər giriş edibsə və F5-dən sonra səhvən login açılmaq istəyirsə, marketplace-ə göndər
+    // Giriş varsa və səhvən login açılmaq istənirsə, marketplace-ə yönləndir
     if (isLoggedIn === 'true' && userID && (sectionId === 'login-section' || sectionId === 'register-section' || !sectionId)) {
-        console.log("İstifadəçi artıq sistemdədir! Marketplace açılır...");
         sectionId = 'marketplace-section';
     }
 
-    // Proqramındakı bütün ehtimal olunan bölmə ID-ləri
+    // Bütün bölmələri gizlət
     const sections = ['login-section', 'register-section', 'marketplace-section', 'dashboard-section'];
-    
     sections.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-            el.style.display = 'none';
-        } else {
-            console.warn(`DİQQƏT: HTML-də '${id}' ID-li bir element tapılmadı!`);
-        }
+        if (el) el.style.display = 'none';
     });
 
+    // Hədəf bölməni aç
     const targetEl = document.getElementById(sectionId);
     if (targetEl) {
         targetEl.style.display = 'block';
-        console.log(`UĞURLU: '${sectionId}' səhifəsi ekranda göstərildi.`);
-    } else {
-        console.error(`XƏTA: '${sectionId}' ekranda göstərilə bilmədi, çünki HTML-də yoxdur!`);
     }
 }
 
 /**
- * 2. İSTİFADƏÇİ GİRİŞ FUNKSİYASI
+ * 2. İSTİFADƏÇİ GİRİŞ FUNKSİYASI (LOGIN)
  */
 async function login(email, pass) {
     if (!email || !pass) {
@@ -62,18 +83,17 @@ async function login(email, pass) {
         password: pass
     };
 
-    console.log("Serverə login sorğusu göndərilir...", requestData);
     const response = await apiCall(requestData);
-    console.log("Serverdən gələn cavab:", response);
     
     if (response.includes("Uğurlu") || response.includes("Login sorğusu")) {
-        // Məlumatları brauzerin daimi yaddaşına yazırıq
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userID', '650001'); 
-        
-        console.log("Giriş məlumatları localStorage-a yazıldı!");
         alert("Giriş edildi!");
-        
+
+        // 🔥 DAŞ KİMİ YADDAŞ: Məlumatları həm kukiyə (30 günlük), həm də yerli yaddaşa yazırıq
+        setCookie('isLoggedIn', 'true', 30);
+        setCookie('userID', '650001', 30);
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userID', '650001');
+
         showSection('marketplace-section');
     } else {
         alert("Server cavabı: " + response);
@@ -81,9 +101,11 @@ async function login(email, pass) {
 }
 
 /**
- * 3. SİSTEMDƏN ÇIXIŞ
+ * 3. SİSTEMDƏN ÇIXIŞ (LOGOUT)
  */
 function logout() {
+    eraseCookie('isLoggedIn');
+    eraseCookie('userID');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userID');
     alert("Sistemdən çıxış edildi!");
@@ -91,12 +113,11 @@ function logout() {
 }
 
 /**
- * 4. F5 OLUNANDA YADDAŞI ANINDA OXUYAN AVTOMATİK APARAT
+ * 4. F5 PROBLEMİNİ KÖKÜNDƏN KƏSƏN AVTOMATİK BAŞLANĞIC
  */
 window.addEventListener('DOMContentLoaded', () => {
-    console.log("Səhifə yükləndi və ya F5 edildi. Yaddas yoxlanılır...");
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const userID = localStorage.getItem('userID');
+    const isLoggedIn = getCookie('isLoggedIn') || localStorage.getItem('isLoggedIn');
+    const userID = getCookie('userID') || localStorage.getItem('userID');
 
     if (isLoggedIn === 'true' && userID) {
         showSection('marketplace-section');
