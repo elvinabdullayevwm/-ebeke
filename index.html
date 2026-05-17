@@ -6,91 +6,93 @@
     <title>Yolasal - Professional Loqistika Platforması</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/components.css">
-    /* ==========================================================================
-   YENİ SİFARİŞ MODALININ MƏRKƏZLƏŞDİRİLMƏSİ VƏ MOBİL UYĞUNLUĞU
-   ========================================================================== */
-
-/* Modalı Ekranın Tam Ortasına Gətirən Mərkəzi Struktur */
-#newOrderModal {
-    display: none; /* İlkin olaraq gizli */
-    position: fixed !important;
-    z-index: 9999 !important; /* Hər şeyin önündə durması üçün */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto; /* Form uzun olarsa aşağı sürüşdürmək üçün */
-    background-color: rgba(0, 0, 0, 0.5) !important; /* Arxa fonu qaraltmaq */
-    backdrop-filter: blur(4px); /* Müasir dumanlı fon effekti */
-}
-
-/* Modal İçindəki Ağ Qutu (Konteyner) */
-#newOrderModal .modal-content {
-    background-color: #ffffff !important;
-    margin: 30px auto !important; /* Yuxarı-aşağıdan məsafə, sağ-soldan avtomatik mərkəzləmə */
-    padding: 30px !important;
-    border: none !important;
-    border-radius: 16px !important;
-    width: 90% !important; /* Mobil telefonlar üçün ekranın 90%-ni tutsun */
-    max-width: 650px !important; /* Masaüstü kompüterlərdə maksimum genişlik */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
-    position: relative !important;
-    box-sizing: border-box !important;
-    animation: modalSlideDown 0.3s ease-out; /* Yuxarıdan aşağı yumşaq düşmə animasiyası */
-}
-
-/* Bütün input, select və textarea elementlərinin tam enlikdə olması */
-#newOrderModal .form-group,
-#newOrderModal .form-input,
-#newOrderModal select,
-#newOrderModal textarea {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Yan-yana duran xanaların (Məsələn: Çəki + Vahid) nizamlanması */
-#newOrderModal div[style*="display: flex"] {
-    display: flex !important;
-    flex-wrap: wrap !important; /* Yer çatmayanda alt-alta düşmək icazəsi */
-    gap: 12px !important;
-}
-
-#newOrderModal div[style*="display: flex"] > * {
-    flex: 1 1 120px !important; /* Elementlərin bərabər bölünməsi */
-}
-
-/* Animasiya təyinatsı */
-@keyframes modalSlideDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* TELEFONLAR ÜÇÜN XÜSUSİ UYĞUNLUQ (Maksimum 576px ekran) */
-@media screen and (max-width: 576px) {
-    #newOrderModal .modal-content {
-        margin: 15px auto !important;
-        padding: 20px 15px !important;
-        width: 95% !important; /* Mobildə kənarlara tam otursun */
-    }
     
-    #newOrderModal div[style*="display: flex"] {
-        flex-direction: column !important; /* Mobildə yan-yana olan hər şeyi alt-alta salır */
-        gap: 8px !important;
-    }
-    
-    #newOrderModal .btn-customer {
-        width: 100% !important; /* Təsdiq düyməsi mobildə tam enlik olsun */
-    }
-}
     <style>
+        /* ==========================================================================
+           YENİ SİFARİŞ MODALININ MƏRKƏZLƏŞDİRİLMƏSİ VƏ MOBİL UYĞUNLUĞU
+           ========================================================================== */
+
+        /* Modalı Ekranın Tam Ortasına Gətirən Mərkəzi Struktur */
+        #newOrderModal {
+            display: none; /* İlkin olaraq gizli */
+            position: fixed !important;
+            z-index: 9999 !important; /* Hər şeyin önündə durması üçün */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto; /* Form uzun olarsa aşağı sürüşdürmək üçün */
+            background-color: rgba(0, 0, 0, 0.5) !important; /* Arxa fonu qaraltmaq */
+            backdrop-filter: blur(4px); /* Müasir dumanlı fon effekti */
+        }
+
+        /* Modal İçindəki Ağ Qutu (Konteyner) */
+        #newOrderModal .modal-content {
+            background-color: #ffffff !important;
+            margin: 30px auto !important; /* Yuxarı-aşağıdan məsafə, sağ-soldan avtomatik mərkəzləmə */
+            padding: 30px !important;
+            border: none !important;
+            border-radius: 16px !important;
+            width: 90% !important; /* Mobil telefonlar üçün ekranın 90%-ni tutsun */
+            max-width: 650px !important; /* Masaüstü kompüterlərdə maksimum genişlik */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+            animation: modalSlideDown 0.3s ease-out; /* Yuxarıdan aşağı yumşaq düşmə animasiyası */
+        }
+
+        /* Bütün input, select və textarea elementlərinin tam enlikdə olması */
+        #newOrderModal .form-group,
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Yan-yana duran xanaların (Məsələn: Çəki + Vahid) nizamlanması */
+        #newOrderModal div[style*="display: flex"] {
+            display: flex !important;
+            flex-wrap: wrap !important; /* Yer çatmayanda alt-alta düşmək icazəsi */
+            gap: 12px !important;
+        }
+
+        #newOrderModal div[style*="display: flex"] > * {
+            flex: 1 1 120px !important; /* Elementlərin bərabər bölünməsi */
+        }
+
+        /* Animasiya təyinatsı */
+        @keyframes modalSlideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* TELEFONLAR ÜÇÜN XÜSUSİ UYĞUNLUQ (Maksimum 576px ekran) */
+        @media screen and (max-width: 576px) {
+            #newOrderModal .modal-content {
+                margin: 15px auto !important;
+                padding: 20px 15px !important;
+                width: 95% !important; /* Mobildə kənarlara tam otursun */
+            }
+            
+            #newOrderModal div[style*="display: flex"] {
+                flex-direction: column !important; /* Mobildə yan-yana olan hər şeyi alt-alta salır */
+                gap: 8px !important;
+            }
+            
+            #newOrderModal .btn-customer {
+                width: 100% !important; /* Təsdiq düyməsi mobildə tam enlik olsun */
+            }
+        }
+
+        /* ==========================================================================
+           MÖVCUD İSTİFADƏÇİ PANELİ VƏ DÜYMƏ DİZAYNLARI
+           ========================================================================== */
         .user-profile-container {
             position: relative;
             display: inline-block;
@@ -146,7 +148,6 @@
             margin: 0;
         }
         
-        /* DASHBOARD İDARƏETMƏ DÜYMƏLƏRİNİN DİZAYNI */
         .dashboard-actions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
