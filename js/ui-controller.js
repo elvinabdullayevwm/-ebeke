@@ -410,75 +410,7 @@ function populateOrderCities() {
     }
 }
 
-// Sifariş formunu backend-ə göndərən əsas idarəçi
-function submitNewOrder(event) {
-    event.preventDefault();
-    
-    const submitBtn = document.getElementById('submitOrderBtn');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'GÖNDƏRİLİR... LÜTFƏN GÖZLƏYİN';
-    }
 
-    // Kombinasiya edilmiş dəyərlərin birləşdirilməsi
-    const weight = document.getElementById('orderWeightVal').value + ' ' + document.getElementById('orderWeightUnit').value;
-    const width = document.getElementById('orderWidthVal').value + ' ' + document.getElementById('orderWidthUnit').value;
-    const length = document.getElementById('orderLengthVal').value + ' ' + document.getElementById('orderLengthUnit').value;
-    const height = document.getElementById('orderHeightVal').value + ' ' + document.getElementById('orderHeightUnit').value;
-    const budget = document.getElementById('orderBudgetVal').value + ' ' + document.getElementById('orderBudgetCurrency').value;
-
-    // Google Sheets-ə göndəriləcək 16 əsas məlumat paketi
-    const orderData = {
-        goodType: document.getElementById('orderGoodType').value,
-        goodName: document.getElementById('orderGoodName').value,
-        material: document.getElementById('orderMaterial').value,
-        fragility: document.getElementById('orderFragility').value,
-        weight: weight,
-        width: width,
-        length: length,
-        height: height,
-        pickupCity: document.getElementById('orderPickupCity').value,
-        pickupAddress: document.getElementById('orderPickupAddress').value,
-        dropCity: document.getElementById('orderDropCity').value,
-        dropAddress: document.getElementById('orderDropAddress').value,
-        pickupDate: document.getElementById('orderPickupDate').value,
-        dropDate: document.getElementById('orderDropDate').value,
-        budget: budget,
-        notes: document.getElementById('orderNotes').value || '-'
-    };
-
-    // js/api.js faylı daxilində yaradacağımız apiNewOrder funksiyasına ötürülür
-    if (typeof apiNewOrder === 'function') {
-        apiNewOrder(orderData)
-            .then(response => {
-                alert('Sifarişiniz uğurla yaradıldı və Google Sheets-ə qeyd olundu!');
-                closeNewOrderModal();
-            })
-            .catch(error => {
-                alert('Xəta baş verdi: ' + error);
-            })
-            .finally(() => {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
-                }
-            });
-    } else {
-        alert('API modulu tapılmadı. Zəhmət olmasa növbəti addımı tamamlayın.');
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
-        }
-    }
-}
-
-// Modalın kənarına vuranda bağlanması
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('newOrderModal');
-    if (event.target === modal) {
-        closeNewOrderModal();
-    }
-});
 // ==========================================================================
 // MƏRKƏZİ DASHBOARD IDARƏEDİCİSİ VƏ MODAL SCRIPTİ
 // ==========================================================================
@@ -552,3 +484,156 @@ function populateOrderCities() {
         });
     }
 }
+// ==========================================================================
+// SİFARİŞ FORMASI VƏ MƏRKƏZİ DASHBOARD IDARƏEDİCİSİ
+// ==========================================================================
+
+/**
+ * Formadan məlumatları yığıb API vasitəsilə Google Sheets-ə göndərən funksiya
+ */
+function submitNewOrder(event) {
+    event.preventDefault();
+    
+    // Ekrandan daxil olmuş müştərinin real ID-sini oxuyuruq
+    const idElement = document.getElementById('dashUserId');
+    let customerID = "650001"; // Ehtiyat ID
+    
+    if (idElement && idElement.innerText.trim() !== "-") {
+        customerID = idElement.innerText.trim();
+    } else {
+        customerID = localStorage.getItem('userID') || "650001";
+    }
+
+    const submitBtn = document.getElementById('submitOrderBtn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'GÖNDƏRİLİR... LÜTFƏN GÖZLƏYİN';
+    }
+
+    // Dəyər və vahidlərin kombinasiyası
+    const weight = document.getElementById('orderWeightVal').value + ' ' + document.getElementById('orderWeightUnit').value;
+    const width = document.getElementById('orderWidthVal').value + ' ' + document.getElementById('orderWidthUnit').value;
+    const length = document.getElementById('orderLengthVal').value + ' ' + document.getElementById('orderLengthUnit').value;
+    const height = document.getElementById('orderHeightVal').value + ' ' + document.getElementById('orderHeightUnit').value;
+    const budget = document.getElementById('orderBudgetVal').value + ' ' + document.getElementById('orderBudgetCurrency').value;
+
+    // Google Sheets-ə gedəcək data paketi
+    const orderData = {
+        goodType: document.getElementById('orderGoodType').value,
+        goodName: document.getElementById('orderGoodName').value,
+        material: document.getElementById('orderMaterial').value,
+        fragility: document.getElementById('orderFragility').value,
+        weight: weight,
+        width: width,
+        length: length,
+        height: height,
+        pickupCity: document.getElementById('orderPickupCity').value,
+        pickupAddress: document.getElementById('orderPickupAddress').value,
+        dropCity: document.getElementById('orderDropCity').value,
+        dropAddress: document.getElementById('orderDropAddress').value,
+        pickupDate: document.getElementById('orderPickupDate').value,
+        dropDate: document.getElementById('orderDropDate').value,
+        budget: budget,
+        notes: document.getElementById('orderNotes').value || '-'
+    };
+
+    // js/api.js daxilindəki funksiyanı çağırırıq (Həm datanı, həm ID-ni göndəririk)
+    if (typeof apiNewOrder === 'function') {
+        apiNewOrder(orderData, customerID)
+            .then(response => {
+                alert('Sifarişiniz uğurla yaradıldı və Google Sheets-ə qeyd olundu!');
+                closeNewOrderModal();
+                if (document.getElementById('newOrderForm')) {
+                    document.getElementById('newOrderForm').reset(); // Formanı sıfırlayırıq
+                }
+            })
+            .catch(error => {
+                alert('Xəta baş verdi: ' + error);
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
+                }
+            });
+    } else {
+        alert('API modulu tapılmadı. Zəhmət olmasa js/api.js faylını yoxlayın.');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
+        }
+    }
+}
+
+/**
+ * Dashboard-dakı düymələrin klik əmrlərini mərkəzi idarə edən funksiya
+ */
+function handleDashboardAction(actionType) {
+    if (actionType === 'new-order') {
+        openNewOrderModal();
+    } else if (actionType === 'new-route') {
+        alert('Yeni Reys Yaratma modulu tezliklə bura inteqrasiya olunacaq.');
+    } else {
+        alert(actionType + ' bölməsi tezliklə aktivləşdiriləcək.');
+    }
+}
+
+/**
+ * Yeni sifariş modalını ekranda göstərən əsas funksiya
+ */
+function openNewOrderModal() {
+    const modal = document.getElementById('newOrderModal');
+    if (modal) {
+        modal.style.display = 'block';
+        populateOrderCities();
+    } else {
+        console.error("XƏTA: 'newOrderModal' elementi tapılmadı!");
+    }
+}
+
+/**
+ * Modal pəncərəsini bağlamaq üçün funksiya
+ */
+function closeNewOrderModal() {
+    const modal = document.getElementById('newOrderModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+/**
+ * Sifariş formasındakı "Şəhərlər" siyahısını avtomatik dolduran funksiya
+ */
+function populateOrderCities() {
+    const pickupSelect = document.getElementById('orderPickupCity');
+    const dropSelect = document.getElementById('orderDropCity');
+    
+    const cities = [
+        "Bakı", "Gəncə", "Sumqayıt", "Mingəçevir", "Xırdalan", "Naxçıvan", "Lənkəran", 
+        "Yevlax", "Şəki", "Şirvan", "Quba", "Xaçmaz", "Qusar", "Şamaxi", "İsmayıllı", 
+        "Qəbələ", "Göyçay", "Bərdə", "Ağdam", "Ağcabədi", "Füzuli", "Cəlilabad", 
+        "Salyan", "Masallı", "Şəmkir", "Tovuz", "Qazax", "Zaqatala", "Balakən"
+    ];
+    
+    if (pickupSelect && pickupSelect.options.length <= 1) {
+        pickupSelect.innerHTML = '<option value="">Seçin *</option>';
+        cities.forEach(city => {
+            pickupSelect.innerHTML += `<option value="${city}">${city}</option>`;
+        });
+    }
+    
+    if (dropSelect && dropSelect.options.length <= 1) {
+        dropSelect.innerHTML = '<option value="">Seçin *</option>';
+        cities.forEach(city => {
+            dropSelect.innerHTML += `<option value="${city}">${city}</option>`;
+        });
+    }
+}
+
+// Modalın kənarına vuranda bağlanması
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('newOrderModal');
+    if (event.target === modal) {
+        closeNewOrderModal();
+    }
+});
