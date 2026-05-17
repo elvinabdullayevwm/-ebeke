@@ -22,10 +22,39 @@ async function apiCall(data) {
  * @param {Object} orderData - Formdan gələn 16 əsas sütun məlumatı
  * @returns {Promise} Backend-dən gələn cavab (Success/Error)
  */
-function apiNewOrder(orderData) {
-    // Burada sizin mövcud təyin olunmuş Google Script Web App URL-iniz istifadə olunmalıdır.
-    // Əgər scriptURL dəyişəni api.js daxilində yuxarıda artıq qlobal olaraq varsa, bu sətri silə bilərsiniz.
-    const WEB_SCRIPT_URL = typeof scriptURL !== 'undefined' ? scriptURL : 'SİZİN_GOOGLE_SCRIPT_WEB_APP_URL_UNUZ';
+function apiNewOrder(orderData, customerID) {
+    // 1. Mövcud Google Script Web App URL-ini bura daxil et (Dırnaq işarələrinin içinə)
+    const WEB_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb...bura_sənin_real_linkin_gələcək.../exec'; 
+
+    // 2. ui-controller-dən gələn real Müştəri ID-sini götürürük
+    const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
+
+    // 3. Sənin istədiyin riyazi formatda Sifariş ID-si (MüştəriID/O-Təsadüfi4Rəqəm)
+    // Məsələn: 650001/O-4815
+    const randomOrderNum = Math.floor(1000 + Math.random() * 9000); 
+    const customOrderID = `${realCustomerID}/O-${randomOrderNum}`;
+
+    // 4. Google Sheets-ə göndəriləcək təmiz məlumat paketi
+    const payload = {
+        action: "newOrder",
+        customerId: realCustomerID,   // Bura artıq "MÜŞTƏRİ-01" yox, məsələn "650001" gedəcək
+        orderId: customOrderID,       // Bura isə "650001/O-4815" gedəcək
+        ...orderData
+    };
+
+    // Google Sheets-ə məlumatı POST sorğusu ilə göndəririk
+    return fetch(WEB_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        // no-cors rejimində brauzer cavabı birbaşa oxuya bilmədiyi üçün obyekti uğurlu sayırıq
+        return { success: true, orderId: customOrderID };
+    });
+}
 
     // Cari daxil olmuş istifadəçinin (müştərinin) unikal ID-sini götürürük
     // Bu məlumat böyük ehtimalla auth.js və ya localŞtorage daxilində saxlanılır
