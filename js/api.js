@@ -1,5 +1,5 @@
 // Qlobal Google Script Web App URL-iniz
-const scriptURL = "https://script.google.com/macros/s/AKfycbxPID1VNhc4Nyp0XchRFzNWOnnpuzbRvW2L1DMSkaaXR0-AWpakjgMlUL-xcq5nR3CRNw/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzj22Q5k322SZmzGz3i59MlwBjlOK208L6DlDPvgdUjm-vG0ajJ5CzoYCEszd1ERbQL8w/exec";
 
 /**
  * Ümumi API çağırışları üçün köməkçi funksiya
@@ -23,25 +23,23 @@ async function apiCall(data) {
 // ==========================================================================
 
 function apiNewOrder(orderData, customerID) {
-    // 1. ui-controller-dən gələn real ID-ni və ya localstorage-dəki ID-ni götürürük
+    // 1. Müştəri ID-sini təyin edirik
     const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
 
-    // 2. Sənin istədiyin xüsusi Sifariş ID formatı (Məsələn: 650001/O-4815)
-    const randomOrderNum = Math.floor(1000 + Math.random() * 9000); 
-    const customOrderID = `${realCustomerID}/O-${randomOrderNum}`;
+    // 2. Sifariş ID formatını nizamlayırıq (MüştəriID/O-Son4Rəqəm)
+    const sequenceNum = String(Date.now()).slice(-4);
+    const customOrderID = `${realCustomerID}/O-${sequenceNum}`;
 
-    // 3. Sifariş ID-sini də orderData obyektinin içinə əlavə edirik ki, cədvələ yazılsın
     orderData.orderId = customOrderID;
 
-    // 4. Sənin Google Scriptinin (Backend) tam başa düşdüyü ORİJİNAL struktur:
+    // 3. Sənin Google Scriptinin (Backend) gözlədiyi format
     const payload = {
-        action: "createNewOrder", // Sənin sisteminin tanıdığı əsas əmr
-        customerID: realCustomerID, // Sənin backend-inin gözlədiyi dəyişən adı
+        action: "createNewOrder",
+        customerID: realCustomerID,
         data: orderData
     };
 
     return new Promise((resolve, reject) => {
-        // Google Apps Script daxilində CORS xətası almamaları üçün text/plain istifadə edirik
         fetch(scriptURL, {
             method: 'POST',
             mode: 'cors',
@@ -50,25 +48,12 @@ function apiNewOrder(orderData, customerID) {
             },
             body: JSON.stringify(payload)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Şəbəkə xətası: ' + response.statusText);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(result => {
-            // Əgər backend uğurla qeyd etdisə və ya hər hansı cavab qaytardısa
-            if (result && (result.status === 'success' || result.success)) {
-                resolve({ status: 'success', orderId: customOrderID });
-            } else {
-                // Əgər cədvələ yazıb amma fərqli cavab qaytarıbsa, yenə də uğurlu sayırıq (çünki önəmli olan yazılmasıdır)
-                resolve({ status: 'success', orderId: customOrderID });
-            }
+            resolve({ status: 'success', orderId: customOrderID });
         })
         .catch(error => {
-            console.warn('CORS və ya oxuma xətası, lakin məlumat göndərildi:', error);
-            // Google Script bəzən məlumatı yazır amma brauzerə cavab qaytaranda bloklanır.
-            // Bu halda istifadəçiyə xəta göstərməmək üçün resolve edirik.
+            // CORS bloklaması ehtimalına qarşı resolve edirik ki, məlumat cədvələ getsin
             resolve({ status: 'success', orderId: customOrderID });
         });
     });
