@@ -1,4 +1,4 @@
-const scriptURL = "BURA_OZ_SCRIPT_URL_NI_YAPISDIR";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzj22Q5k322SZmzGz3i59MlwBjlOK208L6DlDPvgdUjm-vG0ajJ5CzoYCEszd1ERbQL8w/exec";
 
 async function apiCall(data) {
     try {
