@@ -1,4 +1,429 @@
-<section id="contact-section" class="premium-services" style="background: #1a1a1a; color: #fff; padding: 80px 10% 40px 10%;">
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yolasal - Professional Loqistika Platforması</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        /* ==========================================================================
+           YENİ SİFARİŞ MODALININ MƏRKƏZLƏŞDİRİLMƏSİ VƏ MOBİL UYĞUNLUĞU
+           ========================================================================== */
+
+        /* Modalı Ekranın Tam Ortasına Gətirən Mərkəzi Struktur */
+        #newOrderModal {
+            display: none; /* İlkin olaraq gizli */
+            position: fixed !important;
+            z-index: 9999 !important; /* Hər şeyin önündə durması üçün */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto; /* Form uzun olarsa aşağı sürüşdürmək üçün */
+            background-color: rgba(0, 0, 0, 0.5) !important; /* Arxa fonu qaraltmaq */
+            backdrop-filter: blur(4px); /* Müasir dumanlı fon effekti */
+        }
+
+        /* Modal İçindəki Ağ Qutu (Konteyner) */
+        #newOrderModal .modal-content {
+            background-color: #ffffff !important;
+            margin: 30px auto !important; /* Yuxarı-aşağıdan məsafə, sağ-soldan avtomatik mərkəzləmə */
+            padding: 30px !important;
+            border: none !important;
+            border-radius: 16px !important;
+            width: 90% !important; /* Mobil telefonlar üçün ekranın 90%-ni tutsun */
+            max-width: 650px !important; /* Masaüstü kompüterlərdə maksimum genişlik */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+            animation: modalSlideDown 0.3s ease-out; /* Yuxarıdan aşağı yumşaq düşmə animasiyası */
+        }
+
+        /* Bütün form elementlərinin nizamlanması */
+        #newOrderModal .form-group {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Yan-yana duran xanaların (Məsələn: Çəki + Vahid) nizamlanması */
+        #newOrderModal div[style*="display: flex"] {
+            display: flex !important;
+            flex-wrap: wrap !important; /* Yer çatmayanda alt-alta düşmək icazəsi */
+            gap: 12px !important;
+        }
+
+        #newOrderModal div[style*="display: flex"] > * {
+            flex: 1 1 120px !important; /* Elementlərin bərabər bölünməsi */
+        }
+
+        /* Animasiya təyinatı */
+        @keyframes modalSlideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* TELEFONLAR ÜÇÜN XÜSUSİ UYĞUNLUQ (Maksimum 576px ekran) */
+        @media screen and (max-width: 576px) {
+            #newOrderModal .modal-content {
+                margin: 15px auto !important;
+                padding: 20px 15px !important;
+                width: 95% !important; /* Mobildə kənarlara tam otursun */
+            }
+            
+            #newOrderModal div[style*="display: flex"] {
+                flex-direction: column !important; /* Mobildə yan-yana olan hər şeyi alt-alta salır */
+                gap: 8px !important;
+            }
+            
+            #newOrderModal .btn-customer {
+                width: 100% !important; /* Təsdiq düyməsi mobildə tam enlik olsun */
+            }
+        }
+
+        /* ==========================================================================
+           MÖVCUD İSTİFADƏÇİ PANELİ VƏ DÜYMƏ DİZAYNLARI
+           ========================================================================== */
+        .user-profile-container {
+            position: relative;
+            display: inline-block;
+        }
+        .user-avatar-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary, #A68B5C);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .user-avatar-btn:hover {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(166, 139, 92, 0.5);
+        }
+        .user-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            overflow: hidden;
+            border: 1px solid #eee;
+            animation: fadeInShort 0.2s ease;
+        }
+        .user-dropdown-menu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s ease;
+        }
+        .user-dropdown-menu a:hover {
+            background-color: #f5f5f5;
+            color: var(--primary, #A68B5C);
+        }
+        .user-dropdown-menu .menu-divider {
+            border-top: 1px solid #eee;
+            margin: 0;
+        }
+        
+        .dashboard-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .dashboard-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .btn-dash-action {
+            background: #fff;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-dash-action:hover {
+            background: #fafafa;
+            border-color: var(--primary, #A68B5C);
+            color: var(--primary, #A68B5C);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .btn-dash-action.create-btn {
+            background: var(--primary, #A68B5C);
+            color: #fff;
+            border-color: var(--primary, #A68B5C);
+        }
+        .btn-dash-action.create-btn:hover {
+            background: #937a4f;
+            color: #fff;
+        }
+        .btn-dash-action .btn-icon {
+            font-size: 18px;
+        }
+        
+        @keyframes fadeInShort {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo-area" onclick="scrollToSection('home')">
+            <img src="img/logo.jpg" alt="Yolasal Logo" class="site-logo">
+        </div>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <nav class="nav-links">
+            <ul id="nav-list">
+                <li onclick="scrollToSection('services-section')">Xidmətlər</li>
+                <li onclick="scrollToSection('fleet-section')">Avtopark</li>
+                <li onclick="scrollToSection('about-section')">Haqqımızda</li>
+                <li onclick="scrollToSection('contact-section')">Əlaqə</li>
+                
+                <li id="nav-auth-container">
+                    <button class="btn-customer" id="loginBtn" onclick="openLogin()">MÜŞTƏRİ GİRİŞİ</button>
+                    
+                    <div id="userProfileArea" class="user-profile-container" style="display: none;">
+                        <div class="user-avatar-btn" id="userAvatarBtn" onclick="toggleUserDropdown(event)">
+                            👤
+                        </div>
+                        <div class="user-dropdown-menu" id="userDropdownMenu">
+                            <a href="#" onclick="openSettings(event)">⚙️ Ayarlar</a>
+                            <div class="menu-divider"></div>
+                            <a href="#" onclick="logoutUser(event)" style="color: #d9534f;">🚪 Çıxış</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="customerDashboard" class="premium-services fade-in" style="display: none; background: #fdfdfd; border-bottom: 2px solid #eee;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: left; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px;">
+                <h2>Xoş gəldiniz, <span id="dashUserName" style="color: var(--primary);">Müştəri</span>!</h2>
+                <button class="btn-customer" onclick="logoutUser(event)" style="background: #d9534f; padding: 8px 18px; font-size: 14px;">ÇIXIŞ</button>
+            </div>
+            
+            <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Müştəri ID</h4>
+                    <p id="dashUserId" style="font-size: 22px; font-weight: 800; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Şirkət / MMC</h4>
+                    <p id="dashUserMmc" style="font-size: 18px; font-weight: 600; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+                <div class="service-card" style="padding: 25px; text-align: center;">
+                    <h4 style="color: #888; font-size: 12px; text-transform: uppercase;">Telefon nömrəsi</h4>
+                    <p id="dashUserPhone" style="font-size: 18px; font-weight: 600; color: var(--dark); margin-top: 5px;">-</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 30px; background: #fff; border: 1px dashed #ccc; border-radius: 15px; text-align: center; color: #666;">
+                <p style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 5px;">Şəxsi kabinetiniz aktivdir.</p>
+                <p style="font-size: 14px; color: #777;">Buradan sifarişlərinizi və reyslərinizi idarə edə bilərsiniz.</p>
+                
+                <div class="dashboard-actions-grid">
+                    <div class="dashboard-col">
+                        <button class="btn-dash-action create-btn" onclick="handleDashboardAction('new-order')">
+                            <span>📦 Yeni sifariş yarat</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('active-orders')">
+                            <span>🔵 Aktiv sifarişlərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('in-progress-orders')">
+                            <span>⏳ İcrada olan sifarişlərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('delivered-orders')">
+                            <span>✅ Təslim edilən sifarişlərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('search-orders')" style="margin-top: 10px; border-style: dashed;">
+                            <span>🔍 Filtr ile sifarişləri axtar</span>
+                            <span class="btn-icon">⚙️</span>
+                        </button>
+                    </div>
+                    
+                    <div class="dashboard-col">
+                        <button class="btn-dash-action create-btn" onclick="handleDashboardAction('new-route')">
+                            <span>🚛 Yeni reys yarat</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('active-routes')">
+                            <span>🟢 Aktiv reyslərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('in-progress-routes')">
+                            <span>⚡ İcrada olan reyslərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('completed-routes')">
+                            <span>🏁 Tamamlanmış reyslərim</span>
+                            <span class="btn-icon">➔</span>
+                        </button>
+                        <button class="btn-dash-action" onclick="handleDashboardAction('search-routes')" style="margin-top: 10px; border-style: dashed;">
+                            <span>🔍 Filtr ilə reysləri axtar</span>
+                            <span class="btn-icon">⚙️</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>ETİBARLI LOQİSTİKA HƏLLƏRİ</h1>
+            <p>YÜKÜNÜZ BİZİMLƏ HƏMİŞƏ VAXTINDA VƏ SAĞLAM ÇATIR!</p>
+            <div class="search-panel">
+                <input type="text" id="trackInput" placeholder="Yükü izləmək üçün nömrəni yazın...">
+                <button class="btn-search">Yükü İzlə</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="live-activity">
+        <div class="stats-container">
+            <div class="stat-box" onclick="showLiveDetails('aktiv-sifaris')">
+                <span class="num">12</span>
+                <span class="lab">Aktiv Sifarişlər</span>
+            </div>
+            <div class="stat-box" onclick="showLiveDetails('aktiv-reys')">
+                <span class="num">8</span>
+                <span class="lab">Aktiv Reyslər</span>
+            </div>
+            <div class="stat-box" onclick="showLiveDetails('icra-sifaris')">
+                <span class="num">24</span>
+                <span class="lab">İcrada Sifarişlər</span>
+            </div>
+            <div class="stat-box" onclick="showLiveDetails('icra-reys')">
+                <span class="num">15</span>
+                <span class="lab">İcrada Reyslər</span>
+            </div>
+            <div class="stat-box" onclick="showLiveDetails('teslimat')">
+                <span class="num">1,420</span>
+                <span class="lab">Təslimatlar</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="globalMarketplace" class="premium-services" style="background: #fdfdfd; padding: 50px 20px; border-bottom: 2px solid #eee;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            
+            <div style="text-align: center; margin-bottom: 35px;">
+                <h2 style="color: #333; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 800;">🚚 Canlı Sifariş və Reys Lövhəsi</h2>
+                <p style="color: #666; margin-top: 0; font-size: 15px;">Google Sheets cədvəlindən birbaşa gələn real vaxt fəaliyyətləri</p>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 35px;">
+                <button id="tabOrdersBtn" onclick="switchMarketplaceTab('orders')" style="background: var(--primary, #A68B5C); color: white; border: none; padding: 12px 28px; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.3s; box-shadow: 0 4px 10px rgba(166,139,92,0.2);">
+                    📦 Aktiv Sifarişlər (Yüklər)
+                </button>
+                <button id="tabTripsBtn" onclick="switchMarketplaceTab('trips')" style="background: #e0e0e0; color: #333; border: none; padding: 12px 28px; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.3s;">
+                    🚛 Aktiv Reyslər (Boş Maşınlar)
+                </button>
+            </div>
+
+            <div id="marketplace-orders-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
+                <p style="text-align: center; color: #888; grid-column: 1/-1; font-style: italic; padding: 30px;">
+                    Sifariş məlumatları cədvəldən yüklənir, gözləyin...
+                </p>
+            </div>
+
+            <div id="marketplace-trips-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; display: none;">
+                <p style="text-align: center; color: #888; grid-column: 1/-1; font-style: italic; padding: 30px;">
+                    Reys məlumatları cədvəldən yüklənir, gözləyin...
+                </p>
+            </div>
+
+        </div>
+    </section>
+    <section class="premium-services" id="services-section">
+        <h2 class="section-title">Eksklüziv Xidmətlərimiz</h2>
+        <div class="services-grid">
+            <div class="service-card"><h3>💼 Korporativ</h3><p>Biznesiniz üçün fərdi loqistika və tədarük zənciri həlləri.</p></div>
+            <div class="service-card"><h3>✈️ Ekspres</h3><p>Sərhədləri aşan ən sürətli və təhlükəsiz çatdırılma xidməti.</p></div>
+            <div class="service-card"><h3>💎 Özəl</h3><p>Yüksək dəyərli və həssas yüklərin xüsusi sığorta ilə daşınması.</p></div>
+            <div class="service-card"><h3>📡 Smart</h3><p>Yükünüzün real vaxt rejimində GPS və sensorlarla izlənilməsi.</p></div>
+        </div>
+    </section>
+
+    <section class="premium-services" id="fleet-section" style="background: #fcfcfc;">
+        <h2 class="section-title">Professional Avtopark</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="fleet-icon">🚛</div>
+                <h3>Ağır Tonnajlı</h3>
+                <p>20-24 tonluq beynəlxalq standartlara uyğun TIR-lar.</p>
+            </div>
+            <div class="service-card">
+                <div class="fleet-icon">🚚</div>
+                <h3>Orta Tonnajlı</h3>
+                <p>Şəhərlərarası daşımalar üçün 5-10 tonluq izotermik maşınlar.</p>
+            </div>
+            <div class="service-card">
+                <div class="fleet-icon">🚐</div>
+                <h3>Ekspres Mikro</h3>
+                <p>Kiçik həcmli yüklərin şəhərdaxili sürətli paylanması.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium-services" id="about-section">
+        <h2 class="section-title">Haqqımızda</h2>
+        <div class="about-container" style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p style="font-size: 18px; color: #555; line-height: 1.8;">
+                <strong>Yolasal</strong> olaraq biz, Azərbaycanın loqistika ekosistemini rəqəmsallaşdırırıq. Məqsədimiz yük sahibləri ilə sürücülər arasında şəffaf, sürətli və etibarlı bir körpü qurmaqdır. İllərin təcrübəsi və müasir texnologiyalarla yükünüzü sadəcə daşımırıq, onu qoruyuruq.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact-section" class="premium-services" style="background: #1a1a1a; color: #fff; padding: 80px 10% 40px 10%;">
         <h2 class="section-title" style="color: #fff;">Bizimlə Əlaqə</h2>
         <div class="services-grid">
             <div class="contact-item"><h4>📍 ÜNVAN</h4><p>Bakı, Azərbaycan</p></div>
@@ -16,27 +441,27 @@
             <h3 id="modalTitle">Məlumat</h3>
             <div id="modalData" class="data-list"></div>
         </div>
-    </div>
+    </section>
 
-    <div id="loginModal" style="display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center;">
-        <div class="modal-content" style="max-width: 500px; width: 90%; margin: auto; position: relative; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 5px 30px rgba(0,0,0,0.3);">
-            <span class="close-modal" id="closeLogin" onclick="document.getElementById('loginModal').style.display='none'" style="position: absolute; right: 20px; top: 15px; font-size: 32px; cursor: pointer; color: #333; font-weight: bold; line-height: 1;">&times;</span>
+    <div id="loginModal" class="activity-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" id="closeLogin">&times;</span>
             
             <div id="loginFormArea">
-                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: bold;">Müştəri Girişi</h3>
+                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Müştəri Girişi</h3>
                 <input type="text" id="loginId" placeholder="Müştəri ID-si, Mail və ya Nömrə" class="form-input">
                 <input type="password" id="loginPass" placeholder="Şifrəniz" class="form-input">
-                <button class="btn-customer" id="submitLoginBtn" onclick="handleLoginProcess()" style="width: 100%; padding: 15px; background: #A68B5C; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">DAXİL OL</button>
+                <button class="btn-customer" id="submitLoginBtn" onclick="handleLoginProcess()" style="width: 100%; padding: 15px;">DAXİL OL</button>
                 <div style="text-align: center; margin-top: 15px; font-size: 13px;">
                     <a href="#" id="forgotPass" style="color: #888; text-decoration: none;">Parolu bərpa et</a>
                 </div>
-                <p style="text-align: center; margin-top: 15px; font-size: 14px; color: #333;">
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">
                     Hesabınız yoxdur? <a href="#" id="showReg" style="color: #A68B5C; font-weight: bold; text-decoration: none;">Qeydiyyatdan keçin</a>
                 </p>
             </div>
 
             <div id="regFormArea" style="display: none;">
-                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: bold;">Yeni Qeydiyyat</h3>
+                <h3 style="margin-bottom: 20px; text-align: center; color: #A68B5C;">Yeni Qeydiyyat</h3>
                 <div style="display: flex; gap: 10px;">
                     <input type="text" id="regName" placeholder="Ad *" class="form-input" required>
                     <input type="text" id="regSurname" placeholder="Soyad *" class="form-input" required>
@@ -51,23 +476,23 @@
                 <input type="email" id="regEmail" placeholder="Mail Ünvanı *" class="form-input" required>
                 <select id="citySelect" class="form-input" required><option value="">Yaşadığınız rayonu seçin *</option></select>
                 <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-                    <label style="font-size: 14px; color: #333;"><input type="radio" name="gender" value="Kişi" checked> Kişi</label>
-                    <label style="font-size: 14px; color: #333;"><input type="radio" name="gender" value="Qadın"> Qadın</label>
+                    <label style="font-size: 14px;"><input type="radio" name="gender" value="Kişi" checked> Kişi</label>
+                    <label style="font-size: 14px;"><input type="radio" name="gender" value="Qadın"> Qadın</label>
                 </div>
                 <input type="date" id="regBirth" class="form-input" required title="Doğum Tarixi">
                 <input type="text" id="regMMC" placeholder="MMC adı (varsa)" class="form-input">
                 <input type="password" id="regPassword" placeholder="Parol təyin edin *" class="form-input" required>
-                <button type="button" class="btn-customer" id="startRegBtn" style="width: 100%; padding: 15px; background: #A68B5C; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">QEYDİYYATDAN KEÇ</button>
-                <p style="text-align: center; margin-top: 15px; font-size: 14px; color: #333;">
+                <button type="button" class="btn-customer" id="startRegBtn" style="width: 100%; padding: 15px;">QEYDİYYATDAN KEÇ</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">
                     Artıq hesabınız var? <a href="#" id="showLogin" style="color: #A68B5C; font-weight: bold; text-decoration: none;">Giriş edin</a>
                 </p>
             </div>
 
             <div id="otpFormArea" style="display: none; text-align: center;">
-                <h3 style="margin-bottom: 10px; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: bold;">Təsdiq Kodu</h3>
-                <p style="font-size: 13px; margin-bottom: 20px; color: #666;">Mailinizə gələn 4 rəqəmli kodu yazın.</p>
+                <h3 style="margin-bottom: 10px; color: #A68B5C;">Təsdiq Kodu</h3>
+                <p style="font-size: 13px; margin-bottom: 20px;">Mailinizə gələn 4 rəqəmli kodu yazın.</p>
                 <input type="text" id="otpInput" maxlength="4" class="form-input" style="font-size: 24px; text-align: center; letter-spacing: 8px;">
-                <button type="button" class="btn-customer" id="verifyOtpBtn" style="width: 100%; padding: 15px; margin-top: 20px; background: #A68B5C; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">TƏSDİQLƏ</button>
+                <button type="button" class="btn-customer" id="verifyOtpBtn" style="width: 100%; padding: 15px; margin-top: 20px;">TƏSDİQLƏ</button>
             </div>
         </div>
     </div>
@@ -75,9 +500,11 @@
     <div id="newOrderModal" class="activity-modal" style="display: none; padding-top: 50px; overflow-y: auto;">
         <div class="modal-content" style="max-width: 700px; margin-bottom: 50px;">
             <span class="close-modal" onclick="closeNewOrderModal()">&times;</span>
+            
             <h3 style="margin-bottom: 25px; text-align: center; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: 800;">📦 YENİ SİFARİŞ YARAT</h3>
             
             <form id="newOrderForm" onsubmit="submitNewOrder(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 250px;">
                         <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Növü *</label>
@@ -247,83 +674,6 @@
             </form>
         </div>
     </div>
-
-    <section id="globalMarketplace" class="premium-services" style="background: #fdfdfd; padding: 50px 20px; border-bottom: 2px solid #eee;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            
-            <div style="text-align: center; margin-bottom: 35px;">
-                <h2 style="color: #333; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 800;">🚚 Canlı Sifariş və Reys Lövhəsi</h2>
-                <p style="color: #666; margin-top: 0; font-size: 15px;">Google Sheets cədvəlindən birbaşa gələn real vaxt fəaliyyətləri</p>
-            </div>
-
-            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 35px;">
-                <button id="tabOrdersBtn" onclick="switchMarketplaceTab('orders')" style="background: var(--primary, #A68B5C); color: white; border: none; padding: 12px 28px; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.3s; box-shadow: 0 4px 10px rgba(166,139,92,0.2);">
-                    📦 Aktiv Sifarişlər (Yüklər)
-                </button>
-                <button id="tabTripsBtn" onclick="switchMarketplaceTab('trips')" style="background: #e0e0e0; color: #333; border: none; padding: 12px 28px; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.3s;">
-                    🚛 Aktiv Reyslər (Boş Maşınlar)
-                </button>
-            </div>
-
-            <div id="marketplace-orders-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
-                <p style="text-align: center; color: #888; grid-column: 1/-1; font-style: italic; padding: 30px;">
-                    Sifariş məlumatları cədvəldən yüklənir, gözləyin...
-                </p>
-            </div>
-
-            <div id="marketplace-trips-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; display: none;">
-                <p style="text-align: center; color: #888; grid-column: 1/-1; font-style: italic; padding: 30px;">
-                    Reys məlumatları cədvəldən yüklənir, gözləyin...
-                </p>
-            </div>
-
-        </div>
-    </section>
-
-    <script>
-        // Sənin Google Apps Script Web App URL-in bura gələcək (və ya js/api.js daxilindəki URL istifadə olunacaq)
-        // Platformanın problemsiz funksionallığı üçün dinamik funksiya:
-        async function fetchMarketplaceData() {
-            try {
-                // Həm orders, həm trips məlumatlarını log.data cədvəlindən çəkirik
-                const response = await fetch('js/api.js'); 
-                // Qeyd: Əgər api.js daxilində birbaşa URL-in varsa, sistem avtomatik qoşulur.
-                // Aşağıdakı funksionallıq Google Sheets strukturuna tam uyğunlaşdırılıb.
-                
-                loadLiveMarketplaceData();
-            } catch (error) {
-                console.log("Məlumat yüklənməsində sinxronizasiya xətası:", error);
-            }
-        }
-
-        function switchMarketplaceTab(tabName) {
-            const ordersCont = document.getElementById('marketplace-orders-container');
-            const tripsCont = document.getElementById('marketplace-trips-container');
-            const ordersBtn = document.getElementById('tabOrdersBtn');
-            const tripsBtn = document.getElementById('tabTripsBtn');
-
-            if (tabName === 'orders') {
-                ordersCont.style.display = 'grid';
-                tripsCont.style.display = 'none';
-                ordersBtn.style.background = '#A68B5C';
-                ordersBtn.style.color = 'white';
-                tripsBtn.style.background = '#e0e0e0';
-                tripsBtn.style.color = '#333';
-            } else {
-                ordersCont.style.display = 'none';
-                tripsCont.style.display = 'grid';
-                tripsBtn.style.background = '#A68B5C';
-                tripsBtn.style.color = 'white';
-                ordersBtn.style.background = '#e0e0e0';
-                ordersBtn.style.color = '#333';
-            }
-        }
-
-        // Səhifə yüklənəndə avtomatik işə düşür və heç nəyi dağıtmır
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchMarketplaceData();
-        });
-    </script>
 
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
