@@ -637,3 +637,94 @@ window.addEventListener('click', function(event) {
         closeNewOrderModal();
     }
 });
+// Azərbaycanın 70+ Rayon və Şəhər massivi (Həm Haradan, həm Haraya üçün)
+const azCities = [
+    "Bakı", "Gəncə", "Sumqayıt", "Mingəçevir", "Xankəndi", "Yevlax", "Naftalan", "Lənkəran", "Şəki", "Şirvan",
+    "Naxçıvan", "Abşeron", "Ağdam", "Ağdaş", "Ağcabədi", "Ağstafa", "Ağsu", "Astara", "Babək", "Balakən",
+    "Bərdə", "Beyləqan", "Biləsuvar", "Cəbrayıl", "Cəlilabad", "Culfa", "Daşkəsən", "Füzuli", "Gədəbəy", "Goranboy",
+    "Göyçay", "Göygöl", "Hacıqabul", "Xaçmaz", "Xızı", "Xocalı", "Xocavənd", "İmişli", "İsmayıllı", "Kəlbəcər",
+    "Kürdəmir", "Laçın", "Lerik", "Masallı", "Neftçala", "Oğuz", "Ordubad", "Qəbələ", "Qax", "Qazax",
+    "Qobustan", "Quba", "Qubadlı", "Qusar", "Saatlı", "Sabirabad", "Şahbuz", "Salyan", "Şamaxı", "Samux",
+    "Şərur", "Siyəzən", "Şuşa", "Tərtər", "Tovuz", "Ucar", "Yardımlı", "Zaqatala", "Zərdab", "Zəngilan"
+];
+
+function openNewTripModal() {
+    document.getElementById("newTripModal").style.display = "block";
+    
+    // Şəhər seçimlərini doldururuq (əgər boşdursa)
+    const fromSelect = document.getElementById("tripFromCity");
+    const toSelect = document.getElementById("tripToCity");
+    
+    if (fromSelect.options.length <= 1) {
+        azCities.sort().forEach(city => {
+            let opt1 = new Option(city, city);
+            let opt2 = new Option(city, city);
+            fromSelect.add(opt1);
+            toSelect.add(opt2);
+        });
+    }
+}
+
+function closeNewTripModal() {
+    document.getElementById("newTripModal").style.display = "none";
+    document.getElementById("newTripForm").reset();
+}
+function submitNewTrip(event) {
+    event.preventDefault();
+    
+    // Mövcud sessiyadan daxil olmuş müştərinin IDsini götürürük
+    // Əgər test edirsənsə və hələ sessiya yoxdursa bura keçici olaraq "650004" yaza bilərsən
+    var activeCustomerID = localStorage.getItem("customerID") || "650004"; 
+    
+    var tripData = {
+        truckType: document.getElementById("tripTruckType").value,
+        truckBrand: document.getElementById("tripTruckBrand").value,
+        plateNumber: document.getElementById("tripPlateNumber").value.toUpperCase().trim(),
+        driverName: document.getElementById("tripDriverName").value.trim(),
+        driverSurname: document.getElementById("tripDriverSurname").value.trim(),
+        licenseCategory: document.getElementById("tripLicenseCategory").value,
+        experience: document.getElementById("tripExpVal").value + " " + document.getElementById("tripExpUnit").value,
+        width: document.getElementById("tripWidthVal").value + " " + document.getElementById("tripWidthUnit").value,
+        length: document.getElementById("tripLengthVal").value + " " + document.getElementById("tripLengthUnit").value,
+        height: document.getElementById("tripHeightVal").value + " " + document.getElementById("tripHeightUnit").value,
+        weight: document.getElementById("tripWeightVal").value + " " + document.getElementById("tripWeightUnit").value,
+        fromCity: document.getElementById("tripFromCity").value,
+        toCity: document.getElementById("tripToCity").value,
+        pickupDate: document.getElementById("tripPickupDate").value,
+        dropDate: document.getElementById("tripDropDate").value,
+        notes: document.getElementById("tripNotes").value.trim()
+    };
+
+    var payload = {
+        action: "createNewTrip",
+        customerID: activeCustomerID,
+        data: tripData
+    };
+
+    // Düyməni kilidləyirik ki, dublikat getməsin
+    var btn = document.getElementById("submitTripBtn");
+    btn.disabled = true;
+    btn.innerText = "GÖNDƏRİLİR...";
+
+    // Sizin mövcud API URL-iniz bura yazılmalıdır (Məs: api.js içindəki url)
+    var WEB_APP_URL = "https://script.google.com/macros/s/BURA_OZ_SCRIPT_ID_YAZ/exec";
+
+    fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors", // Mövcud arxitekturanız no-cors-dursa toxunmuruq
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(function() {
+        alert("Reys uğurla sistemə daxil edildi və aktivləşdirildi!");
+        closeNewTripModal();
+        btn.disabled = false;
+        btn.innerText = "REYSI TƏSDİQLƏ VƏ PAYLAŞ";
+    })
+    .catch(function(error) {
+        console.error("Xəta:", error);
+        alert("Sistem xətası baş verdi, yenidən yoxlayın.");
+        btn.disabled = false;
+        btn.innerText = "REYSI TƏSDİQLƏ VƏ PAYLAŞ";
+    });
+}
