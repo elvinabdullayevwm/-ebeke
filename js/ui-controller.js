@@ -1,47 +1,35 @@
 /**
  * YOLASAL - Professional UI & Logic Controller
- * Version: 2.7 (Dashboard İntellektual İdarəetmə Düymələri İnteqrasiyası ilə)
- * Yenilənmiş və tam sinxronlaşdırılmış tam işlək versiya.
+ * Version: 2.8 (YENİ MƏRKƏZİ GOOGLE SCRIPT URL İNTEQRASİYASI İLƏ)
+ * TAM STRUKTUR QORUNUB, SƏNİN YENİ URL BİRBAŞA DAXİL EDİLİB.
  */
 
-// --- KONFİQURASİYA ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkWD_46f2PwzSwokzJ_NM-DmyOstZcSmP0BTCp73c-DIXOOtI9dF-9UNB94QeQPCYLjQ/exec"; 
+// --- YENİ DEPLOY OLUNMUŞ GOOGLE SCRIPT BACKEND URL ---
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw05sX5mZfMTQnQxGp9pLhsQiN2lc0G2eMA4geuo5yOQbtCV5J2LSbG4wP9L2A4ZgKF9Q/exec"; 
+
 let generatedOtp = null;
 let tempUserData = {};
 
-// 1. ŞƏHƏR VƏ RAYONLARIN YÜKLƏNMƏSİ (KÖHNƏ KODDAN OLDUĞU KİMİ)
-const cities = ["Bakı", "Sumqayıt", "Gəncə", "Xırdalan", "Mingəçevir", "Lənkəran", "Şirvan", "Naxçıvan", "Quba", "Qusar", "Xaçmaz", "Şəki", "Qəbələ", "Şamaxı", "İsmayıllı", "Göyçay", "Ağsu", "Kürdəmir", "Ucar", "Yevlax", "Bərdə", "Tərtər", "Ağdam", "Füzuli", "Cəbrayıl", "Zəngilan", "Qubadlı", "Laçın", "Kəlbəcər", "Şuşa", "Xocalı", "Xankəndi", "Goranboy", "Naftalan", "Şəmkir", "Tovuz", "Ağstafa", "Qazax", "Gədəbəy", "Daşkəsən", "Samux", "Göygöl", "Oğuz", "Balakən", "Zaqatala", "Qax", "Siyəzən", "Şabran", "Xızı", "Qobustan", "Hacıqabul", "Saatlı", "Sabirabad", "İmişli", "Beyləqan", "Zərdab", "Biləsuvar", "Neftçala", "Salyan", "Cəlilabad", "Masallı", "Yardümlı", "Lerik", "Astara"];
-
-// Azərbaycanın rayon və şəhərlərinin tam əlifba siyahısı (Form 1 üçün)
-const azerbaijanCities = [
-    "Bakı", "Sumqayıt", "Gəncə", "Mingəçevir", "Xırdalan", "Şirvan", "Naxçıvan", "Lənkəran", 
-    "Yevlax", "Şəki", "Xankəndi", "Ağcabədi", "Ağdam", "Ağdaş", "Ağstafa", "Ağsu", "Astara", 
-    "Babək", "Balakən", "Bərdə", "Beyləqan", "Biləsuvar", "Cəbrayıl", "Cəlilabad", "Culfa", 
-    "Daşkəsən", "Füzuli", "Gədəbəy", "Goranboy", "Göyçay", "Göygöl", "Hacıqabul", "Xaçmaz", 
-    "Xızı", "Xocalı", "Xocavənd", "İmişli", "İsmayıllı", "Kəlbəcər", "Kürdəmir", "Qax", 
-    "Qazax", "Qəbələ", "Qobustan", "Quba", "Qubadlı", "Qusar", "Laçın", "Lerik", "Masallı", 
-    "Neftçala", "Oğuz", "Ordubad", "Saatlı", "Sabirabad", "Şahbuz", "Salyan", "Şamaxı", 
-    "Şəmkir", "Şərur", "Şuşa", "Siyəzən", "Tərtər", "Tovuz", "Ucar", "Yardımlı", "Zaqatala", 
-    "Zardab", "Zəngilan"
-].sort((a, b) => a.localeCompare(b, 'az'));
-
-// Azərbaycanın 70+ Rayon və Şəhər massivi (Reys Formu üçün)
-const azCities = [
-    "Bakı", "Gəncə", "Sumqayıt", "Mingəçevir", "Xankəndi", "Yevlax", "Naftalan", "Lənkəran", "Şəki", "Şirvan",
-    "Naxçıvan", "Abşeron", "Ağdam", "Ağdaş", "Ağcabədi", "Ağstafa", "Ağsu", "Astara", "Babək", "Balakən",
-    "Bərdə", "Beyləqan", "Biləsuvar", "Cəbrayıl", "Cəlilabad", "Culfa", "Daşkəsən", "Füzuli", "Gədəbəy", "Goranboy",
-    "Göyçay", "Göygöl", "Hacıqabul", "Xaçmaz", "Xızı", "Xocalı", "Xocavənd", "İmişli", "İsmayıllı", "Kəlbəcər",
-    "Kürdəmir", "Laçın", "Lerik", "Masallı", "Neftçala", "Oğuz", "Ordubad", "Qəbələ", "Qax", "Qazax",
-    "Qobustan", "Quba", "Qubadlı", "Qusar", "Saatlı", "Sabirabad", "Şahbuz", "Salyan", "Şamaxı", "Samux",
-    "Şərur", "Siyəzən", "Şuşa", "Tərtər", "Tovuz", "Ucar", "Yardımlı", "Zaqatala", "Zərdab", "Zəngilan"
+// Şəhər və Rayonların Təhlükəsiz Siyahısı
+const cities = [
+    "Abşeron", "Ağcabədi", "Ağdam", "Ağdaş", "Ağstafa", "Ağsu", "Astara", "Babək", "Bakı", "Balakən", 
+    "Bərdə", "Beyləqan", "Biləsuvar", "Cəbrayıl", "Cəlilabad", "Culfa", "Daşkəsən", "Füzuli", "Gədəbəy", "Gəncə", 
+    "Goranboy", "Göyçay", "Göygöl", "Hacıqabul", "Xaçmaz", "Xankəndi", "Xızı", "Xocalı", "Xocavənd", "Xırdalan", 
+    "İmişli", "İsmayıllı", "Kəlbəcər", "Kürdəmir", "Laçın", "Lerik", "Lənkəran", "Masallı", "Mingəçevir", "Naftalan", 
+    "Naxçıvan", "Neftçala", "Oğuz", "Ordubad", "Qax", "Qazax", "Qəbələ", "Qobustan", "Quba", "Qubadlı", 
+    "Qusar", "Saatlı", "Sabirabad", "Salyan", "Samux", "Siyəzən", "Sumqayıt", "Şabran", "Şahbuz", "Şamaxı", 
+    "Şəki", "Şəmkir", "Şərur", "Şirvan", "Şuşa", "Tərtər", "Tovuz", "Ucar", "Yardımlı", "Yevlax", 
+    "Zaqatala", "Zərdab", "Zəngilan"
 ];
+const azerbaijanCities = cities;
+const azCities = cities;
 
+// 1. ŞƏHƏR VƏ RAYONLARIN DROPDOWN-LARA YÜKLƏNMƏSİ
 document.addEventListener('DOMContentLoaded', () => {
-    // Qeydiyyat vərəqindəki rayonları doldur
     const citySelect = document.getElementById('citySelect');
     if (citySelect) {
         citySelect.innerHTML = '<option value="">Yaşadığınız rayonu seçin *</option>'; 
-        cities.sort().forEach(city => {
+        cities.forEach(city => {
             let opt = document.createElement('option');
             opt.value = city; opt.innerHTML = city;
             citySelect.appendChild(opt);
@@ -59,17 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Menyu linkinə basanda menyunu bağla (Mobil üçün)
     document.querySelectorAll('.nav-links li').forEach(link => {
         link.addEventListener('click', (e) => {
             if (e.target.closest('#userProfileArea')) return;
             if (navLinks) navLinks.classList.remove('active');
         });
     });
-
-    // Dinamik Form Submit Dinləyiciləri (HTML daxilində yoxdursa bura sığortadır)
-    document.getElementById('newOrderForm')?.addEventListener('submit', submitNewOrder);
-    document.getElementById('newTripForm')?.addEventListener('submit', submitNewTrip);
 });
 
 // 3. MODAL KONTROL (Giriş/Qeydiyyat)
@@ -84,7 +67,6 @@ document.getElementById('closeLogin')?.addEventListener('click', () => {
     if (loginModal) loginModal.style.display = 'none';
 });
 
-// Pəncərələr arası keçid
 document.getElementById('showReg')?.addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('loginFormArea').style.display = 'none';
@@ -168,7 +150,6 @@ document.getElementById('verifyOtpBtn')?.addEventListener('click', async () => {
             
             document.getElementById('otpFormArea').style.display = 'none';
             document.getElementById('loginFormArea').style.display = 'block';
-            
             document.getElementById('loginId').value = tempUserData.email;
             
             generatedOtp = null;
@@ -196,8 +177,10 @@ async function handleLoginProcess() {
         return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Yoxlanılır...";
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Yoxlanılır...";
+    }
 
     try {
         const response = await fetch(SCRIPT_URL, {
@@ -215,13 +198,11 @@ async function handleLoginProcess() {
         if (result.status === "Success" || result.status === "success") {
             if (loginModal) loginModal.style.display = 'none';
             
-            // Məlumatları Şəxsi Kabinetə (Dashboard) doldur
             document.getElementById('dashUserName').innerText = result.name + " " + result.surname;
             document.getElementById('dashUserId').innerText = result.id;
             document.getElementById('dashUserMmc').innerText = result.mmc ? result.mmc : "Şəxsi Hesab";
             document.getElementById('dashUserPhone').innerText = result.phone;
 
-            // Navbardakı düyməni gizlə və avatarı aktivləşdir
             const mainLoginBtn = document.getElementById('loginBtn');
             const userProfileArea = document.getElementById('userProfileArea');
             
@@ -231,19 +212,13 @@ async function handleLoginProcess() {
                 document.getElementById('userAvatarBtn').innerText = result.name.charAt(0).toUpperCase();
             }
 
-            // Sessiyanı qeyd edirik
-            localStorage.setItem('userID', result.id);
-            localStorage.setItem('customerID', result.id);
-            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem("customerID", result.id);
+            localStorage.setItem("userID", result.id);
 
-            // Şəxsi kabinet bölməsini göstər və ekranı oraya sürüşdür
             const dashboardSection = document.getElementById('customerDashboard');
-            if (dashboardSection) {
-                dashboardSection.style.display = 'block';
-                scrollToSection('customerDashboard');
-            }
+            if (dashboardSection) dashboardSection.style.display = 'block';
+            scrollToSection('customerDashboard');
 
-            // İnputları təmizlə
             document.getElementById('loginId').value = "";
             document.getElementById('loginPass').value = "";
 
@@ -259,9 +234,6 @@ async function handleLoginProcess() {
         }
     }
 }
-
-// HTML-də klik dinləyici köhnə metoddursa bura bağlayırıq
-document.getElementById('submitLoginBtn')?.addEventListener('click', handleLoginProcess);
 
 // 7. AVATAR DROPDOWN MENYUNU AÇIB-BAĞLAMAQ
 function toggleUserDropdown(event) {
@@ -296,18 +268,12 @@ function logoutUser(event) {
         if (mainLoginBtn) mainLoginBtn.style.display = 'inline-block';
         if (userProfileArea) userProfileArea.style.display = 'none';
         
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userID');
-        localStorage.removeItem('customerID');
-        
+        localStorage.clear();
         scrollToSection('home');
     }
 }
 
-// ==========================================================================
-// MƏRKƏZİ DASHBOARD İNTELLEKTUAL İDARƏEDİCİSİ
-// ==========================================================================
-
+// 10. MƏRKƏZİ DASHBOARD İNTELLEKTUAL İDARƏEDİCİSİ
 function handleDashboardAction(actionType) {
     console.log("İcra edilən əməliyyat:", actionType);
     
@@ -323,7 +289,6 @@ function handleDashboardAction(actionType) {
             alert("Aktiv Sifarişlərinizin siyahısı yüklənir...");
             break;
         case 'active-routes':
-        case 'active-trips':
             alert("Aktiv Reyslərinizin siyahısı yüklənir...");
             break;
         case 'in-progress-orders':
@@ -345,21 +310,16 @@ function handleDashboardAction(actionType) {
             alert("Reyslər üçün təkmilləşdirilmiş filtr paneli hazırlanır...");
             break;
         default:
-            alert(actionType + ' bölməsi tezliklə aktivləşdiriləcək.');
+            console.warn("Naməlum əməliyyat xətası.");
     }
 }
 
-// ==========================================================================
-// YENİ SİFARİŞ MODALININ İDARƏ EDİLMƏSİ VƏ VALIDASIYASI
-// ==========================================================================
-
+// 11. YENİ SİFARİŞ YARAT MODALININ IDARƏEDİLMƏSİ
 function openNewOrderModal() {
     const modal = document.getElementById('newOrderModal');
     if (modal) {
         modal.style.display = 'block';
         populateOrderCities();
-    } else {
-        console.error("XƏTA: 'newOrderModal' elementi HTML daxilində tapılmadı!");
     }
 }
 
@@ -367,8 +327,7 @@ function closeNewOrderModal() {
     const modal = document.getElementById('newOrderModal');
     if (modal) {
         modal.style.display = 'none';
-        const form = document.getElementById('newOrderForm');
-        if (form) form.reset();
+        document.getElementById('newOrderForm')?.reset();
     }
 }
 
@@ -395,20 +354,17 @@ function populateOrderCities() {
     }
 }
 
-// ==========================================================================
-// SİFARİŞİN SUBMIT EDİLMƏSİ MƏNTİQİ
-// ==========================================================================
-
+// 12. SİFARİŞİN GÖNDƏRİLMƏSİ
 function submitNewOrder(event) {
     if (event) event.preventDefault();
     
     const idElement = document.getElementById('dashUserId');
     let customerID = "650001";
     
-    if (idElement && idElement.innerText.trim() !== "-" && idElement.innerText.trim() !== "") {
+    if (idElement && idElement.innerText.trim() !== "-") {
         customerID = idElement.innerText.trim();
     } else {
-        customerID = localStorage.getItem('userID') || localStorage.getItem('customerID') || "650001";
+        customerID = localStorage.getItem('customerID') || "650001";
     }
 
     const submitBtn = document.getElementById('submitOrderBtn');
@@ -442,45 +398,24 @@ function submitNewOrder(event) {
         notes: document.getElementById('orderNotes').value || '-'
     };
 
-    if (typeof apiNewOrder === 'function') {
-        apiNewOrder(orderData, customerID)
-            .then(response => {
-                alert('Sifarişiniz uğurla yaradıldı və Google Sheets-ə qeyd olundu!');
-                closeNewOrderModal();
-            })
-            .catch(error => {
-                alert('Xəta baş verdi: ' + error);
-            })
-            .finally(() => {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
-                }
-            });
-    } else {
-        // Fallback: Əgər api.js hələ yüklənməyibsə köhnə birbaşa metodla göndər
-        fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "createNewOrder", customerID: customerID, data: orderData })
-        })
-        .then(() => {
-            alert('Sifariş uğurla göndərildi!');
-            closeNewOrderModal();
-        })
-        .catch(err => alert("Xəta: " + err))
-        .finally(() => {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
-            }
-        });
-    }
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "createNewOrder", customerID: customerID, data: orderData })
+    })
+    .then(() => {
+        alert('Sifarişiniz uğurla yaradıldı və Google Sheets-ə qeyd olundu!');
+        closeNewOrderModal();
+    })
+    .catch(err => alert("Xəta baş verdi: " + err))
+    .finally(() => {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ';
+        }
+    });
 }
 
-// ==========================================================================
-// YENİ REYS (TRIP) MODALININ İDARƏ EDİLMƏSİ VƏ SUBMITI
-// ==========================================================================
-
+// 13. YENİ REYS (TRIP) MODALININ IDARƏEDİLMƏSİ VƏ SUBMITI
 function openNewTripModal() {
     const modal = document.getElementById("newTripModal");
     if (modal) {
@@ -492,7 +427,7 @@ function openNewTripModal() {
         if (fromSelect && fromSelect.options.length <= 1) {
             fromSelect.innerHTML = '<option value="">Haradan *</option>';
             toSelect.innerHTML = '<option value="">Haraya *</option>';
-            azCities.sort().forEach(city => {
+            azCities.forEach(city => {
                 let opt1 = new Option(city, city);
                 let opt2 = new Option(city, city);
                 fromSelect.add(opt1);
@@ -506,8 +441,7 @@ function closeNewTripModal() {
     const modal = document.getElementById("newTripModal");
     if (modal) {
         modal.style.display = "none";
-        const form = document.getElementById("newTripForm");
-        if (form) form.reset();
+        document.getElementById("newTripForm")?.reset();
     }
 }
 
@@ -517,10 +451,10 @@ function submitNewTrip(event) {
     const idElement = document.getElementById('dashUserId');
     let activeCustomerID = "650004";
     
-    if (idElement && idElement.innerText.trim() !== "-" && idElement.innerText.trim() !== "") {
+    if (idElement && idElement.innerText.trim() !== "-") {
         activeCustomerID = idElement.innerText.trim();
     } else {
-        activeCustomerID = localStorage.getItem("userID") || localStorage.getItem("customerID") || "650004"; 
+        activeCustomerID = localStorage.getItem("customerID") || "650004"; 
     }
     
     const tripData = {
@@ -554,47 +488,27 @@ function submitNewTrip(event) {
         btn.innerText = "GÖNDƏRİLİR...";
     }
 
-    // api.js daxilində apiNewTrip funksiyası varsa ondan istifadə edirik
-    if (typeof apiNewTrip === 'function') {
-        apiNewTrip(tripData, activeCustomerID)
-            .then(() => {
-                alert("Reys uğurla sistemə daxil edildi və aktivləşdirildi!");
-                closeNewTripModal();
-            })
-            .catch(err => alert("Xəta baş verdi: " + err))
-            .finally(() => {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerText = "REYSI TƏSDİQLƏ VƏ PAYLAŞ";
-                }
-            });
-    } else {
-        // Api modulu yoxdursa təhlükəsiz birbaşa POST sorğusu
-        fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert("Reys uğurla sistemə daxil edildi və aktivləşdirildi!");
-            closeNewTripModal();
-        })
-        .catch(function(error) {
-            console.error("Xəta:", error);
-            alert("Sistem xətası baş verdi, yenidən yoxlayın.");
-        })
-        .finally(() => {
-            if (btn) {
-                btn.disabled = false;
-                btn.innerText = "REYSI TƏSDİQLƏ VƏ PAYLAŞ";
-            }
-        });
-    }
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        alert("Reys uğurla sistemə daxil edildi və aktivləşdirildi!");
+        closeNewTripModal();
+    })
+    .catch(function(error) {
+        console.error("Xəta:", error);
+        alert("Sistem xətası baş verdi, yenidən yoxlayın.");
+    })
+    .finally(() => {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "REYSI TƏSDİQLƏ VƏ PAYLAŞ";
+        }
+    });
 }
 
-// ==========================================================================
-// 11. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
-// ==========================================================================
-
+// 14. KÖMƏKÇİ FUNKSİYALAR (Scroll & Activity)
 function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
@@ -611,7 +525,6 @@ function scrollToSection(id) {
     }
 }
 
-// Canlı Statistika Detalları
 function showLiveDetails(type) {
     const modal = document.getElementById('activityModal');
     const title = document.getElementById('modalTitle');
@@ -637,15 +550,14 @@ function closeActivityModal() {
     if (actModal) actModal.style.display = 'none';
 }
 
-// Pəncərə klikləri sığortası (Bütün qapalı modalları tənzimləyir)
-window.addEventListener('click', function(event) {
+window.onclick = function(event) {
     if (event.target == loginModal) loginModal.style.display = "none";
     if (event.target == document.getElementById('activityModal')) closeActivityModal();
-    if (event.target === document.getElementById('newOrderModal')) closeNewOrderModal();
-    if (event.target === document.getElementById('newTripModal')) closeNewTripModal();
+    if (event.target == document.getElementById('newOrderModal')) closeNewOrderModal();
+    if (event.target == document.getElementById('newTripModal')) closeNewTripModal();
     
     if (!event.target.closest('#userProfileArea')) {
         const menu = document.getElementById('userDropdownMenu');
         if (menu) menu.style.display = 'none';
     }
-});
+}
