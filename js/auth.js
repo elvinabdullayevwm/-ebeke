@@ -38,7 +38,8 @@ function showSection(sectionId) {
 }
 
 /**
- * 2. İSTİFADƏÇİ GİRİŞ FUNKSİYASI
+ * 2. İSTİFADƏÇİ GİRİŞ FUNKSİYASI (YENİLƏNMİŞ VƏ TƏHLÜKƏSİZ)
+ * api.js-dəki apiCall funksiyası ilə tam sinxron işləyir.
  */
 async function login(email, pass) {
     if (!email || !pass) {
@@ -46,25 +47,41 @@ async function login(email, pass) {
         return;
     }
 
+    // Sənin backend strukturuna uyğun parametr adları
     const requestData = {
         action: "login",
-        email: email,
+        customerID: email, // Google Script ID olaraq bu parametri gözləyir
         password: pass
     };
 
-    const response = await apiCall(requestData);
-    
-    if (response.includes("Uğurlu") || response.includes("Login sorğusu")) {
-        alert("Giriş edildi!");
+    try {
+        // api.js daxilindəki qlobal funksiyanı çağırırıq
+        const response = await apiCall(requestData);
+        
+        // 🔥 KRİTİK DƏYİŞİKLİK: Həm köhnə mətn, həm də yeni JSON strukturunu yoxlayırıq (Heç nə dağılmır)
+        const isStringSuccess = typeof response === "string" && (response.includes("Uğurlu") || response.includes("Login sorğusu"));
+        const isJsonSuccess = response && response.status === "success";
 
-        // Məlumatları həm daimi yaddaşa, həm kukiyə yazırıq
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userID', '650001');
-        document.cookie = "isLoggedIn=true; path=/; max-age=2592000; SameSite=Lax";
+        if (isStringSuccess || isJsonSuccess) {
+            alert("Giriş edildi!");
 
-        showSection('marketplace-section');
-    } else {
-        alert("Server cavabı: " + response);
+            // Real istifadəçi ID-sini backend-dən götürürük, yoxdursa daxil edilən emaili/ID-ni yazırıq
+            const finalUserID = response.customerID || email || '650001';
+
+            // Məlumatları həm daimi yaddaşa, həm kukiyə yazırıq
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userID', String(finalUserID).trim());
+            document.cookie = "isLoggedIn=true; path=/; max-age=2592000; SameSite=Lax";
+
+            showSection('marketplace-section');
+        } else {
+            // Əgər backend-dən xəta mesajı gəlibsə onu göstər, yoxdursa obyektin özünü yazdır
+            const errorMsg = response.message || (typeof response === "string" ? response : "İstifadəçi ID və ya parol yanlışdır!");
+            alert("Server cavabı: " + errorMsg);
+        }
+    } catch (err) {
+        console.error("Giriş zamanı xəta:", err);
+        alert("Giriş zamanı xəta baş verdi. Sistem idarəçisinə müraciət edin.");
     }
 }
 
