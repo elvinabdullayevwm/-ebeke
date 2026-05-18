@@ -10,7 +10,7 @@
 
 // --- KONFİQURASİYA ---
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweXAWCzUo35VWaTHvRuE1LMI9fpdri5KMnAAf91noVm5ugcwDGTFRIKlf5EN2-D50Cgg/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymQdiABGx0irIv-rOGXAuIhOymtjiXP1REgSywBBfnL6u5s76Yfk4tWgtKWPoQV_NFeQ/exec"; 
 
 let generatedOtp = null;
 
