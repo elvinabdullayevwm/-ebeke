@@ -1,5 +1,5 @@
 // Qlobal Google Script Web App URL-iniz
-const scriptURL = "https://script.google.com/macros/s/AKfycbyFgZ6dChWi5WlE4SZbOxq34XZT2SgTe2vN8IFS4b1owoma2sbgapwp3iwCMxi4Bq3lAQ/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzbyV64hZEF0T6OaEM0d4am7QlufbxbqhBHZH_TULWFGuzJKRo2l9lAm8WzvsO2Zz6kuQ/exec";
 
 /**
  * Ümumi API çağırışları üçün köməkçi funksiya
