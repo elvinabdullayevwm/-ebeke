@@ -542,312 +542,192 @@
                     </select>
                 </div>
             </div>
-
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 250px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Dövlət Qeydiyyat Nişanı (Məs: 10-CC-250) *</label>
-                    <input type="text" id="tripPlateNumber" placeholder="10-XX-000" class="form-input" style="margin-bottom: 0;" required pattern="^[0-9]{2}-[A-Z]{2}-[0-9]{3}$" title="Zəhmət olmasa Azərbaycan standartına uyğun yazın. Məsələn: 10-CC-250">
-                </div>
-                <div style="display: flex; gap: 10px; flex: 1; min-width: 250px;">
-                    <div style="flex: 1;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Sürücü Adı *</label>
-                        <input type="text" id="tripDriverName" placeholder="Ad" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Sürücü Soyadı *</label>
-                        <input type="text" id="tripDriverSurname" placeholder="Soyad" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 250px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Vəsiqə Kateqoriyası *</label>
-                    <select id="tripLicenseCategory" class="form-input" style="margin-bottom: 0;" required>
-                        <option value="">Seçin *</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="BE">BE</option>
-                        <option value="CE">CE</option>
-                        <option value="DE">DE</option>
-                        <option value="BC">BC</option>
-                        <option value="ABC">ABC</option>
-                        <option value="Digər">Digər</option>
-                    </select>
-                </div>
-                <div style="flex: 1; min-width: 250px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Sürücülük Təcrübəsi *</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="number" min="1" id="tripExpVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="tripExpUnit" class="form-input" style="width: 100px; margin-bottom: 0;" required>
-                            <option value="il">il</option>
-                            <option value="ay">ay</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 180px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Yük üçün Mövcud En *</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="number" step="any" id="tripWidthVal" placeholder="En" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="tripWidthUnit" class="form-input" style="width: 90px; margin-bottom: 0;" required>
-                            <option value="metr">metr</option>
-                            <option value="santimetr">santimetr</option>
-                            <option value="desimetr">desimetr</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 180px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Mövcud Uzunluq *</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="number" step="any" id="tripLengthVal" placeholder="Uzunluq" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="tripLengthUnit" class="form-input" style="width: 90px; margin-bottom: 0;" required>
-                            <option value="metr">metr</option>
-                            <option value="santimetr">santimetr</option>
-                            <option value="desimetr">desimetr</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 180px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Mövcud Hündürlük *</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="number" step="any" id="tripHeightVal" placeholder="Hündürlük" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="tripHeightUnit" class="form-input" style="width: 90px; margin-bottom: 0;" required>
-                            <option value="metr">metr</option>
-                            <option value="santimetr">santimetr</option>
-                            <option value="desimetr">desimetr</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 220px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Götürə Biləcəyi Çəki *</label>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="number" step="any" id="tripWeightVal" placeholder="Çəki" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="tripWeightUnit" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                            <option value="ton">ton</option>
-                            <option value="kiloqram">kiloqram</option>
-                            <option value="qram">qram</option>
-                            <option value="barel">barel</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Haradan *</label>
-                    <select id="tripFromCity" class="form-input" style="margin-bottom: 0;" required>
-                        <option value="">Seçin *</option>
-                    </select>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Haraya *</label>
-                    <select id="tripToCity" class="form-input" style="margin-bottom: 0;" required>
-                        <option value="">Seçin *</option>
-                    </select>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 250px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Tarixi *</label>
-                    <input type="date" id="tripPickupDate" class="form-input" style="margin-bottom: 0;" required>
-                </div>
-                <div style="flex: 1; min-width: 250px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Tarixi *</label>
-                    <input type="date" id="tripDropDate" class="form-input" style="margin-bottom: 0;" required>
-                </div>
-            </div>
-
-            <div style="width: 100%;">
+<div style="width: 100%;">
                 <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Əlavə Qeyd (İstəyə bağlı)</label>
-                <textarea id="tripNotes" placeholder="Sürücü və ya avtomobillə bağlı digər qeydlər..." class="form-input" style="width: 100%; height: 70px; padding: 10px; font-family: 'Inter', sans-serif; resize: none;"></textarea>
+                <textarea id="tripNotes" placeholder="Sürücü və ya avtomobillə bağlı digər qeydlər..." class="form-input" style="width: 100%; height: 70px; padding: 10px; font-family: 'Inter', sans-serif; resize: none; box-sizing: border-box;"></textarea>
             </div>
 
             <button type="submit" class="btn-customer" id="submitTripBtn" style="width: 100%; padding: 15px; margin-top: 10px; font-weight: bold; font-size: 16px;">REYSI TƏSDİQLƏ VƏ PAYLAŞ</button>
         </form>
     </div>
 </div>
-        <div class="modal-content" style="max-width: 700px; margin-bottom: 50px;">
-            <span class="close-modal" onclick="closeNewOrderModal()">&times;</span>
+
+<div class="modal" id="newOrderModal" style="display: none;"> <div class="modal-content" style="max-width: 700px; margin: 30px auto; padding: 20px; box-sizing: border-box; position: relative;">
+        <span class="close-modal" onclick="closeNewOrderModal()" style="position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer;">&times;</span>
+        
+        <h3 style="margin-bottom: 25px; text-align: center; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: 800;">📦 YENİ SİFARİŞ YARAT</h3>
+        
+        <form id="newOrderForm" onsubmit="submitNewOrder(event)" style="display: flex; flex-direction: column; gap: 15px;">
             
-            <h3 style="margin-bottom: 25px; text-align: center; color: #A68B5C; font-family: 'Inter', sans-serif; font-weight: 800;">📦 YENİ SİFARİŞ YARAT</h3>
-            
-            <form id="newOrderForm" onsubmit="submitNewOrder(event)" style="display: flex; flex-direction: column; gap: 15px;">
-                
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Növü *</label>
-                        <select id="orderGoodType" class="form-input" style="margin-bottom: 0;" required>
-                            <option value="">Seçin *</option>
-                            <option value="Tikinti materialları">Tikinti materialları</option>
-                            <option value="Qida və Kənd təsərrüfatı">Qida və Kənd təsərrüfatı</option>
-                            <option value="Tekstil və Geyim">Tekstil və Geyim</option>
-                            <option value="Elektronika və Texnika">Elektronika və Texnika</option>
-                            <option value="Kimyəvi və Maye yüklər">Kimyəvi və Maye yüklər</option>
-                            <option value="Mebel və Ev əşyaları">Mebel və Ev əşyaları</option>
-                            <option value="Avtomobil və Ehtiyat hissələri">Avtomobil və Ehtiyat hissələri</option>
-                            <option value="Plastik və Rezin məmulatlar">Plastik və Rezin məmulatlar</option>
-                            <option value="Kağız və Poloqrafiya">Kağız və Poloqrafiya</option>
-                            <option value="Tibbi və Əczaçılıq məhsulları">Tibbi və Əczaçılıq məhsulları</option>
-                            <option value="Digər">Digər</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Adı *</label>
-                        <input type="text" id="orderGoodName" placeholder="Məs: Sement, Un, Soyuducu və s." class="form-input" style="margin-bottom: 0;" required>
-                    </div>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Növü *</label>
+                    <select id="orderGoodType" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="">Seçin *</option>
+                        <option value="Tikinti materialları">Tikinti materialları</option>
+                        <option value="Qida və Kənd təsərrüfatı">Qida və Kənd təsərrüfatı</option>
+                        <option value="Tekstil və Geyim">Tekstil və Geyim</option>
+                        <option value="Elektronika və Texnika">Elektronika və Texnika</option>
+                        <option value="Kimyəvi və Maye yüklər">Kimyəvi və Maye yüklər</option>
+                        <option value="Mebel və Ev əşyaları">Mebel və Ev əşyaları</option>
+                        <option value="Avtomobil və Ehtiyat hissələri">Avtomobil və Ehtiyat hissələri</option>
+                        <option value="Plastik və Rezin məmulatlar">Plastik və Rezin məmulatlar</option>
+                        <option value="Kağız və Poloqrafiya">Kağız və Poloqrafiya</option>
+                        <option value="Tibbi və Əczaçılıq məhsulları">Tibbi və Əczaçılıq məhsulları</option>
+                        <option value="Digər">Digər</option>
+                    </select>
                 </div>
-
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Materialı *</label>
-                        <select id="orderMaterial" class="form-input" style="margin-bottom: 0;" required>
-                            <option value="">Seçin *</option>
-                            <option value="Metal">Metal</option>
-                            <option value="Taxta / Ağac">Taxta / Ağac</option>
-                            <option value="Plastik / Polimer">Plastik / Polimer</option>
-                            <option value="Şüşə / Keramika">Şüşə / Keramika</option>
-                            <option value="Beton / Daş / Sement">Beton / Daş / Sement</option>
-                            <option value="Parça / Tekstil">Parça / Tekstil</option>
-                            <option value="Kağız / Karton">Kağız / Karton</option>
-                            <option value="Maye / Qaz">Maye / Qaz</option>
-                            <option value="Üzvi / Qida">Üzvi / Qida</option>
-                            <option value="Digər">Digər</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Sınma Həssaslığı *</label>
-                        <select id="orderFragility" class="form-input" style="margin-bottom: 0;" required>
-                            <option value="">Seçin *</option>
-                            <option value="Çox həssas">Çox həssas</option>
-                            <option value="Həssas">Həssas</option>
-                            <option value="Nisbətən həssas">Nisbətən həssas</option>
-                            <option value="Çox az həssas">Çox az həssas</option>
-                            <option value="Sınmaz material">Sınmaz material</option>
-                        </select>
-                    </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Adı *</label>
+                    <input type="text" id="orderGoodName" placeholder="Məs: Sement, Un, Soyuducu və s." class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
                 </div>
+            </div>
 
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Çəkisi *</label>
-                        <div style="display: flex; gap: 5px;">
-                            <input type="number" step="any" id="orderWeightVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                            <select id="orderWeightUnit" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                                <option value="kiloqram">kiloqram</option>
-                                <option value="qram">qram</option>
-                                <option value="litr">litr</option>
-                                <option value="ton">ton</option>
-                                <option value="barel">barel</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Eni *</label>
-                        <div style="display: flex; gap: 5px;">
-                            <input type="number" step="any" id="orderWidthVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                            <select id="orderWidthUnit" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                                <option value="metr">metr</option>
-                                <option value="millimetr">millimetr</option>
-                                <option value="santimetr">santimetr</option>
-                                <option value="desimetr">desimetr</option>
-                            </select>
-                        </div>
-                    </div>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Malın Materialı *</label>
+                    <select id="orderMaterial" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="">Seçin *</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Taxta / Ağac">Taxta / Ağac</option>
+                        <option value="Plastik / Polimer">Plastik / Polimer</option>
+                        <option value="Şüşə / Keramika">Şüşə / Keramika</option>
+                        <option value="Beton / Daş / Sement">Beton / Daş / Sement</option>
+                        <option value="Parça / Tekstil">Parça / Tekstil</option>
+                        <option value="Kağız / Karton">Kağız / Karton</option>
+                        <option value="Maye / Qaz">Maye / Qaz</option>
+                        <option value="Üzvi / Qida">Üzvi / Qida</option>
+                        <option value="Digər">Digər</option>
+                    </select>
                 </div>
-
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Uzunluğu *</label>
-                        <div style="display: flex; gap: 5px;">
-                            <input type="number" step="any" id="orderLengthVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                            <select id="orderLengthUnit" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                                <option value="metr">metr</option>
-                                <option value="millimetr">millimetr</option>
-                                <option value="santimetr">santimetr</option>
-                                <option value="desimetr">desimetr</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Hündürlüyü *</label>
-                        <div style="display: flex; gap: 5px;">
-                            <input type="number" step="any" id="orderHeightVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                            <select id="orderHeightUnit" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                                <option value="metr">metr</option>
-                                <option value="millimetr">millimetr</option>
-                                <option value="santimetr">santimetr</option>
-                                <option value="desimetr">desimetr</option>
-                            </select>
-                        </div>
-                    </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Sınma Həssaslığı *</label>
+                    <select id="orderFragility" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="">Seçin *</option>
+                        <option value="Çox həssas">Çox həssas</option>
+                        <option value="Həssas">Həssas</option>
+                        <option value="Nisbətən həssas">Nisbətən həssas</option>
+                        <option value="Çox az həssas">Çox az həssas</option>
+                        <option value="Sınmaz material">Sınmaz material</option>
+                    </select>
                 </div>
+            </div>
 
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Alınacaq Şəhər *</label>
-                        <select id="orderPickupCity" class="form-input" style="margin-bottom: 0;" required>
-                            <option value="">Seçin *</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Alınacaq Konkret Ünvan *</label>
-                        <input type="text" id="orderPickupAddress" placeholder="Məs: Nizami küç. 45, Anbar N3" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Ediləcək Şəhər *</label>
-                        <select id="orderDropCity" class="form-input" style="margin-bottom: 0;" required>
-                            <option value="">Seçin *</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Ediləcək Konkret Ünvan *</label>
-                        <input type="text" id="orderDropAddress" placeholder="Məs: Heydər Əliyev pr. 12" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Tarixi *</label>
-                        <input type="date" id="orderPickupDate" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                    <div style="flex: 1; min-width: 250px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Tarixi *</label>
-                        <input type="date" id="orderDropDate" class="form-input" style="margin-bottom: 0;" required>
-                    </div>
-                </div>
-
-                <div style="width: 100%;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təklif Olunan Büdcə *</label>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Çəkisi *</label>
                     <div style="display: flex; gap: 5px;">
-                        <input type="number" step="any" id="orderBudgetVal" placeholder="Məbləğ yazın" class="form-input" style="flex: 1; margin-bottom: 0;" required>
-                        <select id="orderBudgetCurrency" class="form-input" style="width: 110px; margin-bottom: 0;" required>
-                            <option value="AZN">AZN</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="TRY">TRY</option>
-                            <option value="RUB">RUB</option>
+                        <input type="number" step="any" id="orderWeightVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0; box-sizing: border-box;" required>
+                        <select id="orderWeightUnit" class="form-input" style="width: 110px; margin-bottom: 0; box-sizing: border-box;" required>
+                            <option value="kiloqram">kiloqram</option>
+                            <option value="qram">qram</option>
+                            <option value="litr">litr</option>
+                            <option value="ton">ton</option>
+                            <option value="barel">barel</option>
                         </select>
                     </div>
                 </div>
-
-                <div style="width: 100%;">
-                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Əlavə Qeyd (İstəyə bağlı)</label>
-                    <textarea id="orderNotes" placeholder="Yük ilə bağlı bilməli olduğumuz xüsusi qeydlər..." class="form-input" style="width: 100%; height: 80px; padding: 10px; font-family: 'Inter', sans-serif; resize: none;"></textarea>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Eni *</label>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="number" step="any" id="orderWidthVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0; box-sizing: border-box;" required>
+                        <select id="orderWidthUnit" class="form-input" style="width: 110px; margin-bottom: 0; box-sizing: border-box;" required>
+                            <option value="metr">metr</option>
+                            <option value="millimetr">millimetr</option>
+                            <option value="santimetr">santimetr</option>
+                            <option value="desimetr">desimetr</option>
+                        </select>
+                    </div>
                 </div>
+            </div>
 
-                <button type="submit" class="btn-customer" id="submitOrderBtn" style="width: 100%; padding: 15px; margin-top: 10px; font-weight: bold; font-size: 16px;">SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ</button>
-            </form>
-        </div>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Uzunluğu *</label>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="number" step="any" id="orderLengthVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0; box-sizing: border-box;" required>
+                        <select id="orderLengthUnit" class="form-input" style="width: 110px; margin-bottom: 0; box-sizing: border-box;" required>
+                            <option value="metr">metr</option>
+                            <option value="millimetr">millimetr</option>
+                            <option value="santimetr">santimetr</option>
+                            <option value="desimetr">desimetr</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Hündürlüyü *</label>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="number" step="any" id="orderHeightVal" placeholder="Dəyər" class="form-input" style="flex: 1; margin-bottom: 0; box-sizing: border-box;" required>
+                        <select id="orderHeightUnit" class="form-input" style="width: 110px; margin-bottom: 0; box-sizing: border-box;" required>
+                            <option value="metr">metr</option>
+                            <option value="millimetr">millimetr</option>
+                            <option value="santimetr">santimetr</option>
+                            <option value="desimetr">desimetr</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Alınacaq Şəhər *</label>
+                    <select id="orderPickupCity" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="">Seçin *</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Alınacaq Konkret Ünvan *</label>
+                    <input type="text" id="orderPickupAddress" placeholder="Məs: Nizami küç. 45, Anbar N3" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Ediləcək Şəhər *</label>
+                    <select id="orderDropCity" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="">Seçin *</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Ediləcək Konkret Ünvan *</label>
+                    <input type="text" id="orderDropAddress" placeholder="Məs: Heydər Əliyev pr. 12" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təhvil Tarixi *</label>
+                    <input type="date" id="orderPickupDate" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təslim Tarixi *</label>
+                    <input type="date" id="orderDropDate" class="form-input" style="width: 100%; margin-bottom: 0; box-sizing: border-box;" required>
+                </div>
+            </div>
+
+            <div style="width: 100%;">
+                <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Təklif Olunan Büdcə *</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="number" step="any" id="orderBudgetVal" placeholder="Məbləğ yazın" class="form-input" style="flex: 1; margin-bottom: 0; box-sizing: border-box;" required>
+                    <select id="orderBudgetCurrency" class="form-input" style="width: 110px; margin-bottom: 0; box-sizing: border-box;" required>
+                        <option value="AZN">AZN</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="TRY">TRY</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="width: 100%;">
+                <label style="font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">Əlavə Qeyd (İstəyə bağlı)</label>
+                <textarea id="orderNotes" placeholder="Yük ilə bağlı bilməli olduğumuz xüsusi qeydlər..." class="form-input" style="width: 100%; height: 80px; padding: 10px; font-family: 'Inter', sans-serif; resize: none; box-sizing: border-box;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-customer" id="submitOrderBtn" style="width: 100%; padding: 15px; margin-top: 10px; font-weight: bold; font-size: 16px;">S SİFARİŞİ TƏSDİQLƏ VƏ PAYLAŞ</button>
+        </form>
     </div>
+</div>
 
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
