@@ -1,114 +1,124 @@
 /**
- * QARDAŞ, BU BİZİM BİRƏŞMİŞ VƏ TƏHLÜKƏSİZ ANA DOPOST FUNKSİYAMIZDIR.
- * Mövcud olan bütün funksiyalar (login, createOrder, createNewOrder) qorunub saxlanıldı.
+ * YOLASAL - MƏRKƏZİ BACKEND GATWAY (main.gs)
+ * Location: backend/main.gs
+ * Description: Saytdan gələn bütün GET və POST HTTP sorğularını qarşılayan 
+ * və müvafiq modullara (Database / LogisticsEngine) yönləndirən ana qovşaq.
+ * Version: 2.8 (2026)
  */
-function doPost(e) {
+
+// 1. Qlobal GET Sorğularının Qarşılanması
+function doGet(e) {
+  // CORS təhlükəsizlik başlıqları ilə cavab vermək üçün mərkəzi funksiya
   try {
-    // 1. Gələn paketi açırıq
-    var data = JSON.parse(e.postData.contents);
-    var action = data.action; // Router rolunu oynayan əsas dəyişən
-    
-    // ==========================================================================
-    // DISPETÇER MƏNTİQİ (ROUTING) - BÜTÜN EMRLƏR BURADA YOXLANILIR
-    // ==========================================================================
-    
-    // Əmr 1: Köhnə/Alternativ Sifariş Yaratma Məntiqi
-    if (action === "createOrder") {
-      // LogisticsEngine.gs-dəki funksiyanı çağırırıq
-      var newID = generateID(data.sheetName, data.userId, data.prefix);
-      
-      // Database.gs-dəki funksiya ilə bazaya yazırıq
-      appendToSheet(data.sheetName, [data.userId, newID, data.details, new Date()]);
-      
-      return ContentService.createTextOutput("Uğurlu: Yeni ID yaradıldı - " + newID);
-    }
-    
-    // Əmr 2: Sistemimiz üçün 19 Sütunlu Yeni Sifariş Yaratma Əməliyyatı (YOLASAL LAYİHƏSİ)
-    if (action === "createNewOrder") {
-      return ContentService.createTextOutput(JSON.stringify(saveNewOrderToSheet(data)))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // Əmr 3: İstifadəçi Girişi (Login)
-    if (action === "login") {
-      // Bura gələcəkdə AuthProvider.gs-i bağlayacağıq
-      return ContentService.createTextOutput("Login sorğusu qəbul edildi");
+    const action = e.parameter.action;
+    let responseData = {};
+
+    // Axtarış və ya istifadəçi yoxlama əməliyyatlarının yönləndirilməsi
+    if (action === "checkUser") {
+      if (typeof checkUserExists === "function") {
+        responseData = checkUserExists(e.parameter.email, e.parameter.phone);
+      } else {
+        responseData = { status: "Error", message: "Database modulu tapılmadı!" };
+      }
+    } 
+    else if (action === "globalSearch") {
+      if (typeof globalLogisticsSearch === "function") {
+        responseData = globalLogisticsSearch(e.parameter.type, e.parameter.from, e.parameter.to);
+      } else {
+        responseData = { status: "Error", message: "LogisticsEngine modulu tapılmadı!" };
+      }
+    } 
+    else {
+      responseData = { status: "Error", message: "Naməlum GET aksiyası!" };
     }
 
-    // Əgər gələn action yuxarıdakıların heç birinə uyğun gəlməzsə:
-    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Xəta: Naməlum əmr!" }))
+    return ContentService.createTextOutput(JSON.stringify(responseData))
       .setMimeType(ContentService.MimeType.JSON);
 
-  } catch (f) {
-    // Backend xətalarını JSON formatında stabil şəkildə qaytarırıq
-    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Backend Xətası: " + f.toString() }))
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "Error", message: error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-// ==========================================================================
-// GOOGLE APPS SCRIPT - YENİ SİFARİŞİN ORDERS VƏRƏQİNƏ YAZILMASI
-// ==========================================================================
-
-/**
- * 16 form məlumatını, avtomatik ID və Statusları 19 sütunlu Orders vərəqinə yazan əsas funksiya
- * (Bu funksiyaya və daxili strukturuna qətiyyən toxunulmadı, tam qorunub saxlanıldı)
- */
-function saveNewOrderToSheet(request) {
+// 2. Qlobal POST Sorğularının Qarşılanması
+function doPost(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Orders"); 
-    
-    if (!sheet) {
-      return { "status": "error", "message": "'Orders' adlı işçi vərəqi tapılmadı!" };
+    // Gələn məlumatın oxunması
+    const requestData = JSON.parse(e.postData.contents);
+    const action = requestData.action;
+    let responseData = {};
+
+    console.log("Gələn POST sorğusu, Aksiya: " + action);
+
+    // Əməliyyat tipinə görə alt funksiyalara paylanma
+    switch (action) {
+      case "sendOtp":
+        if (typeof sendVerificationOtp === "function") {
+          responseData = sendVerificationOtp(requestData.email, requestData.otp);
+        } else {
+          responseData = { status: "Error", message: "OTP funksiyası aktiv deyil!" };
+        }
+        break;
+
+      case "registerUser":
+        if (typeof registerNewUser === "function") {
+          responseData = registerNewUser(requestData);
+        } else {
+          responseData = { status: "Error", message: "Qeydiyyat funksiyası aktiv deyil!" };
+        }
+        break;
+
+      case "login":
+        if (typeof processUserLogin === "function") {
+          responseData = processUserLogin(requestData.loginId, requestData.password);
+        } else {
+          responseData = { status: "Error", message: "Giriş funksiyası aktiv deyil!" };
+        }
+        break;
+
+      case "createNewOrder":
+        if (typeof createOrder === "function") {
+          responseData = createOrder(requestData.customerID, requestData.data);
+        } else {
+          responseData = { status: "Error", message: "Sifariş yaratma funksiyası aktiv deyil!" };
+        }
+        break;
+
+      case "createNewTrip":
+        if (typeof createTrip === "function") {
+          responseData = createTrip(requestData.customerID, requestData.data);
+        } else {
+          responseData = { status: "Error", message: "Reys yaratma funksiyası aktiv deyil!" };
+        }
+        break;
+
+      case "getDashboardStats":
+        if (typeof getCustomerDashboardStats === "function") {
+          responseData = getCustomerDashboardStats(requestData.customerID);
+        } else {
+          responseData = { status: "Error", message: "Statistika mühərriki aktiv deyil!" };
+        }
+        break;
+
+      case "getMatchingOrders":
+        if (typeof findMatchingOrdersForTrip === "function") {
+          responseData = findMatchingOrdersForTrip(requestData.tripID);
+        } else {
+          responseData = { status: "Error", message: "Uyğunlaşdırma mühərriki aktiv deyil!" };
+        }
+        break;
+
+      default:
+        responseData = { status: "Error", message: "İcra edilə bilməyən POST əməliyyatı!" };
     }
-    
-    var customerID = request.customerID;
-    var orderData = request.data; // Gələn daxili data obyekti
-    
-    // 1. Unikal Sifariş ID-sinin generasiya edilməsi (Məs: ORD-1715978432)
-    var timestamp = new Date().getTime();
-    var orderID = "ORD-" + timestamp;
-    
-    // 2. Statusun avtomatik təyin edilməsi
-    var status = "Aktiv";
-    
-    // 3. Əlavə Qeyd boşdursa defolt olaraq "-" qoyulur
-    var notes = orderData.notes ? orderData.notes : "-";
-    
-    // Google Sheet-dəki 19 sütunlu arxitekturaya tam uyğun ardıcıllıq (A-dan S-ə qədər)
-    var rowData = [
-      customerID,          // A sütunu: Müştəri ID
-      orderData.goodType,       // B sütunu: Malın növü
-      orderData.goodName,       // C sütunu: Malın adı
-      orderData.material,       // D sütunu: Malın materialı
-      orderData.fragility,      // E sütunu: Sınma həssaslığı
-      orderData.weight,         // F sütunu: Çəkisi
-      orderData.width,          // G sütunu: Eni
-      orderData.length,         // H sütunu: Uzunluğu
-      orderData.height,         // I sütunu: Hündürlüyü
-      orderData.pickupCity,     // J sütunu: Təhvil alınacaq şəhər
-      orderData.pickupAddress,  // K sütunu: Təhvil alınacaq konkret ünvan
-      orderData.dropCity,       // L sütunu: Təslim ediləcək şəhər
-      orderData.dropAddress,    // M sütunu: Təslim ediləcək konkret ünvan
-      orderData.pickupDate,     // N sütunu: Təhvil tarixi
-      orderData.dropDate,       // O sütunu: Təslim tarixi
-      orderData.budget,         // P sütunu: Büdcə
-      status,              // Q sütunu: Status
-      notes,               // R sütunu: Qeyd
-      orderID              // S sütunu: Sifariş ID
-    ];
-    
-    // Məlumatı ən aşağı boş sətrə əlavə edirik
-    sheet.appendRow(rowData);
-    
-    return { 
-      "status": "success", 
-      "message": "Sifariş uğurla yadda saxlanıldı", 
-      "orderID": orderID 
-    };
-    
-  } catch (err) {
-    return { "status": "error", "message": "Backend xətası: " + err.toString() };
+
+    // Nəticəni JSON formatında brauzerə geri qaytarırıq
+    return ContentService.createTextOutput(JSON.stringify(responseData))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "Error", message: "Mərkəzi Gateway Xətası: " + error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
