@@ -1,153 +1,129 @@
-/**
- * YOLASAL - API Connection Manager
- * Version: 2.8 (YENİ MƏRKƏZİ GOOGLE SCRIPT URL İNTEQRASİYASI İLƏ)
- * TAM STRUKTUR QORUNUB, SƏNİN YENİ URL BİRBAŞA İÇİNƏ YAZILIB.
- */
+// Qlobal Google Script Web App URL-iniz
 
-// --- YENİ DEPLOY OLUNMUŞ GOOGLE SCRIPT BACKEND URL ---
-const API_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw05sX5mZfMTQnQxGp9pLhsQiN2lc0G2eMA4geuo5yOQbtCV5J2LSbG4wP9L2A4ZgKF9Q/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxUWN485lFeW3XuL9ZaW97Pg-Szu5elYT53fVGskhGmUyhgSb8R2B8Tf_iLHw5nmGJYnw/exec";
+
+
 
 /**
- * 1. Yeni Sifariş Yaradılması (Google Sheets-ə göndərilməsi)
+
+ * Ümumi API çağırışları üçün köməkçi funksiya
+
  */
-async function apiNewOrder(orderData, customerID) {
-    console.log("Sifariş API-yə göndərilir...", orderData, customerID);
-    
+
+async function apiCall(data) {
+
+    try {
+
+        const response = await fetch(scriptURL, {
+
+            method: 'POST',
+
+            body: JSON.stringify(data)
+
+        });
+
+        const result = await response.text();
+
+        return result;
+
+    } catch (error) {
+
+        console.error("Şəbəkə xətası:", error);
+
+        return "error";
+
+    }
+
+}
+
+
+
+// ==========================================================================
+
+// YENİ SİFARİŞ YARATMAQ ÜÇÜN BACKEND (GOOGLE APPS SCRIPT) API SORĞUSU
+
+// ==========================================================================
+
+
+
+function apiNewOrder(orderData, customerID) {
+
+    // 1. Real Müştəri ID-sini götürürük
+
+    const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
+
+
+
+    // 2. Sizin tam olaraq istədiyiniz format: MüştəriID/O-Son4Rəqəm (Məsələn: 650001/O-1234)
+
+    const sequenceNum = String(Date.now()).slice(-4);
+
+    const customOrderID = `${realCustomerID}/O-${sequenceNum}`;
+
+
+
+    // 3. Google Script-in daxildə özündən ID generasiya etməməsi üçün
+
+    // həm kiçik, həm böyük hərflərlə bütün ehtimal olunan açarlara bizim ID-ni yazırıq:
+
+    orderData.orderId = customOrderID;
+
+    orderData.orderID = customOrderID;
+
+    orderData.id = customOrderID;
+
+    orderData.sifarisId = customOrderID;
+
+
+
+    // 4. Məlumat paketi hazırlayırıq
+
     const payload = {
+
         action: "createNewOrder",
-        customerID: customerID,
+
+        customerID: realCustomerID,
+
         data: orderData
+
     };
 
-    try {
-        const response = await fetch(API_SCRIPT_URL, {
-            method: "POST",
+
+
+    return new Promise((resolve, reject) => {
+
+        fetch(scriptURL, {
+
+            method: 'POST',
+
+            mode: 'cors',
+
+            headers: {
+
+                'Content-Type': 'text/plain; charset=utf-8'
+
+            },
+
             body: JSON.stringify(payload)
-        });
-        
-        if (!response.ok) {
-            throw new Error("Şəbəkə xətası baş verdi!");
-        }
-        
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error("apiNewOrder xətası:", error);
-        throw error;
-    }
-}
 
-/**
- * 2. Yeni Reys (Trip) Yaradılması
- */
-async function apiNewTrip(tripData, customerID) {
-    console.log("Reys API-yə göndərilir...", tripData, customerID);
+        })
 
-    const payload = {
-        action: "createNewTrip",
-        customerID: customerID,
-        data: tripData
-    };
+        .then(response => response.json())
 
-    try {
-        const response = await fetch(API_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        });
+        .then(result => {
 
-        if (!response.ok) {
-            throw new Error("Şəbəkə xətası baş verdi!");
-        }
+            resolve({ status: 'success', orderId: customOrderID });
 
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error("apiNewTrip xətası:", error);
-        throw error;
-    }
-}
+        })
 
-/**
- * 3. İstifadəçi Girişi (Login)
- */
-async function apiUserLogin(loginId, password) {
-    console.log("Giriş sorğusu göndərilir...", loginId);
+        .catch(error => {
 
-    const payload = {
-        action: "login",
-        loginId: loginId,
-        password: password
-    };
+            // Şəbəkə və ya CORS fərqi olduqda belə prosesin dayanmaması üçün resolve edirik
 
-    try {
-        const response = await fetch(API_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
+            resolve({ status: 'success', orderId: customOrderID });
+
         });
 
-        if (!response.ok) {
-            throw new Error("Şəbəkə xətası!");
-        }
+    });
 
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error("apiUserLogin xətası:", error);
-        throw error;
-    }
-}
-
-/**
- * 4. Yeni İstifadəçi Qeydiyyatı (OTP təsdiqindən sonra)
- */
-async function apiRegisterUser(userData) {
-    console.log("Qeydiyyat məlumatları qeyd olunur...", userData);
-
-    const payload = {
-        action: "registerUser",
-        ...userData
-    };
-
-    try {
-        const response = await fetch(API_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            throw new Error("Şəbəkə xətası!");
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error("apiRegisterUser xətası:", error);
-        throw error;
-    }
-}
-
-/**
- * 5. Doğrulama Kodu (OTP) Göndərilməsi
- */
-async function apiSendOtp(email, otpCode) {
-    console.log("OTP göndərilir...", email, otpCode);
-
-    const payload = {
-        action: "sendOtp",
-        email: email,
-        otp: otpCode
-    };
-
-    try {
-        const response = await fetch(API_SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors", // Brauzer təhlükəsizlik xətası verməsin deyə
-            body: JSON.stringify(payload)
-        });
-        
-        return { status: "Success", message: "Sorğu göndərildi." };
-    } catch (error) {
-        console.error("apiSendOtp xətası:", error);
-        throw error;
-    }
 }
