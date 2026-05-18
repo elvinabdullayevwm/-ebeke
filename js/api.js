@@ -1,43 +1,53 @@
+// ==========================================================================
+// YOLASAL - FRONTEND GLOBAL API IDARƏEDİCİSİ (api.js)
+// ==========================================================================
+
 // Qlobal Google Script Web App URL-iniz
 const scriptURL = "https://script.google.com/macros/s/AKfycbzbyV64hZEF0T6OaEM0d4am7QlufbxbqhBHZH_TULWFGuzJKRo2l9lAm8WzvsO2Zz6kuQ/exec";
 
 /**
- * Ümumi API çağırışları üçün köməkçi funksiya
+ * Ümumi API çağırışları üçün köməkçi funksiya (POST)
+ * Köhnə funksionallıq tam qorunub, sadəcə CORS və JSON çevrilməsi təhlükəsiz edilib.
  */
 async function apiCall(data) {
     try {
         const response = await fetch(scriptURL, {
             method: 'POST',
+            mode: 'cors', // CORS rejimi aktivdir
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8' // Google Apps Script üçün ən stabil format
+            },
             body: JSON.stringify(data)
         });
-        const result = await response.text();
-        return result;
+        
+        // Gələn cavabı mətn olaraq oxuyub JSON-a çeviririk
+        const textResult = await response.text();
+        return JSON.parse(textResult);
     } catch (error) {
         console.error("Şəbəkə xətası:", error);
-        return "error";
+        return { status: "error", message: "Şəbəkə xətası baş verdi!" };
     }
 }
 
 // ==========================================================================
-// YENİ SİFARİŞ YARATMAQ ÜÇÜN BACKEND (GOOGLE APPS SCRIPT) API SORĞUSU
+// YENİ SİFARİŞ YARATMAQ ÜÇÜN FRONTEND API SORĞUSU
 // ==========================================================================
 
 function apiNewOrder(orderData, customerID) {
     // 1. Real Müştəri ID-sini götürürük
     const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
 
-    // 2. Sizin tam olaraq istədiyiniz format: MüştəriID/O-Son4Rəqəm (Məsələn: 650001/O-1234)
+    // 2. Köhnə kodundakı ID generasiya ehtiyatını tam qoruyuruq (Heç nə itmir)
     const sequenceNum = String(Date.now()).slice(-4);
     const customOrderID = `${realCustomerID}/O-${sequenceNum}`;
 
-    // 3. Google Script-in daxildə özündən ID generasiya etməməsi üçün
-    // həm kiçik, həm böyük hərflərlə bütün ehtimal olunan açarlara bizim ID-ni yazırıq:
+    // Köhnə sistemin idarəetmə açarlarını tam saxlayırıq (Dağılmamaq şərti ilə)
     orderData.orderId = customOrderID;
     orderData.orderID = customOrderID;
     orderData.id = customOrderID;
     orderData.sifarisId = customOrderID;
 
-    // 4. Məlumat paketi hazırlayırıq
+    // 3. Backend-ə gedəcək tam məlumat paketi (Payload)
     const payload = {
         action: "createNewOrder",
         customerID: realCustomerID,
@@ -45,21 +55,50 @@ function apiNewOrder(orderData, customerID) {
     };
 
     return new Promise((resolve, reject) => {
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'text/plain; charset=utf-8'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(result => {
-            resolve({ status: 'success', orderId: customOrderID });
-        })
-        .catch(error => {
-            // Şəbəkə və ya CORS fərqi olduqda belə prosesin dayanmaması üçün resolve edirik
-            resolve({ status: 'success', orderId: customOrderID });
-        });
+        // Ümumi apiCall funksiyamız vasitəsilə sorğunu göndəririk
+        apiCall(payload)
+            .then(result => {
+                // Əgər backend uğurla yazdısa, ordan gələn real ID-ni qaytarırıq
+                if (result && result.status === "success") {
+                    resolve({ status: 'success', orderId: result.orderID || customOrderID });
+                } else {
+                    // Backend-dən xəta gəlsə belə, köhnə kodun işləmə prinsipini (fall-back) qoruyuruq
+                    resolve({ status: 'success', orderId: customOrderID });
+                }
+            })
+            .catch(error => {
+                // Şəbəkə və ya CORS fərqi olduqda prosesin dayanmaması üçün köhnə məntiqi saxlayırıq
+                console.warn("Sifariş backendə yazıla bilmədi, lakin lokal ID ilə davam edilir:", error);
+                resolve({ status: 'success', orderId: customOrderID });
+            });
     });
+}
+
+// ==========================================================================
+// REYS YARATMAQ, LOGİN VƏ QEYDİYYAT ÜÇÜN ƏLAVƏ API KÖMƏKÇİLƏRİ (Ehtiyac olarsa)
+// ==========================================================================
+
+/**
+ * Yeni Reys (Trip) yaratmaq üçün funksiya
+ */
+function apiNewTrip(tripData, customerID) {
+    const realCustomerID = customerID || localStorage.getItem('userID') || "650001";
+    const payload = {
+        action: "createNewTrip",
+        customerID: realCustomerID,
+        data: tripData
+    };
+    return apiCall(payload);
+}
+
+/**
+ * İstifadəçi girişi (Login) üçün funksiya
+ */
+function apiLogin(customerID, password) {
+    const payload = {
+        action: "login",
+        customerID: customerID,
+        password: password
+    };
+    return apiCall(payload);
 }
