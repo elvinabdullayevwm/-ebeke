@@ -1,6 +1,6 @@
 // Qlobal Google Script Web App URL-iniz
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbxUWN485lFeW3XuL9ZaW97Pg-Szu5elYT53fVGskhGmUyhgSb8R2B8Tf_iLHw5nmGJYnw/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbymQdiABGx0irIv-rOGXAuIhOymtjiXP1REgSywBBfnL6u5s76Yfk4tWgtKWPoQV_NFeQ/exec";
 
 
 
