@@ -3,7 +3,7 @@
 // ==========================================================================
 
 // Qlobal Google Script Web App URL-iniz
-const scriptURL = "https://script.google.com/macros/s/AKfycbzbyV64hZEF0T6OaEM0d4am7QlufbxbqhBHZH_TULWFGuzJKRo2l9lAm8WzvsO2Zz6kuQ/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzkWD_46f2PwzSwokzJ_NM-DmyOstZcSmP0BTCp73c-DIXOOtI9dF-9UNB94QeQPCYLjQ/exec";
 
 /**
  * Ümumi API çağırışları üçün köməkçi funksiya (POST)
