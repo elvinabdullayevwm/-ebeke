@@ -1,77 +1,199 @@
+// ==========================================================================
+
+// YOLASAL - ZİREHLİ F5 QORUMA SİSTEMİ (QEYD-ŞƏRTSİZ GİRİŞ)
+
+// ==========================================================================
+
+
+
 /**
- * YOLASAL - Authentication & Session Manager
- * Version: 2.8 (YENİ MƏRKƏZİ GOOGLE SCRIPT URL İNTEQRASİYASI İLƏ)
- * TAM STRUKTUR QORUNUB, SƏNİN YENİ URL BİRBAŞA İÇİNƏ YAZILIB.
+
+ * 1. SƏHİFƏLƏRİ AÇIB-GİZLƏDƏN ANA FUNKSİYA
+
  */
 
-// --- YENİ DEPLOY OLUNMUŞ GOOGLE SCRIPT BACKEND URL ---
-const AUTH_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw05sX5mZfMTQnQxGp9pLhsQiN2lc0G2eMA4geuo5yOQbtCV5J2LSbG4wP9L2A4ZgKF9Q/exec";
+function showSection(sectionId) {
 
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Yolasal Auth Modulu Aktivdir.");
+    // Brauzer yaddasını tam qaranlıq otaqda belə tapırıq
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn') || document.cookie.includes('isLoggedIn=true');
+
+    const userID = localStorage.getItem('userID');
+
+
+
+    // 🔥 ƏSAS ZİREH BURADIR: 
+
+    // Əgər istifadəçi giriş EDİBSƏ və hansısa köhnə HTML kodu inadla onu 
+
+    // login-ə və ya register-ə atmaq istəyirsə, biz onun qarşısını kəsirik!
+
+    if (isLoggedIn && userID && (sectionId === 'login-section' || sectionId === 'register-section' || !sectionId)) {
+
+        console.log("Zireh Aktivləşdi: Giriş var, login səhifəsi bloklandı. Marketplace açılır.");
+
+        sectionId = 'marketplace-section'; // Məcburi olaraq marketplace-ə çeviririk
+
+    }
+
+
+
+    // Əgər giriş yoxdursa və başqa yerə keçmək istəyirsə, login-ə at
+
+    if (!isLoggedIn && sectionId !== 'login-section' && sectionId !== 'register-section') {
+
+        sectionId = 'login-section';
+
+    }
+
+
+
+    // --- Səhifələri ekranda göstərmək məntiqi ---
+
+    const sections = ['login-section', 'register-section', 'marketplace-section', 'dashboard-section'];
+
     
-    // Əgər form birbaşa html daxilində submit edilirsə, idarəetməni ələ al
-    const loginForm = document.getElementById("loginFormArea")?.querySelector("form");
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            if (typeof handleLoginProcess === "function") {
-                handleLoginProcess();
-            }
-        });
+
+    sections.forEach(id => {
+
+        const el = document.getElementById(id);
+
+        if (el) el.style.display = 'none';
+
+    });
+
+
+
+    const targetEl = document.getElementById(sectionId);
+
+    if (targetEl) {
+
+        targetEl.style.display = 'block';
+
     }
 
-    // Sessiyanı yoxla (İstifadəçi daxil olubsa, səhifə yenilənəndə sistemdən atmasın)
-    checkUserSession();
-});
+}
+
+
 
 /**
- * İstifadəçi Sessiyasının Yoxlanılması (Auto-Login Check)
+
+ * 2. İSTİFADƏÇİ GİRİŞ FUNKSİYASI
+
  */
-function checkUserSession() {
-    const customerID = localStorage.getItem("customerID") || localStorage.getItem("userID");
+
+async function login(email, pass) {
+
+    if (!email || !pass) {
+
+        alert("Bütün xanaları doldurun!");
+
+        return;
+
+    }
+
+
+
+    const requestData = {
+
+        action: "login",
+
+        email: email,
+
+        password: pass
+
+    };
+
+
+
+    const response = await apiCall(requestData);
+
     
-    if (customerID) {
-        console.log("Aktiv sessiya tapıldı, ID:", customerID);
-        
-        // Əgər ui-controller funksiyası mövcuddursa, profil sahəsini avtomatik doldur
-        const dashUserId = document.getElementById("dashUserId");
-        if (dashUserId && dashUserId.innerText === "-") {
-            // Səhifə yenilənəndə məlumatlar itməsin deyə local-dan oxuyuruq
-            dashUserId.innerText = customerID;
-            
-            const dashboardSection = document.getElementById("customerDashboard");
-            if (dashboardSection) {
-                dashboardSection.style.display = "block";
-            }
-            
-            const mainLoginBtn = document.getElementById("loginBtn");
-            const userProfileArea = document.getElementById("userProfileArea");
-            
-            if (mainLoginBtn) mainLoginBtn.style.display = "none";
-            if (userProfileArea) {
-                userProfileArea.style.display = "inline-block";
-                const avatarBtn = document.getElementById("userAvatarBtn");
-                if (avatarBtn) avatarBtn.innerText = "U"; // User-in baş hərfi (Default)
-            }
-        }
+
+    if (response.includes("Uğurlu") || response.includes("Login sorğusu")) {
+
+        alert("Giriş edildi!");
+
+
+
+        // Məlumatları həm daimi yaddaşa, həm kukiyə yazırıq
+
+        localStorage.setItem('isLoggedIn', 'true');
+
+        localStorage.setItem('userID', '650001');
+
+        document.cookie = "isLoggedIn=true; path=/; max-age=2592000; SameSite=Lax";
+
+
+
+        showSection('marketplace-section');
+
+    } else {
+
+        alert("Server cavabı: " + response);
+
     }
+
 }
 
-/**
- * Şifrənin təhlükəsizlik yoxlanışı (Validasiya)
- */
-function validatePassword(password) {
-    if (password.length < 6) {
-        return { valid: false, msg: "Şifrə ən azı 6 simvoldan ibarət olmalıdır!" };
-    }
-    return { valid: true };
-}
+
 
 /**
- * E-mail formatının düzgünlüyünü yoxlamaq
+
+ * 3. SİSTEMDƏN ÇIXIŞ
+
  */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
+
+function logout() {
+
+    localStorage.removeItem('isLoggedIn');
+
+    localStorage.removeItem('userID');
+
+    document.cookie = "isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    alert("Sistemdən çıxış edildi!");
+
+    showSection('login-section');
+
 }
+
+
+
+/**
+
+ * 4. SƏHİFƏ AÇILANDA VƏ YA F5 OLUNANDA ARASIKƏSİLMƏZ YOXLAMA (Yarım saniyəlik təhlükəsizlik taymeri ilə)
+
+ */
+
+function checkSessionAndRun() {
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn') || document.cookie.includes('isLoggedIn=true');
+
+    if (isLoggedIn) {
+
+        showSection('marketplace-section');
+
+    } else {
+
+        showSection('login-section');
+
+    }
+
+}
+
+
+
+// Səhifə yüklənən kimi dərhal yoxla
+
+window.addEventListener('DOMContentLoaded', checkSessionAndRun);
+
+window.addEventListener('load', checkSessionAndRun);
+
+
+
+// 🔥 GİZLİ SİLAH: Əgər HTML-in içindəki hansısa kod səhifə tam açılandan sonra 
+
+// bizi çölə atarsa, bu taymer yarım saniyə sonra onu yenidən məcburi içəri salacaq!
+
+setTimeout(checkSessionAndRun, 500);
