@@ -4,7 +4,7 @@
  */
 
 // --- KONFİQURASİYA ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweXAWCzUo35VWaTHvRuE1LMI9fpdri5KMnAAf91noVm5ugcwDGTFRIKlf5EN2-D50Cgg/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFgZ6dChWi5WlE4SZbOxq34XZT2SgTe2vN8IFS4b1owoma2sbgapwp3iwCMxi4Bq3lAQ/exec"; 
 let generatedOtp = null;
 let tempUserData = {};
 
@@ -707,7 +707,7 @@ function submitNewTrip(event) {
     btn.innerText = "GÖNDƏRİLİR...";
 
     // Sizin mövcud API URL-iniz bura yazılmalıdır (Məs: api.js içindəki url)
-    var WEB_APP_URL = "https://script.google.com/macros/s/BURA_OZ_SCRIPT_ID_YAZ/exec";
+    var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyFgZ6dChWi5WlE4SZbOxq34XZT2SgTe2vN8IFS4b1owoma2sbgapwp3iwCMxi4Bq3lAQ/exec";
 
     fetch(WEB_APP_URL, {
         method: "POST",
